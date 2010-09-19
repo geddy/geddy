@@ -21,8 +21,8 @@ var fs = require('fs');
 
 desc('Installs Geddy web framework');
 task('default', [], function () {
-  var uid = process.env.SUDO_UID;
-  var gid = process.env.SUDO_GID;
+  var uid = process.env.SUDO_UID || process.getuid();
+  var gid = process.env.SUDO_GID || process.getgid();
   var cmds = [];
   cmds = [
     'mkdir -p ~/.node_libraries'
@@ -45,8 +45,8 @@ task('default', [], function () {
 
 desc('Uninstalls Geddy web framework');
 task('uninstall', [], function () {
-  var uid = process.env.SUDO_UID;
-  var gid = process.env.SUDO_GID;
+  var uid = process.env.SUDO_UID || process.getuid();
+  var gid = process.env.SUDO_GID || process.getgid();
   var cmds = [];
   cmds = [
     'rm -f /usr/local/bin/geddy*'
