@@ -15,7 +15,7 @@
   "bin": {
     "geddy": "./bin/cli.js"
   },
-  "main": "./lib",
+  "main": "./lib/geddy",
   "repository": {
     "type": "git",
     "url": "git://github.com/mde/geddy.git"
