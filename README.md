@@ -315,6 +315,6 @@ If there are no errors, the tests all ran successfully.
 API docs [can be found here](http://mde.github.com/geddy/doc/).
 
 - - -
-Geddy Web-app development framework copyright 2112
+Geddy Web-app development framework copyright 2012
 mde@fleegix.org.
 
