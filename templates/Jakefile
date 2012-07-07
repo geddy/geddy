@@ -5,7 +5,7 @@ require('../lib/geddy')
 var fs = require('fs')
   , path = require('path')
   , existsSync = typeof fs.existsSync == 'function' ?
-      fs.existsSync : path.existsSync
+      fs.existsSync : fs.existsSync
   , inflection = require('../deps/inflection')
   , utils = require('../lib/utils')
   , adapter = require('../lib/template/adapters').Adapter

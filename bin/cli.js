@@ -170,7 +170,7 @@ else {
   for(var i = 0, len = utils.file.maxParentDir; i <= len; i++) {
     var configPath = path.join(cwd, relPath, 'config')
       , existsSync = typeof fs.existsSync == 'function' ?
-          fs.existsSync : path.existsSync
+          fs.existsSync : fs.existsSync
       , geddyApp = existsSync(configPath);
 
     if(geddyApp) {
