@@ -110,16 +110,22 @@ start = function() {
   geddy.start();
 };
 
-if(opts.help) die(usage);
-if(opts.version) die(geddy.version);
+if (opts.help) {
+    die(usage);
+}
+if (opts.version) {
+    die(geddy.version);
+}
 
 // `geddy app foo` or `geddy resource bar` etc. -- run generators
-if(cmds.length) {
+if (cmds.length) {
   // Get templates Jake file
   filepath = path.normalize(path.join(__dirname, '..', 'templates', 'Jakefile'));
 
   // Wrap quotes in case path has spaces
-  if(process.platform === 'win32') filepath = '"' + filepath + '"';
+  if (process.platform === 'win32') {
+      filepath = '"' + filepath + '"';
+  }
   cmd = 'jake -t -f ' + filepath + ' ';
 
   // If command isn't secret and has no other argument
@@ -128,18 +134,22 @@ if(cmds.length) {
   }
 
   // Add engines to command
-  if(opts.jade) {
+  if (opts.jade) {
     engineCmd = ',' + 'jade';
-  } else if(opts.handle) {
+  } else if (opts.handle) {
     engineCmd = ',' + 'handlebars';
-  } else if(opts.mustache) {
+  } else if (opts.mustache) {
     engineCmd = ',' + 'mustache';
-  } else engineCmd = '';
+  } else {
+      engineCmd = '';
+  }
 
   // Get the model properties
-  if(cmds.slice(2).length > 0) {
+  if (cmds.slice(2).length > 0) {
     modelCmd = ',' + cmds.slice(2).join(' ');
-  } else modelCmd = '';
+  } else {
+      modelCmd = '';
+  }
 
   // Add Jake argument based on commands
   switch(cmds[0]) {
@@ -184,7 +194,7 @@ if(cmds.length) {
   }
 
   exec(cmd, function(err, stdout, stderr) {
-    if(err) {
+    if (err) {
       throw err;
     }
     if (stderr) {
