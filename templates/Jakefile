@@ -71,7 +71,9 @@ namespace('db', function () {
         if (adapter) {
           console.log('Creating table for ' + m);
           adapter.createTable(m, function (err, data) {
-            if (err) { throw err }
+            if (err) { 
+              throw err; 
+            }
             createTable();
           });
         }
@@ -149,10 +151,18 @@ namespace('gen', function () {
       type = type.replace(/:.*/g, '');
 
       // Defaults and aliases
-      if (!type) type = 'string';
-      if (type === 'integer') type = 'int';
-      if (type === 'bool') type = 'boolean';
-      if (args === 'def') args = 'default';
+      if (!type) {
+        type = 'string';
+      }
+      if (type === 'integer') {
+        type = 'int';
+      }
+      if (type === 'bool') {
+        type = 'boolean';
+      }
+      if (args === 'def') {
+        args = 'default';
+      }
       if (type === 'default' || type === 'def') {
         // If the type is `default` assume they want `string`
         // type and want this property to be default
@@ -180,7 +190,7 @@ namespace('gen', function () {
       }
 
       // Set property as default if given the `default` argument
-      if(args === 'default') {
+      if (args === 'default') {
         obj['default'] = {name: name, type: type};
         // Add the original ID property
         obj['id'] = obj['id'] || {name: 'id', type: 'int'};
@@ -429,7 +439,9 @@ namespace('gen', function () {
   });
 
   task('views', function (name, options) {
-    if (!name) throw new Error('No view name specified.');
+    if (!name) {
+      throw new Error('No view name specified.');
+    }
 
     options = options || {};
 
@@ -447,10 +459,18 @@ namespace('gen', function () {
       , addActionView;
 
     // Set extension based on engine option
-    if (engine === 'ejs') ext += '.ejs';
-    if (engine === 'jade') ext += '.jade';
-    if (engine === 'handlebars') ext += '.hbs';
-    if (engine === 'mustache') ext += '.ms';
+    if (engine === 'ejs') {
+      ext += '.ejs';
+    }
+    if (engine === 'jade') {
+      ext += '.jade';
+    }
+    if (engine === 'handlebars') {
+      ext += '.hbs';
+    }
+    if (engine === 'mustache') {
+      ext += '.ms';
+    }
 
     // Set application layout path
     appLayoutPath = path.join('app', 'views', 'layouts', 'application');
@@ -504,10 +524,18 @@ namespace('gen', function () {
       , templ;
 
     // Set extension based on engine option
-    if (engine === 'ejs') ext += '.ejs';
-    if (engine === 'jade') ext += '.jade';
-    if (engine === 'handlebars') ext += '.hbs';
-    if (engine === 'mustache') ext += '.ms';
+    if (engine === 'ejs') {
+      ext += '.ejs';
+    }
+    if (engine === 'jade') {
+      ext += '.jade';
+    }
+    if (engine === 'handlebars') {
+      ext += '.hbs';
+    }
+    if (engine === 'mustache') {
+      ext += '.ms';
+    }
 
     // Set application layout path
     appLayoutPath = path.join('app', 'views', 'layouts', 'application');
@@ -578,7 +606,9 @@ namespace('gen', function () {
       text = text.replace(/\nconfig.secret.+\n/, '');
 
       splitText = 'module.exports = config';
-      if (environmentPath.match('.js')) splitText += ';';
+      if (environmentPath.match('.js')) {
+        splitText += ';';
+      }
 
       environmentArr = text.split(splitText);
       environmentArr[0] += "config.secret = '" + secret + "'";
