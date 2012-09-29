@@ -35,6 +35,14 @@ install:
 		chmod 755 $(DESTDIR)$(PREFIX)/lib/node_modules/geddy/bin/cli.js && \
 		echo 'Geddy installed.'
 
+quickinstall:
+	@mkdir -p $(DESTDIR)$(PREFIX)/bin && \
+	  mkdir -p $(DESTDIR)$(PREFIX)/lib/node_modules/geddy && \
+		cp -R ./* $(DESTDIR)$(PREFIX)/lib/node_modules/geddy/ && \
+		ln -snf ../lib/node_modules/geddy/bin/cli.js $(DESTDIR)$(PREFIX)/bin/geddy && \
+		chmod 755 $(DESTDIR)$(PREFIX)/lib/node_modules/geddy/bin/cli.js && \
+		echo 'Geddy installed. Geddy dependencies might need to be updated. Use install instead of quick-install to make sure everything is up to date'
+
 clean:
 	@true
 
