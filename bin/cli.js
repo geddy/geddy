@@ -60,6 +60,7 @@ usage = [
   , '  controller <name>           Generate a new controller including an index view'
   , '                                and and a route'
   , '  model <name> [attrs]        Generate a new model'
+  , '  console                     Opens a geddy console'
   , ''
   , 'Examples:'
   , '  geddy                    Start Geddy on localhost:4000 in development mode'
