@@ -365,7 +365,7 @@ util.puts(user.errors.password);
 
 ## Running the tests
 
-In the geddy project directory, run `jake test`. The tests simply
+In the geddy project directory, run `geddy jake test`. The tests simply
 use NodeJS's `assert` library, which throws an error on failure.
 If there are no errors, the tests all ran successfully.
 
