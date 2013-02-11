@@ -396,9 +396,35 @@ namespace('gen', function () {
     return obj;
   };
 
+  var getTemplatesPath = function (templatesNameOrPath) {
+    var templatesPath = __dirname
+      , localModulesPath = path.join('node_modules', templatesNameOrPath, 'templates')
+      // TODO: This won't work in Windows, we need a better way to get to NPMs g modules
+      , globalModulesPath = path.join('/usr/local/lib/node_modules/', templatesNameOrPath, 'templates');   
+
+    if (templatesNameOrPath != 'default') { 
+      if (utils.file.existsSync(templatesNameOrPath)) {    // Assuming it's a full or relative path
+        templatesPath = templatesNameOrPath;
+      }        
+      else if (utils.file.existsSync(localModulesPath)) {
+        templatesPath = localModulesPath;
+      }
+      else if (utils.file.existsSync(globalModulesPath)) {
+        templatesPath = globalModulesPath;
+      }
+      else {
+        throw new Error("The specified templates weren't found. Check they exists as a full or relatvie path or as a local or global module");
+      }
+
+      console.log('Using templates in ' + templatesPath);
+    }
+
+    return templatesPath;
+  };
+
   // Creates a new Geddy app scaffold
   task('app', function (name, engine, realtime, templates) {
-    var basePath
+    var basePath = path.join(getTemplatesPath(templates), 'base')
       , mkdirs
       , cps
       , text
@@ -412,18 +438,7 @@ namespace('gen', function () {
     }
     if (realtime == 'default') {
       realtime = false;
-    }
-    if (templates == 'default') { 
-      basePath = path.join(__dirname, 'base');
-    }
-    else {
-      basePath = path.join(templates, 'base');
-      console.log('Using templates in ' + templates);
-      if (!utils.file.existsSync(templates)) {
-        throw new Error("The specified templates weren't found. Check the following path exists: " + templates);
-      }
-    }
-
+    }  
 
     mkdirs = [
       ''
