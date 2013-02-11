@@ -429,18 +429,9 @@ namespace('gen', function () {
       (realtime) ? ['realtime/views/' + engine, 'app/views'] : ['views/' + engine, 'app/views']
     , ['public', '']
     , ['config', '']
-    //, ['router.js', 'config']
-    //, ['init.js', 'config']
-    // , (realtime) ? ['realtime/environment.js', 'config'] : ['environment.js', 'config']
-    //, ['development.js', 'config']
-    //, ['production.js', 'config']
-    //, ['secrets.json', 'config']
-    , ['main.js', 'app/controllers']
-    , ['application.js', 'app/controllers']
-    , ['favicon.ico', 'public']
+    , ['app/controllers', '']
     , ['gitignore.txt', '.gitignore']
     ];
-
 
     if (realtime) {
       cps.push(['realtime/environment.js', 'config']);
