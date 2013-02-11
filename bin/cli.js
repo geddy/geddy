@@ -18,6 +18,7 @@ var cwd = process.cwd()
   , engineCmd
   , rtCmd
   , modelCmd
+  , templatesCmd
   , filepath
   , die
   , jake
@@ -49,6 +50,7 @@ usage = [
   , '                        templates(Default: EJS)'
   , '  --help, -h          Output this usage dialog'
   , '  --version, -v       Output the version of Geddy that\'s installed'
+  , '  --templates, -t     Directory containing the code generation templates. '
   , ''
   , 'Commands:'
   , '  console                     Start up the Geddy REPL'
@@ -156,6 +158,11 @@ optsMap = [
   , args: false
   , canon: 'realtime'
   }
+, { full: 'templates'   // TODO: Consider a better name since this can be confused with view templates.... 
+  , abbr: 't'
+  , args: true
+  , canon: 'templates'
+  }
 ];
 
 // Parse optsMap and generate options and cmd commands
@@ -220,6 +227,8 @@ if (cmds.length) {
     rtCmd = ',default';
   }
 
+  templatesCmd = ',' + ((opts.templates) ? opts.templates : 'default');
+
   // Get the model properties
   if (cmds.slice(2).length > 0) {
     modelCmd = ',' + cmds.slice(2).join('%');
@@ -253,7 +262,7 @@ if (cmds.length) {
       break;
     case 'app':
       // Generating application
-      cmd += 'gen:app[' + cmds[1] + engineCmd + rtCmd + ']';
+      cmd += 'gen:app[' + cmds[1] + engineCmd + rtCmd + templatesCmd + ']';
       break;
     case 'resource':
       // Generating resource

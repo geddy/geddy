@@ -397,8 +397,8 @@ namespace('gen', function () {
   };
 
   // Creates a new Geddy app scaffold
-  task('app', function (name, engine, realtime) {
-    var basePath = path.join(__dirname, 'base')
+  task('app', function (name, engine, realtime, templates) {
+    var basePath
       , mkdirs
       , cps
       , text
@@ -413,6 +413,17 @@ namespace('gen', function () {
     if (realtime == 'default') {
       realtime = false;
     }
+    if (templates == 'default') { 
+      basePath = path.join(__dirname, 'base');
+    }
+    else {
+      basePath = path.join(templates, 'base');
+      console.log('Using templates in ' + templates);
+      if (!utils.file.existsSync(templates)) {
+        throw new Error("The specified templates weren't found. Check the following path exists: " + templates);
+      }
+    }
+
 
     mkdirs = [
       ''
@@ -429,7 +440,7 @@ namespace('gen', function () {
       (realtime) ? ['realtime/views/' + engine, 'app/views'] : ['views/' + engine, 'app/views']
     , ['public', '']
     , ['config', '']
-    , ['app/controllers', '']
+    , ['app/controllers', 'app']
     , ['gitignore.txt', '.gitignore']
     ];
 
