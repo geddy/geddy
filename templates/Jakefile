@@ -398,14 +398,15 @@ namespace('gen', function () {
 
   var getTemplatesPath = function (templatesNameOrPath) {
     var templatesPath = __dirname
+      , customTemplatePath = path.join(templatesNameOrPath, 'templates')
       , templatesFullName = 'geddy-'+ templatesNameOrPath + '-templates'
       , localModulesPath = path.join('node_modules', templatesFullName, 'templates')
       // TODO: This won't work in Windows, we need a better way to get to NPMs g modules
       , globalModulesPath = path.join('/usr/local/lib/node_modules/', templatesFullName, 'templates');   
 
     if (templatesNameOrPath != 'default') { 
-      if (utils.file.existsSync(templatesNameOrPath)) {    // Assuming it's a full or relative path
-        templatesPath = templatesNameOrPath;
+      if (utils.file.existsSync(customTemplatePath)) {    // Assuming it's a full or relative path
+        templatesPath = customTemplatePath;
       }        
       else if (utils.file.existsSync(localModulesPath)) {
         templatesPath = localModulesPath;
