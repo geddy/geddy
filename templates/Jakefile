@@ -396,110 +396,123 @@ namespace('gen', function () {
     return obj;
   };
 
-  var getTemplatesPath = function (templatesNameOrPath) {
-    var templatesPath = __dirname
+  var getTemplatesPath = function (templatesNameOrPath, cb) {
+    var exec = require('child_process').exec
       , customTemplatePath = path.join(templatesNameOrPath, 'templates')
       , templatesFullName = 'geddy-'+ templatesNameOrPath + '-templates'
-      , localModulesPath = path.join('node_modules', templatesFullName, 'templates')
-      // TODO: This won't work in Windows, we need a better way to get to NPMs g modules
-      , globalModulesPath = path.join('/usr/local/lib/node_modules/', templatesFullName, 'templates');   
+      , localModulesPath 
+      , globalModulesPath; 
 
-    if (templatesNameOrPath != 'default') { 
-      if (utils.file.existsSync(customTemplatePath)) {    // Assuming it's a full or relative path
-        templatesPath = customTemplatePath;
-      }        
-      else if (utils.file.existsSync(localModulesPath)) {
-        templatesPath = localModulesPath;
-      }
-      else if (utils.file.existsSync(globalModulesPath)) {
-        templatesPath = globalModulesPath;
-      }
-      else {
-        throw new Error("The specified templates weren't found. Check they exists as a full or relatvie path or as a local or global module");
-      }
-
-      console.log('Using templates in ' + templatesPath);
+    if (templatesNameOrPath === 'default') { 
+      cb(null, __dirname);
+      return;
     }
+    if (utils.file.existsSync(customTemplatePath)) {    
+      cb(null, customTemplatePath);
+      return;
+    }        
 
-    return templatesPath;
+    exec("npm root", function (error, stdout, stderror) {
+      localModulesPath = path.join(stdout.split("\n")[0], templatesFullName, 'templates');
+      if (utils.file.existsSync(localModulesPath)) {   
+          cb(null, localModulesPath);
+          return;
+      }
+
+      exec("npm root -g", function (error, stdout, stderror) {
+        globalModulesPath = path.join(stdout.split("\n")[0], templatesFullName, 'templates');
+        if (utils.file.existsSync(globalModulesPath)) {   
+          cb(null, globalModulesPath);  
+          return;
+        }
+        cb("The specified templates weren't found. Check they exists as a full or relatvie path or as a local or global module");
+      });
+    });
   };
 
   // Creates a new Geddy app scaffold
   task('app', function (name, engine, realtime, templates) {
-    var basePath = path.join(getTemplatesPath(templates), 'base')
-      , mkdirs
-      , cps
-      , text
-      , adapter;
-
-    if (!name) {
-      throw new Error('No app name specified.');
-    }
-    if (!engine || engine == 'default') {
-      engine = 'ejs';
-    }
-    if (realtime == 'default') {
-      realtime = false;
-    }  
-
-    mkdirs = [
-      ''
-    , 'config'
-    , 'app/models'
-    , 'app/controllers'
-    , 'app/helpers'
-    , 'lib'
-    , 'log'
-    , 'node_modules'
-    , 'test'
-    ];
-    cps = [
-      (realtime) ? ['realtime/views/' + engine, 'app/views'] : ['views/' + engine, 'app/views']
-    , ['public', '']
-    , ['config', '']
-    , ['app/controllers', 'app']
-    , ['gitignore.txt', '.gitignore']
-    ];
-
-    if (realtime) {
-      cps.push(['realtime/environment.js', 'config']);
-    }
-
-    mkdirs.forEach(function (dir) {
-      jake.mkdirP(path.join(name, dir));
-    });
-    cps.forEach(function (cp) {
-      jake.cpR(path.join(basePath, cp[0]), path.join(name, cp[1]), {silent: true});
-    });
-
-    // one offs
-    if (realtime) {
-      jake.cpR(path.join(__dirname, '..', 'node_modules', 'socket.io' ), path.join(name, 'node_modules'), {silent: true});
-    }
-
-    // Compile Jakefile
-    text = fs.readFileSync(path.join(basePath, 'Jakefile.ejs'), 'utf8').toString();
-    adapter = new Adapter({engine: 'ejs', template: text});
-    fs.writeFileSync(path.join(name, 'Jakefile'), adapter.render({appName: name}), 'utf8');
-
-    // Compile package.json
-    text = fs.readFileSync(path.join(basePath, 'package.json.ejs'), 'utf8').toString();
-    adapter = new Adapter({engine: 'ejs', template: text});
-    fs.writeFileSync(path.join(name, 'package.json'), adapter.render({appName: name}), 'utf8');
-
-    // Add engine to package.json if it's not EJS
-    if (engine !== 'ejs') {
-      // Change to handlebars as we use it behind the scenes
-      if (engine === 'mustache') {
-        engine = 'handlebars';
+    
+    getTemplatesPath(templates, function (err, basePath) {
+      var mkdirs
+        , cps
+        , text
+        , adapter;
+      if (err) {
+        throw new Error(err);
       }
-      var data = {dependencies: {}};
-      data.dependencies[engine] = "*";
+      if (!name) {
+        throw new Error('No app name specified.');
+      }
+      if (!engine || engine == 'default') {
+        engine = 'ejs';
+      }
+      if (realtime == 'default') {
+        realtime = false;
+      }  
 
-      mixinJSONData(path.join(name, 'package.json'), data);
-    }
+      basePath = path.join(basePath, "base");
+      console.log("Using templates in: " + basePath);
 
-    console.log('Created app ' + name + '.');
+      mkdirs = [
+        ''
+      , 'config'
+      , 'app/models'
+      , 'app/controllers'
+      , 'app/helpers'
+      , 'lib'
+      , 'log'
+      , 'node_modules'
+      , 'test'
+      ];
+      cps = [
+        (realtime) ? ['realtime/views/' + engine, 'app/views'] : ['views/' + engine, 'app/views']
+      , ['public', '']
+      , ['config', '']
+      , ['app/controllers', 'app']
+      , ['gitignore.txt', '.gitignore']
+      ];
+
+      if (realtime) {
+        cps.push(['realtime/environment.js', 'config']);
+      }
+
+      mkdirs.forEach(function (dir) {
+        jake.mkdirP(path.join(name, dir));
+      });
+      cps.forEach(function (cp) {
+        jake.cpR(path.join(basePath, cp[0]), path.join(name, cp[1]), {silent: true});
+      });
+
+      // one offs
+      if (realtime) {
+        jake.cpR(path.join(__dirname, '..', 'node_modules', 'socket.io' ), path.join(name, 'node_modules'), {silent: true});
+      }
+
+      // Compile Jakefile
+      text = fs.readFileSync(path.join(basePath, 'Jakefile.ejs'), 'utf8').toString();
+      adapter = new Adapter({engine: 'ejs', template: text});
+      fs.writeFileSync(path.join(name, 'Jakefile'), adapter.render({appName: name}), 'utf8');
+
+      // Compile package.json
+      text = fs.readFileSync(path.join(basePath, 'package.json.ejs'), 'utf8').toString();
+      adapter = new Adapter({engine: 'ejs', template: text});
+      fs.writeFileSync(path.join(name, 'package.json'), adapter.render({appName: name}), 'utf8');
+
+      // Add engine to package.json if it's not EJS
+      if (engine !== 'ejs') {
+        // Change to handlebars as we use it behind the scenes
+        if (engine === 'mustache') {
+          engine = 'handlebars';
+        }
+        var data = {dependencies: {}};
+        data.dependencies[engine] = "*";
+
+        mixinJSONData(path.join(name, 'package.json'), data);
+      }
+
+      console.log('Created app ' + name + '.');
+    });
   });
 
   // Creates a resource with a model, controller and a resource route
