@@ -401,6 +401,10 @@ namespace('gen', function () {
       , customTemplatePath = path.join(templatesNameOrPath, 'templates')
       , templatesFullName = 'geddy-'+ templatesNameOrPath + '-templates';
     
+    reportPath = function (path) {
+      console.log("Using templates in: " + path);
+      cb(path);
+    }
     getModulePath = function (cmdToGetPathFrom, getModulePathCallback) {
       exec(cmdToGetPathFrom, function (error, modulesPath, stdErr) {
         if (error) {
@@ -413,24 +417,20 @@ namespace('gen', function () {
     }
 
     if (templatesNameOrPath === 'default') { 
-      cb(__dirname);
-      return;
+      return reportPath(__dirname);
     }
     
     if (utils.file.existsSync(customTemplatePath)) {    
-      cb(customTemplatePath);
-      return;
+      return reportPath(customTemplatePath);
     }        
 
     getModulePath("npm root", function (localModulePath) {
       if(utils.file.existsSync(localModulePath)) {
-        cb(localModulePath);
-        return;
+        return reportPath(localModulePath);
       }
       getModulePath("npm root -g", function (globalModulePath) {
         if(utils.file.existsSync(globalModulePath)) {
-          cb(globalModulePath);
-          return;
+          return reportPath(globalModulePath);
         }
         throw new Error("The specified templates weren't found. Check they exists as a full or relatvie path or as a local or global module");    
       });
@@ -455,7 +455,6 @@ namespace('gen', function () {
       }  
 
       templatesPath = path.join(templatesPath, "base");
-      console.log("Using templates in: " + templatesPath);
 
       mkdirs = [
         ''
