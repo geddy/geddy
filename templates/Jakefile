@@ -399,48 +399,51 @@ namespace('gen', function () {
   var getTemplatesPath = function (templatesNameOrPath, cb) {
     var exec = require('child_process').exec
       , customTemplatePath = path.join(templatesNameOrPath, 'templates')
-      , templatesFullName = 'geddy-'+ templatesNameOrPath + '-templates'
-      , localModulesPath 
-      , globalModulesPath; 
+      , templatesFullName = 'geddy-'+ templatesNameOrPath + '-templates';
+    
+    getModulePath = function (cmdToGetPathFrom, getModulePathCallback) {
+      exec(cmdToGetPathFrom, function (error, modulesPath, stdErr) {
+        if (error) {
+          throw new Error(error);
+        }
+        modulesPath = modulesPath.split("\n")[0];
+        modulesPath = path.join(modulesPath, templatesFullName, 'templates');
+        getModulePathCallback(modulesPath);  
+      });  
+    }
 
     if (templatesNameOrPath === 'default') { 
-      cb(null, __dirname);
+      cb(__dirname);
       return;
     }
+    
     if (utils.file.existsSync(customTemplatePath)) {    
-      cb(null, customTemplatePath);
+      cb(customTemplatePath);
       return;
     }        
 
-    exec("npm root", function (error, stdout, stderror) {
-      localModulesPath = path.join(stdout.split("\n")[0], templatesFullName, 'templates');
-      if (utils.file.existsSync(localModulesPath)) {   
-          cb(null, localModulesPath);
-          return;
+    getModulePath("npm root", function (localModulePath) {
+      if(utils.file.existsSync(localModulePath)) {
+        cb(localModulePath);
+        return;
       }
-
-      exec("npm root -g", function (error, stdout, stderror) {
-        globalModulesPath = path.join(stdout.split("\n")[0], templatesFullName, 'templates');
-        if (utils.file.existsSync(globalModulesPath)) {   
-          cb(null, globalModulesPath);  
+      getModulePath("npm root -g", function (globalModulePath) {
+        if(utils.file.existsSync(globalModulePath)) {
+          cb(globalModulePath);
           return;
         }
-        cb("The specified templates weren't found. Check they exists as a full or relatvie path or as a local or global module");
+        throw new Error("The specified templates weren't found. Check they exists as a full or relatvie path or as a local or global module");    
       });
     });
   };
 
   // Creates a new Geddy app scaffold
-  task('app', function (name, engine, realtime, templates) {
-    
-    getTemplatesPath(templates, function (err, basePath) {
+  task('app', function (name, engine, realtime, templates) {   
+    getTemplatesPath(templates, function (templatesPath) {
       var mkdirs
         , cps
         , text
         , adapter;
-      if (err) {
-        throw new Error(err);
-      }
       if (!name) {
         throw new Error('No app name specified.');
       }
@@ -451,8 +454,8 @@ namespace('gen', function () {
         realtime = false;
       }  
 
-      basePath = path.join(basePath, "base");
-      console.log("Using templates in: " + basePath);
+      templatesPath = path.join(templatesPath, "base");
+      console.log("Using templates in: " + templatesPath);
 
       mkdirs = [
         ''
@@ -481,7 +484,7 @@ namespace('gen', function () {
         jake.mkdirP(path.join(name, dir));
       });
       cps.forEach(function (cp) {
-        jake.cpR(path.join(basePath, cp[0]), path.join(name, cp[1]), {silent: true});
+        jake.cpR(path.join(templatesPath, cp[0]), path.join(name, cp[1]), {silent: true});
       });
 
       // one offs
@@ -490,12 +493,12 @@ namespace('gen', function () {
       }
 
       // Compile Jakefile
-      text = fs.readFileSync(path.join(basePath, 'Jakefile.ejs'), 'utf8').toString();
+      text = fs.readFileSync(path.join(templatesPath, 'Jakefile.ejs'), 'utf8').toString();
       adapter = new Adapter({engine: 'ejs', template: text});
       fs.writeFileSync(path.join(name, 'Jakefile'), adapter.render({appName: name}), 'utf8');
 
       // Compile package.json
-      text = fs.readFileSync(path.join(basePath, 'package.json.ejs'), 'utf8').toString();
+      text = fs.readFileSync(path.join(templatesPath, 'package.json.ejs'), 'utf8').toString();
       adapter = new Adapter({engine: 'ejs', template: text});
       fs.writeFileSync(path.join(name, 'package.json'), adapter.render({appName: name}), 'utf8');
 
