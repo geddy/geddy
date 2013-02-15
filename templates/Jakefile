@@ -323,7 +323,7 @@ namespace('gen', function () {
   var _writeTemplate = function (name, filename, dirname, opts) {
     var options = opts || {}
       , names = utils.string.getInflections(name)
-      , text = fs.readFileSync(path.join(__dirname, filename + '.ejs'), 'utf8').toString()
+      , text = fs.readFileSync(path.join(filename + '.ejs'), 'utf8').toString()
       , bare = options.bare || false // Default to full controller
       , adapter
       , templContent
@@ -580,8 +580,6 @@ namespace('gen', function () {
     getTemplatesPath(templates, function (templatesPath) {
 
       modelPath = path.join(templatesPath, modelPath);
-      console.log(modelPath);
-
       _writeTemplate(name, modelPath, path.join('app', 'models'), {
           inflection: 'singular'
         , properties: _formatModelProperties(properties)
