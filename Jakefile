@@ -95,3 +95,7 @@ testTask = new jake.TestTask('Geddy model-adapters', function () {
   this.testFiles.include('lib/model/adapters/**/test.js');
 });
 
+testTask = new jake.TestTask('Geddy getTemplatesPath', function () {
+  this.testName = 'testGetTemplatesPath'
+  this.testFiles.include('test/templates/getTemplatesPath.js');
+});
