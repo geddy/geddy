@@ -1,18 +1,15 @@
 var assert = require('assert')
 	, path = require('path')
   , getTemplatesPath = require('../../templates/Jakefile').getTemplatesPath  
-  , fileUtils = require('../../lib/utils').file
-  , originalExistsSync = fileUtils.existsSync
-  , originalLog = console.log
-  , localModulePath = path.resolve("node_modules/geddy-localModuleShortName-templates/templates")
-  , globalModulePath = "/usr/local/lib/node_modules/geddy-globalModuleShortName-templates/templates";
+  , fileUtils = require('../../lib/utils').file;
 
 testGetPathTest = function (pathOrModuleName, expectedPath, done) {
-	console.log = function () { }
+	var originalExistsSync = fileUtils.existsSync
+  	, originalLog = console.log;
+
+	console.log = function () { };
 	fileUtils.existsSync = function (receivedPath) {
-		return receivedPath == "existingLocalPath/templates" 
-			|| receivedPath == localModulePath
-			|| receivedPath == globalModulePath;
+		return receivedPath == expectedPath;
 	};
 	getTemplatesPath(pathOrModuleName, function(path) {
 		assert.equal(path, expectedPath);
@@ -28,13 +25,14 @@ tests = {
 		testGetPathTest("default", path.join(__dirname, "../../templates"), done);
 	}
 , 'localPath': function (done) {
-		console.log("starting test");
   	testGetPathTest("existingLocalPath", "existingLocalPath/templates", done);
   }
 , 'localModule': function (done) {
+		var localModulePath = path.resolve("node_modules/geddy-localModuleShortName-templates/templates");
 		testGetPathTest("localModuleShortName", localModulePath, done);
 	}
 , 'globalModule': function (done) {
+		var globalModulePath = "/usr/local/lib/node_modules/geddy-globalModuleShortName-templates/templates";
 		testGetPathTest("globalModuleShortName", globalModulePath, done);		
 	}
 };
