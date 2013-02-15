@@ -114,6 +114,48 @@ mixinJSONData = function (file, obj) {
   }
 };
 
+getTemplatesPath = function (templatesNameOrPath, cb) {
+  var exec = require('child_process').exec
+    , customTemplatePath = path.join(templatesNameOrPath, 'templates')
+    , templatesFullName = 'geddy-'+ templatesNameOrPath + '-templates'
+  
+  reportPath = function (path) {
+    console.log("Using templates in: " + path);
+    cb(path);
+  };
+  getModulePath = function (cmdToGetPathFrom, getModulePathCallback) {
+    exec(cmdToGetPathFrom, function (error, modulesPath, stdErr) {
+      if (error) {
+        throw new Error(error);
+      }
+      modulesPath = modulesPath.split("\n")[0];
+      modulesPath = path.join(modulesPath, templatesFullName, 'templates');
+      getModulePathCallback(modulesPath);  
+    });  
+  }
+
+  if (templatesNameOrPath === 'default') { 
+    return reportPath(__dirname);
+  }
+  
+  if (utils.file.existsSync(customTemplatePath)) {    
+    return reportPath(customTemplatePath);
+  }        
+
+  getModulePath("npm root", function (localModulePath) {
+    if(utils.file.existsSync(localModulePath)) {
+      return reportPath(localModulePath);
+    }
+    getModulePath("npm root -g", function (globalModulePath) {
+      if(utils.file.existsSync(globalModulePath)) {
+        return reportPath(globalModulePath);
+      }
+      throw new Error("The specified templates weren't found. Check they exists as a full or relatvie path or as a local or global module");    
+    });
+  });
+};
+
+
 namespace('env', function () {
   task('init', function (environment) {
     jake.addListener('complete', function (e) {
@@ -394,47 +436,6 @@ namespace('gen', function () {
     }
 
     return obj;
-  };
-
-  var getTemplatesPath = function (templatesNameOrPath, cb) {
-    var exec = require('child_process').exec
-      , customTemplatePath = path.join(templatesNameOrPath, 'templates')
-      , templatesFullName = 'geddy-'+ templatesNameOrPath + '-templates';
-    
-    reportPath = function (path) {
-      console.log("Using templates in: " + path);
-      cb(path);
-    }
-    getModulePath = function (cmdToGetPathFrom, getModulePathCallback) {
-      exec(cmdToGetPathFrom, function (error, modulesPath, stdErr) {
-        if (error) {
-          throw new Error(error);
-        }
-        modulesPath = modulesPath.split("\n")[0];
-        modulesPath = path.join(modulesPath, templatesFullName, 'templates');
-        getModulePathCallback(modulesPath);  
-      });  
-    }
-
-    if (templatesNameOrPath === 'default') { 
-      return reportPath(__dirname);
-    }
-    
-    if (utils.file.existsSync(customTemplatePath)) {    
-      return reportPath(customTemplatePath);
-    }        
-
-    getModulePath("npm root", function (localModulePath) {
-      if(utils.file.existsSync(localModulePath)) {
-        return reportPath(localModulePath);
-      }
-      getModulePath("npm root -g", function (globalModulePath) {
-        if(utils.file.existsSync(globalModulePath)) {
-          return reportPath(globalModulePath);
-        }
-        throw new Error("The specified templates weren't found. Check they exists as a full or relatvie path or as a local or global module");    
-      });
-    });
   };
 
   // Creates a new Geddy app scaffold
@@ -1042,3 +1043,5 @@ namespace('auth', function () {
   });
 
 });
+
+module.exports.getTemplatesPath = getTemplatesPath;
