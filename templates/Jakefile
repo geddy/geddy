@@ -515,7 +515,7 @@ namespace('gen', function () {
 
       console.log('Created app ' + name + '.');
     });
-  });
+  }, {async: true});
 
   // Creates a resource with a model, controller and a resource route
   task('resource', function (name, modelProperties) {
@@ -567,7 +567,7 @@ namespace('gen', function () {
 
   }, {async: true});
 
-  task('model', function (name, properties, modelPath) {
+  task('model', function (name, properties, modelPath, templates) {
     var createTableTask;
     if (!name) {
       throw new Error('No model name specified.');
@@ -577,18 +577,24 @@ namespace('gen', function () {
     }
     modelPath += '/model';
 
-    _writeTemplate(name, modelPath, path.join('app', 'models'), {
-        inflection: 'singular'
-      , properties: _formatModelProperties(properties)
-    });
+    getTemplatesPath(templates, function (templatesPath) {
 
-    // Try to create a table -- should be a no-op if an
-    // appropriate DB adapter can't be found
-    createTableTask = jake.Task['db:createTable'];
-    createTableTask.on('complete', function () {
-      complete();
+      modelPath = path.join(templatesPath, modelPath);
+      console.log(modelPath);
+
+      _writeTemplate(name, modelPath, path.join('app', 'models'), {
+          inflection: 'singular'
+        , properties: _formatModelProperties(properties)
+      });
+
+      // Try to create a table -- should be a no-op if an
+      // appropriate DB adapter can't be found
+      createTableTask = jake.Task['db:createTable'];
+      createTableTask.on('complete', function () {
+        complete();
+      });
+      createTableTask.invoke(name);
     });
-    createTableTask.invoke(name);
 
   }, {async: true});
 

@@ -278,7 +278,7 @@ if (cmds.length) {
       break;
     case 'model':
       // Generating model
-      cmd += 'gen:model[' + cmds[1] + modelCmd + ']';
+      cmd += 'gen:model[' + cmds[1] + modelCmd + "," + templatesCmd + ']';
       break;
     case 'secret':
       // Generating new app secret
