@@ -114,46 +114,6 @@ mixinJSONData = function (file, obj) {
   }
 };
 
-getTemplatesPath = function (templatesNameOrPath, cb) {
-  var customTemplatePath = path.join(templatesNameOrPath, 'templates')
-    , templatesFullName = 'geddy-'+ templatesNameOrPath + '-templates'
-  
-  reportPath = function (path) {
-    console.log("Using templates in: " + path);
-    cb(path);
-  };
-  getModulePath = function (cmdToGetPathFrom, getModulePathCallback) {
-    var exec = jake.createExec(cmdToGetPathFrom);
-    exec.addListener('stdout', function (modulesPath) {
-      modulesPath = modulesPath.toString();
-      modulesPath = modulesPath.split("\n")[0];
-      modulesPath = path.join(modulesPath, templatesFullName, 'templates');
-      getModulePathCallback(modulesPath);  
-    });
-    exec.run(); 
-  };
-
-  if (templatesNameOrPath === 'default') { 
-    return reportPath(__dirname);
-  }
-  
-  if (utils.file.existsSync(customTemplatePath)) {    
-    return reportPath(customTemplatePath);
-  }        
-
-  getModulePath("npm root", function (localModulePath) {
-    if(utils.file.existsSync(localModulePath)) {
-      return reportPath(localModulePath);
-    }
-    getModulePath("npm root -g", function (globalModulePath) {
-      if(utils.file.existsSync(globalModulePath)) {
-        return reportPath(globalModulePath);
-      }
-      throw new Error("The specified templates weren't found. Check they exists as a full or relatvie path or as a local or global module");    
-    });
-  });
-};
-
 
 namespace('env', function () {
   task('init', function (environment) {
@@ -438,84 +398,83 @@ namespace('gen', function () {
   };
 
   // Creates a new Geddy app scaffold
-  task('app', function (name, engine, realtime, templates) {   
-    getTemplatesPath(templates, function (templatesPath) {
-      var mkdirs
-        , cps
-        , text
-        , adapter;
-      if (!name) {
-        throw new Error('No app name specified.');
-      }
-      if (!engine || engine == 'default') {
-        engine = 'ejs';
-      }
-      if (realtime == 'default') {
-        realtime = false;
-      }  
+  task('app', function (name, engine, realtime, templatesPath) {   
+  
+    var mkdirs
+      , cps
+      , text
+      , adapter;
+    if (!name) {
+      throw new Error('No app name specified.');
+    }
+    if (!engine || engine == 'default') {
+      engine = 'ejs';
+    }
+    if (realtime == 'default') {
+      realtime = false;
+    }  
 
-      templatesPath = path.join(templatesPath, "base");
+    templatesPath = path.join(templatesPath, "base");
 
-      mkdirs = [
-        ''
-      , 'config'
-      , 'app/models'
-      , 'app/controllers'
-      , 'app/helpers'
-      , 'lib'
-      , 'log'
-      , 'node_modules'
-      , 'test'
-      ];
-      cps = [
-        (realtime) ? ['realtime/views/' + engine, 'app/views'] : ['views/' + engine, 'app/views']
-      , ['public', '']
-      , ['config', '']
-      , ['app/controllers', 'app']
-      , ['gitignore.txt', '.gitignore']
-      ];
+    mkdirs = [
+      ''
+    , 'config'
+    , 'app/models'
+    , 'app/controllers'
+    , 'app/helpers'
+    , 'lib'
+    , 'log'
+    , 'node_modules'
+    , 'test'
+    ];
+    cps = [
+      (realtime) ? ['realtime/views/' + engine, 'app/views'] : ['views/' + engine, 'app/views']
+    , ['public', '']
+    , ['config', '']
+    , ['app/controllers', 'app']
+    , ['gitignore.txt', '.gitignore']
+    ];
 
-      if (realtime) {
-        cps.push(['realtime/environment.js', 'config']);
-      }
+    if (realtime) {
+      cps.push(['realtime/environment.js', 'config']);
+    }
 
-      mkdirs.forEach(function (dir) {
-        jake.mkdirP(path.join(name, dir));
-      });
-      cps.forEach(function (cp) {
-        jake.cpR(path.join(templatesPath, cp[0]), path.join(name, cp[1]), {silent: true});
-      });
-
-      // one offs
-      if (realtime) {
-        jake.cpR(path.join(__dirname, '..', 'node_modules', 'socket.io' ), path.join(name, 'node_modules'), {silent: true});
-      }
-
-      // Compile Jakefile
-      text = fs.readFileSync(path.join(templatesPath, 'Jakefile.ejs'), 'utf8').toString();
-      adapter = new Adapter({engine: 'ejs', template: text});
-      fs.writeFileSync(path.join(name, 'Jakefile'), adapter.render({appName: name}), 'utf8');
-
-      // Compile package.json
-      text = fs.readFileSync(path.join(templatesPath, 'package.json.ejs'), 'utf8').toString();
-      adapter = new Adapter({engine: 'ejs', template: text});
-      fs.writeFileSync(path.join(name, 'package.json'), adapter.render({appName: name}), 'utf8');
-
-      // Add engine to package.json if it's not EJS
-      if (engine !== 'ejs') {
-        // Change to handlebars as we use it behind the scenes
-        if (engine === 'mustache') {
-          engine = 'handlebars';
-        }
-        var data = {dependencies: {}};
-        data.dependencies[engine] = "*";
-
-        mixinJSONData(path.join(name, 'package.json'), data);
-      }
-
-      console.log('Created app ' + name + '.');
+    mkdirs.forEach(function (dir) {
+      jake.mkdirP(path.join(name, dir));
     });
-  }, {async: true});
+    cps.forEach(function (cp) {
+      jake.cpR(path.join(templatesPath, cp[0]), path.join(name, cp[1]), {silent: true});
+    });
+
+    // one offs
+    if (realtime) {
+      jake.cpR(path.join(__dirname, '..', 'node_modules', 'socket.io' ), path.join(name, 'node_modules'), {silent: true});
+    }
+
+    // Compile Jakefile
+    text = fs.readFileSync(path.join(templatesPath, 'Jakefile.ejs'), 'utf8').toString();
+    adapter = new Adapter({engine: 'ejs', template: text});
+    fs.writeFileSync(path.join(name, 'Jakefile'), adapter.render({appName: name}), 'utf8');
+
+    // Compile package.json
+    text = fs.readFileSync(path.join(templatesPath, 'package.json.ejs'), 'utf8').toString();
+    adapter = new Adapter({engine: 'ejs', template: text});
+    fs.writeFileSync(path.join(name, 'package.json'), adapter.render({appName: name}), 'utf8');
+
+    // Add engine to package.json if it's not EJS
+    if (engine !== 'ejs') {
+      // Change to handlebars as we use it behind the scenes
+      if (engine === 'mustache') {
+        engine = 'handlebars';
+      }
+      var data = {dependencies: {}};
+      data.dependencies[engine] = "*";
+
+      mixinJSONData(path.join(name, 'package.json'), data);
+    }
+
+    console.log('Created app ' + name + '.');
+  });
 
   // Creates a resource with a model, controller and a resource route
   task('resource', function (name, modelProperties) {
@@ -567,7 +526,7 @@ namespace('gen', function () {
 
   }, {async: true});
 
-  task('model', function (name, properties, modelPath, templates) {
+  task('model', function (name, properties, modelPath, templatesPath) {
     var createTableTask;
     if (!name) {
       throw new Error('No model name specified.');
@@ -577,23 +536,20 @@ namespace('gen', function () {
     }
     modelPath += '/model';
 
-    getTemplatesPath(templates, function (templatesPath) {
-
-      modelPath = path.join(templatesPath, modelPath);
-      _writeTemplate(name, modelPath, path.join('app', 'models'), {
-          inflection: 'singular'
-        , properties: _formatModelProperties(properties)
-      });
-
-      // Try to create a table -- should be a no-op if an
-      // appropriate DB adapter can't be found
-      createTableTask = jake.Task['db:createTable'];
-      createTableTask.on('complete', function () {
-        complete();
-      });
-      createTableTask.invoke(name);
+    modelPath = path.join(templatesPath, modelPath);
+    _writeTemplate(name, modelPath, path.join('app', 'models'), {
+        inflection: 'singular'
+      , properties: _formatModelProperties(properties)
     });
 
+    // Try to create a table -- should be a no-op if an
+    // appropriate DB adapter can't be found
+    createTableTask = jake.Task['db:createTable'];
+    createTableTask.on('complete', function () {
+      complete();
+    });
+    createTableTask.invoke(name);
+    
   }, {async: true});
 
   task('controller', function (name) {
@@ -1046,5 +1002,3 @@ namespace('auth', function () {
   });
 
 });
-
-module.exports.getTemplatesPath = getTemplatesPath;

@@ -4,7 +4,8 @@
 var geddy = require('../lib/geddy')
   , path = require('path')
   , utils = require('utilities')
-  , parseopts = require('../lib/parseopts');
+  , parseopts = require('../lib/parseopts')
+  , getTemplatesPath = require('../templates/templates_path').getTemplatesPath;
 
 // Variables
 var cwd = process.cwd()
@@ -18,7 +19,7 @@ var cwd = process.cwd()
   , engineCmd
   , rtCmd
   , modelCmd
-  , templatesCmd
+  , templatesPathCmd
   , filepath
   , die
   , jake
@@ -227,92 +228,94 @@ if (cmds.length) {
     rtCmd = ',default';
   }
 
-  templatesCmd = ',' + ((opts.templates) ? opts.templates : 'default');
+  getTemplatesPath(opts.templates, function (templatesPath) {
 
-  // Get the model properties
-  if (cmds.slice(2).length > 0) {
-    modelCmd = ',' + cmds.slice(2).join('%');
-  } else modelCmd = '';
+    templatesPathCmd = "," + templatesPath;
+    // Get the model properties
+    if (cmds.slice(2).length > 0) {
+      modelCmd = ',' + cmds.slice(2).join('%');
+    } else modelCmd = '';
 
-  // Add Jake argument based on commands
-  switch (cmds[0]) {
-    case 'jake':
-      cmd = 'jake';
-      jakeArgs = cmds.slice(1);
-      break;
-    case 'console':
-      // Start console
-      cmd += 'console:start[' + (cmds[1] || 'development') + ']';
-      break;
-    case 'auth':
-      // Create authentication
-      cmd += 'auth:init[' + engineCmd.substr(1) + ']';
-      break;
-    case 'auth:update':
-      // Update authentication
-      cmd += 'auth:update';
-      break;
-    case 'db:init':
-      // Create DBs
-      cmd += 'db:init';
-      break;
-    case 'db:createTable':
-      // Create DBs
-      cmd += 'db:createTable[' + cmds[1].replace(/,/g, '%') + ']';
-      break;
-    case 'app':
-      // Generating application
-      cmd += 'gen:app[' + cmds[1] + engineCmd + rtCmd + templatesCmd + ']';
-      break;
-    case 'resource':
-      // Generating resource
-      cmd += 'gen:resource[' + cmds[1] + modelCmd + ']';
-      break;
-    case 'scaffold':
-      // Generating application
-      cmd += 'gen:scaffold[' + cmds[1] + rtCmd + engineCmd + modelCmd + ']';
-      break;
-    case 'controller':
-      // Generating controller
-      cmd += 'gen:bareController[' + cmds[1] + engineCmd + ']';
-      break;
-    case 'model':
-      // Generating model
-      cmd += 'gen:model[' + cmds[1] + modelCmd + "," + templatesCmd + ']';
-      break;
-    case 'secret':
-      // Generating new app secret
-      cmd += 'gen:secret';
-      break;
-    case 'routes':
-      // Show routes(Optionally empty)
-      cmd += 'routes:show[' + (cmds[1] || '') + ']';
-      break;
-    default:
-      die(cmds[0] + ' is not a Geddy command.');
-  }
+    // Add Jake argument based on commands
+    switch (cmds[0]) {
+      case 'jake':
+        cmd = 'jake';
+        jakeArgs = cmds.slice(1);
+        break;
+      case 'console':
+        // Start console
+        cmd += 'console:start[' + (cmds[1] || 'development') + ']';
+        break;
+      case 'auth':
+        // Create authentication
+        cmd += 'auth:init[' + engineCmd.substr(1) + ']';
+        break;
+      case 'auth:update':
+        // Update authentication
+        cmd += 'auth:update';
+        break;
+      case 'db:init':
+        // Create DBs
+        cmd += 'db:init';
+        break;
+      case 'db:createTable':
+        // Create DBs
+        cmd += 'db:createTable[' + cmds[1].replace(/,/g, '%') + ']';
+        break;
+      case 'app':
+        // Generating application
+        cmd += 'gen:app[' + cmds[1] + engineCmd + rtCmd + templatesPathCmd + ']';
+        break;
+      case 'resource':
+        // Generating resource
+        cmd += 'gen:resource[' + cmds[1] + modelCmd + ']';
+        break;
+      case 'scaffold':
+        // Generating application
+        cmd += 'gen:scaffold[' + cmds[1] + rtCmd + engineCmd + modelCmd + ']';
+        break;
+      case 'controller':
+        // Generating controller
+        cmd += 'gen:bareController[' + cmds[1] + engineCmd + templatesPathCmd + ']';
+        break;
+      case 'model':
+        // Generating model
+        cmd += 'gen:model[' + cmds[1] + modelCmd + "," + templatesPathCmd + ']';
+        break;
+      case 'secret':
+        // Generating new app secret
+        cmd += 'gen:secret';
+        break;
+      case 'routes':
+        // Show routes(Optionally empty)
+        cmd += 'routes:show[' + (cmds[1] || '') + ']';
+        break;
+      default:
+        die(cmds[0] + ' is not a Geddy command.');
+    }
 
-  jake = require('jake');
-  jakeProgram = jake.program;
-  jakeLoader = jake.loader;
-  // Load Geddy's bundled Jakefile
-  jakeLoader.loadFile(filepath);
-  if (cmd == 'jake') {
-    jakeProgram.parseArgs(jakeArgs);
-    // Load Jakefile and jakelibdir files for app
-    jakeLoader.loadFile(jakeProgram.opts.jakefile);
-    jakeLoader.loadDirectory(jakeProgram.opts.jakelibdir);
-    // Prepend env:init to load Geddy env
-    jakeProgram.taskNames.unshift('env:init');
-  }
-  else {
-    jakeProgram.init({
-      quiet: !opts.debug
-    , trace: true
-    });
-    jakeProgram.setTaskNames([cmd]);
-  }
-  jakeProgram.run();
+    jake = require('jake');
+    jakeProgram = jake.program;
+    jakeLoader = jake.loader;
+    // Load Geddy's bundled Jakefile
+    jakeLoader.loadFile(filepath);
+    if (cmd == 'jake') {
+      jakeProgram.parseArgs(jakeArgs);
+      // Load Jakefile and jakelibdir files for app
+      jakeLoader.loadFile(jakeProgram.opts.jakefile);
+      jakeLoader.loadDirectory(jakeProgram.opts.jakelibdir);
+      // Prepend env:init to load Geddy env
+      jakeProgram.taskNames.unshift('env:init');
+    }
+    else {
+      jakeProgram.init({
+        quiet: !opts.debug
+      , trace: true
+      });
+      jakeProgram.setTaskNames([cmd]);
+    }
+    jakeProgram.run();
+  });
 }
 // Just `geddy` -- start the server
 else {

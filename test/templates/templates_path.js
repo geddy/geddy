@@ -1,6 +1,6 @@
 var assert = require('assert')
 	, path = require('path')
-  , getTemplatesPath = require('../../templates/Jakefile').getTemplatesPath  
+  , getTemplatesPath = require('../../templates/templates_path').getTemplatesPath  
   , fileUtils = require('../../lib/utils').file;
 
 testGetPathTest = function (pathOrModuleName, expectedPath, done) {
@@ -19,10 +19,9 @@ testGetPathTest = function (pathOrModuleName, expectedPath, done) {
 	});
 };
 
-
 tests = {
 	'default': function (done) {
-		testGetPathTest("default", path.join(__dirname, "../../templates"), done);
+		testGetPathTest(null, path.join(__dirname, "../../templates"), done);
 	}
 , 'localPath': function (done) {
   	testGetPathTest("existingLocalPath", "existingLocalPath/templates", done);
