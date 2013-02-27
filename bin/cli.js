@@ -5,7 +5,8 @@ var geddy = require('../lib/geddy')
   , path = require('path')
   , utils = require('utilities')
   , parseopts = require('../lib/parseopts')
-  , getTemplatesPath = require('../templates/templates_path').getTemplatesPath;
+  , getTemplatesPath = require('../templates/templates_path').getTemplatesPath
+  , debug = require('debug')('jake');
 
 // Variables
 var cwd = process.cwd()
@@ -264,7 +265,7 @@ if (cmds.length) {
         break;
       case 'app':
         // Generating application
-        cmd += 'gen:app[' + cmds[1] + engineCmd + rtCmd + templatesPathCmd + ']';
+        cmd += 'gen:app[' + cmds[1] + templatesPathCmd + engineCmd + rtCmd + ']';
         break;
       case 'resource':
         // Generating resource
@@ -276,11 +277,11 @@ if (cmds.length) {
         break;
       case 'controller':
         // Generating controller
-        cmd += 'gen:bareController[' + cmds[1] + engineCmd + templatesPathCmd + ']';
+        cmd += 'gen:bareController[' + cmds[1] + templatesPathCmd + engineCmd + ']';
         break;
       case 'model':
         // Generating model
-        cmd += 'gen:model[' + cmds[1] + modelCmd + "," + templatesPathCmd + ']';
+        cmd += 'gen:model[' + cmds[1] + templatesPathCmd + "," + modelCmd + ']';
         break;
       case 'secret':
         // Generating new app secret
@@ -297,6 +298,9 @@ if (cmds.length) {
     jake = require('jake');
     jakeProgram = jake.program;
     jakeLoader = jake.loader;
+
+    debug(cmd);
+
     // Load Geddy's bundled Jakefile
     jakeLoader.loadFile(filepath);
     if (cmd == 'jake') {
