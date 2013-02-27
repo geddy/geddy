@@ -1,26 +1,24 @@
-require('../lib/geddy');
-
 var path = require('path')
   , utils = require('../lib/utils')
-  , jake = require('jake');
+  , exec = require('child_process').exec;
 
-reportPath = function (path, cb) {
+var reportPath = function (path, cb) {
   console.log("Using templates in: " + path);
   cb(path);
 };
 
-getModulePath = function (cmdToGetPathFrom, templatesFullName, getModulePathCallback) {
-  var exec = jake.createExec(cmdToGetPathFrom);
-  exec.addListener('stdout', function (modulesPath) {
-    modulesPath = modulesPath.toString();
-    modulesPath = modulesPath.split("\n")[0];
+var getModulePath = function (cmdToGetPathFrom, templatesFullName, getModulePathCallback) {
+  exec(cmdToGetPathFrom, function (err, stdout, stderror) {
+    if (err) {
+      throw err;
+    }
+    var modulesPath = stdout.split("\n")[0];
     modulesPath = path.join(modulesPath, templatesFullName, 'templates');
     getModulePathCallback(modulesPath);  
   });
-  exec.run(); 
 };
 
-getTemplatesPath = function (templatesNameOrPath, cb) {
+var getTemplatesPath = function (templatesNameOrPath, cb) {
   var customTemplatePath = path.join(templatesNameOrPath, 'templates')
     , templatesFullName = 'geddy-'+ templatesNameOrPath + '-templates'
   
@@ -46,3 +44,4 @@ getTemplatesPath = function (templatesNameOrPath, cb) {
 };
 
 module.exports.getTemplatesPath = getTemplatesPath;
+//require('./templates/templates_path')
