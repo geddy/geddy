@@ -398,7 +398,7 @@ namespace('gen', function () {
   };
 
   // Creates a new Geddy app scaffold
-  task('app', function (name, engine, realtime, templatesPath) {   
+  task('app', function (name, templatesPath, engine, realtime) {   
   
     var mkdirs
       , cps
@@ -526,7 +526,7 @@ namespace('gen', function () {
 
   }, {async: true});
 
-  task('model', function (name, properties, modelPath, templatesPath) {
+  task('model', function (name, templatesPath, properties, modelPath) {
     var createTableTask;
     if (!name) {
       throw new Error('No model name specified.');
@@ -552,7 +552,7 @@ namespace('gen', function () {
     
   }, {async: true});
 
-  task('controller', function (name) {
+  task('controller', function (name, templatesPath) {
     if (!name) {
       throw new Error('No controller name specified.');
     }
@@ -584,7 +584,7 @@ namespace('gen', function () {
     });
   });
 
-  task('bareController', function (name, engine) {
+  task('bareController', function (name, templatesPath, engine) {
     if (!name) {
       throw new Error('No controller name specified.');
     }
