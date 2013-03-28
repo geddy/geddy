@@ -1,5 +1,5 @@
 #
-# Geddy JavaScript Web development framework
+# Nails JavaScript Web development framework
 # Copyright 2112 Matthew Eernisse (mde@fleegix.org)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,32 +23,32 @@ DESTDIR=
 all: build
 
 build:
-	@echo 'Geddy built.'
+	@echo 'Nails built.'
 
 install:
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin && \
-		mkdir -p $(DESTDIR)$(PREFIX)/lib/node_modules/geddy && \
+		mkdir -p $(DESTDIR)$(PREFIX)/lib/node_modules/nails && \
 		mkdir -p ./node_modules && \
 		npm install jake utilities model barista && \
-		cp -R ./* $(DESTDIR)$(PREFIX)/lib/node_modules/geddy/ && \
-		ln -snf ../lib/node_modules/geddy/bin/cli.js $(DESTDIR)$(PREFIX)/bin/geddy && \
-		chmod 755 $(DESTDIR)$(PREFIX)/lib/node_modules/geddy/bin/cli.js && \
-		echo 'Geddy installed.'
+		cp -R ./* $(DESTDIR)$(PREFIX)/lib/node_modules/nails/ && \
+		ln -snf ../lib/node_modules/nails/bin/cli.js $(DESTDIR)$(PREFIX)/bin/nails && \
+		chmod 755 $(DESTDIR)$(PREFIX)/lib/node_modules/nails/bin/cli.js && \
+		echo 'Nails installed.'
 
 quickinstall:
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin && \
-		mkdir -p $(DESTDIR)$(PREFIX)/lib/node_modules/geddy && \
-		cp -R ./* $(DESTDIR)$(PREFIX)/lib/node_modules/geddy/ && \
-		ln -snf ../lib/node_modules/geddy/bin/cli.js $(DESTDIR)$(PREFIX)/bin/geddy && \
-		chmod 755 $(DESTDIR)$(PREFIX)/lib/node_modules/geddy/bin/cli.js && \
-		echo 'Geddy installed.'
+		mkdir -p $(DESTDIR)$(PREFIX)/lib/node_modules/nails && \
+		cp -R ./* $(DESTDIR)$(PREFIX)/lib/node_modules/nails/ && \
+		ln -snf ../lib/node_modules/nails/bin/cli.js $(DESTDIR)$(PREFIX)/bin/nails && \
+		chmod 755 $(DESTDIR)$(PREFIX)/lib/node_modules/nails/bin/cli.js && \
+		echo 'Nails installed.'
 
 clean:
 	@true
 
 uninstall:
-	@rm -f $(DESTDIR)$(PREFIX)/bin/geddy && \
-		rm -fr $(DESTDIR)$(PREFIX)/lib/node_modules/geddy/ && \
-		echo 'Geddy uninstalled.'
+	@rm -f $(DESTDIR)$(PREFIX)/bin/nails && \
+		rm -fr $(DESTDIR)$(PREFIX)/lib/node_modules/nails/ && \
+		echo 'Nails uninstalled.'
 
 reinstall: uninstall install

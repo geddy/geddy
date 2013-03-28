@@ -1,31 +1,31 @@
-Geddy provides built-in authentication which integrates with
+Nails provides built-in authentication which integrates with
 [Passport](http://passportjs.org/) to allow auth against either local accounts
 or third-party social services like Facebook and Twitter.
 
 #### Using the generator
 
-To set up a new Geddy app with built-in authentication, create your application
-like normal, then run the `geddy auth` command inside, like so:
+To set up a new Nails app with built-in authentication, create your application
+like normal, then run the `nails auth` command inside, like so:
 
 ```
-$ geddy app by_tor
+$ nails app by_tor
 $ cd by_tor
-$ geddy auth
+$ nails auth
 ```
 
-This will pull down [Geddy-Passport](https://github.com/mde/geddy-passport)
+This will pull down [Nails-Passport](https://github.com/mde/nails-passport)
 using NPM, and install all the needed code into your app. This includes the
-needed Passport libraries, and the Geddy models and controllers for the local
+needed Passport libraries, and the Nails models and controllers for the local
 User accounts and the login process.
 
 #### Danger, Warning, etc.
 
-The `geddy auth` generator should only be used in a new Geddy app. If you
+The `nails auth` generator should only be used in a new Nails app. If you
 run it inside an existing app, it may overwrite existing files that you wanted
 to keep.
 
 If you need to add auth to an existing app, you can take a look at the
-Geddy-Passport project, which is itself a Geddy app scaffold, and use the pieces
+Nails-Passport project, which is itself a Nails app scaffold, and use the pieces
 you need.
 
 #### Configuring Passport
@@ -57,7 +57,7 @@ OAuth keys for your app. The setting will look similar to this:
 #### Local users
 
 Local User accounts just go through the usual RESTful actions you'd get in a
-normal Geddy resource. Start at "/users/add" to create a new User. You can
+normal Nails resource. Start at "/users/add" to create a new User. You can
 modify "/app/models/user.js" to add any other properties you want.
 
 #### Login with third-party services

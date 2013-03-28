@@ -1,17 +1,17 @@
-window.geddy = {}
+window.nails = {}
 
 // require model
-geddy.model = require('model');
+nails.model = require('model');
 
-// mix utilities into geddy
+// mix utilities into nails
 var utilities = require('utilities');
-utilities.mixin(geddy, utilities);
+utilities.mixin(nails, utilities);
 
 // require socket.io-client
-geddy.io = require('socket.io-client');
-geddy.socket = geddy.io.connect('/');
+nails.io = require('socket.io-client');
+nails.socket = nails.io.connect('/');
 
-geddy.io.listenForModelEvents = function (model) {
+nails.io.listenForModelEvents = function (model) {
   var events = [
     'save'
   , 'update'
@@ -20,7 +20,7 @@ geddy.io.listenForModelEvents = function (model) {
 
   for (var e in events) {
     (function (event) {
-      geddy.socket.on(model.modelName + ':' + event, function (data) {
+      nails.socket.on(model.modelName + ':' + event, function (data) {
         var instance;
         if (typeof data != 'string') {
           instance = model.create(data);
@@ -28,7 +28,7 @@ geddy.io.listenForModelEvents = function (model) {
         else {
          instance = data;
         }
-        if (geddy.debug == true) {
+        if (nails.debug == true) {
           console.log(event, instance);
         }
         model.emit(event, instance);
@@ -37,11 +37,11 @@ geddy.io.listenForModelEvents = function (model) {
   };
 }
 
-geddy.io.addListenersForModels = function (models) {
+nails.io.addListenersForModels = function (models) {
   for (var i in models) {
     (function (model) {
-      geddy.io.listenForModelEvents(model);
-    })(geddy.model[models[i]]);
+      nails.io.listenForModelEvents(model);
+    })(nails.model[models[i]]);
   }
 }
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Dependencies
-var geddy = require('../lib/geddy')
+var nails = require('../lib/nails')
   , path = require('path')
   , utils = require('utilities')
   , parseopts = require('../lib/parseopts');
@@ -28,10 +28,10 @@ var cwd = process.cwd()
 
 // Usage dialog
 usage = [
-    'Geddy web framework for Node.js'
+    'Nails web framework for Node.js'
   , ''
   , 'Usage:'
-  , '  geddy [options/commands] [arguments]'
+  , '  nails [options/commands] [arguments]'
   , ''
   , 'Options:'
   , '  --environment, -e   Environment to use'
@@ -48,11 +48,11 @@ usage = [
   , '  --mustache, -m      When generating views this will create Mustache'
   , '                        templates(Default: EJS)'
   , '  --help, -h          Output this usage dialog'
-  , '  --version, -v       Output the version of Geddy that\'s installed'
+  , '  --version, -v       Output the version of Nails that\'s installed'
   , ''
   , 'Commands:'
-  , '  console                     Start up the Geddy REPL'
-  , '  app <name>                  Create a new Geddy application'
+  , '  console                     Start up the Nails REPL'
+  , '  app <name>                  Create a new Nails application'
   , '  resource <name> [attrs]     Create a new resource. A resource includes'
   , '                                a model, controller and route'
   , '  scaffold <name> [attrs]     Create a new scaffolding. Scaffolding includes'
@@ -67,20 +67,20 @@ usage = [
   , '  auth[:update]               Creates user authentication for you, using Passport.'
   , ''
   , 'Examples:'
-  , '  geddy                    Start Geddy on localhost:4000 in development mode'
-  , '                             or if the directory isn\'t a Geddy app it\'ll'
-  , '                             display a prompt to use "geddy -h"'
-  , '  geddy -p 3000            Start Geddy on port 3000'
-  , '  geddy -e production      Start Geddy in production mode'
-  , '  geddy -j scaffold user   Generate a users scaffolding using Jade templates'
-  , '  geddy resource user name admin:boolean'
+  , '  nails                    Start Nails on localhost:4000 in development mode'
+  , '                             or if the directory isn\'t a Nails app it\'ll'
+  , '                             display a prompt to use "nails -h"'
+  , '  nails -p 3000            Start Nails on port 3000'
+  , '  nails -e production      Start Nails in production mode'
+  , '  nails -j scaffold user   Generate a users scaffolding using Jade templates'
+  , '  nails resource user name admin:boolean'
   , '                           Generate a users resource with the model properties'
   , '                             name as a string and admin as a boolean'
-  , '  geddy scaffold user name:string:default'
+  , '  nails scaffold user name:string:default'
   , '                           Generate a users scaffolding user name as the default'
   , '                             value to display data with'
-  , '  geddy routes user        Show all routes for the user resource'
-  , '  geddy routes user.index  Show the index route for the user resource'
+  , '  nails routes user        Show all routes for the user resource'
+  , '  nails routes user.index  Show the index route for the user resource'
   , ''
 ].join('\n');
 
@@ -131,10 +131,10 @@ optsMap = [
   , args: true
   , canon: 'environment'
   }
-, { full: 'geddy-root'
+, { full: 'nails-root'
   , abbr: 'g'
   , args: true
-  , canon: 'geddyRoot'
+  , canon: 'nailsRoot'
   }
 , { full: 'spawned'
   , abbr: ['s', 'q', 'Q']
@@ -178,19 +178,19 @@ die = function (str) {
   process.exit();
 };
 
-// Start Geddy with options
+// Start Nails with options
 start = function () {
-  geddy.startCluster(opts);
+  nails.startCluster(opts);
 };
 
 if (opts.help) {
   die(usage);
 }
 if (opts.version) {
-  die(geddy.version);
+  die(nails.version);
 }
 
-// `geddy app foo` or `geddy resource bar` etc. -- run generators
+// `nails app foo` or `nails resource bar` etc. -- run generators
 if (cmds.length) {
   // Get templates Jake file
   filepath = path.normalize(path.join(__dirname, '..', 'templates', 'Jakefile'));
@@ -285,20 +285,20 @@ if (cmds.length) {
       cmd += 'routes:show[' + (cmds[1] || '') + ']';
       break;
     default:
-      die(cmds[0] + ' is not a Geddy command.');
+      die(cmds[0] + ' is not a Nails command.');
   }
 
   jake = require('jake');
   jakeProgram = jake.program;
   jakeLoader = jake.loader;
-  // Load Geddy's bundled Jakefile
+  // Load Nails's bundled Jakefile
   jakeLoader.loadFile(filepath);
   if (cmd == 'jake') {
     jakeProgram.parseArgs(jakeArgs);
     // Load Jakefile and jakelibdir files for app
     jakeLoader.loadFile(jakeProgram.opts.jakefile);
     jakeLoader.loadDirectory(jakeProgram.opts.jakelibdir);
-    // Prepend env:init to load Geddy env
+    // Prepend env:init to load Nails env
     jakeProgram.taskNames.unshift('env:init');
     jakeProgram.init();
   }
@@ -311,7 +311,7 @@ if (cmds.length) {
   }
   jakeProgram.run();
 }
-// Just `geddy` -- start the server
+// Just `nails` -- start the server
 else {
   start();
 }

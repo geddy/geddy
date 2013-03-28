@@ -3,7 +3,7 @@ var assert = require('assert')
   , tests
   , createController;
 
-global.geddy = {
+global.nails = {
   config: {}
 , log: {
     error: function () {}

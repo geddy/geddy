@@ -13,4 +13,4 @@ Todo = ->
   @validatesWithFunction 'status', (status) ->
     status == 'open' || status == 'done'
 
-Todo = geddy.model.register 'Todo', Todo
+Todo = nails.model.register 'Todo', Todo

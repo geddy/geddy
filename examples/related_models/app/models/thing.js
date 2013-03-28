@@ -10,4 +10,4 @@ var Thing = function () {
   this.adapter = 'mongo';
 
 };
-Thing = geddy.model.register('Thing', Thing);
+Thing = nails.model.register('Thing', Thing);

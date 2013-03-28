@@ -1,5 +1,5 @@
 /*
- * Geddy JavaScript Web development framework
+ * Nails JavaScript Web development framework
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

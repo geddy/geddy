@@ -1,5 +1,5 @@
 /*
- * Geddy JavaScript Web development framework
+ * Nails JavaScript Web development framework
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -98,8 +98,8 @@ tests = {
   }
 
 , 'test select tag with array for contentTag': function () {
-    var string = helpers.contentTag('select', ['geddy', 'alex', 'neil']);
-    assert.equal(string, '<select><option value="geddy">geddy</option><option value="alex">alex</option><option value="neil">neil</option></select>');
+    var string = helpers.contentTag('select', ['nails', 'alex', 'neil']);
+    assert.equal(string, '<select><option value="nails">nails</option><option value="alex">alex</option><option value="neil">neil</option></select>');
   }
 
 , 'test select tag with a string for contentTag': function () {

@@ -20,7 +20,7 @@
 
 <script type="text/javascript">
 $(function () {
-  geddy.io.addListenersForModels(['<%= names.constructor.singular %>']);
+  nails.io.addListenersForModels(['<%= names.constructor.singular %>']);
 
   var renderTemplate = function (<%= names.property.singular %>) {
     var template = [ ''
@@ -53,10 +53,10 @@ $(function () {
     };
 
   };
-  geddy.<%= names.constructor.plural %> = new <%= names.constructor.plural %>Controller();
+  nails.<%= names.constructor.plural %> = new <%= names.constructor.plural %>Controller();
 
-  geddy.model.<%= names.constructor.singular %>.on('save'   , geddy.<%= names.constructor.plural %>.create);
-  geddy.model.<%= names.constructor.singular %>.on('update' , geddy.<%= names.constructor.plural %>.update);
-  geddy.model.<%= names.constructor.singular %>.on('remove' , geddy.<%= names.constructor.plural %>.remove);
+  nails.model.<%= names.constructor.singular %>.on('save'   , nails.<%= names.constructor.plural %>.create);
+  nails.model.<%= names.constructor.singular %>.on('update' , nails.<%= names.constructor.plural %>.update);
+  nails.model.<%= names.constructor.singular %>.on('remove' , nails.<%= names.constructor.plural %>.remove);
 });
 </script>

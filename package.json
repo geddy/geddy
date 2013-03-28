@@ -1,5 +1,5 @@
 {
-  "name": "geddy",
+  "name": "nails",
   "description": "Web framework for Node.js",
   "keywords": [
     "Web",
@@ -18,15 +18,15 @@
     "socket.io": "0.9.x"
   },
   "bin": {
-    "geddy": "./bin/cli.js"
+    "nails": "./bin/cli.js"
   },
   "scripts": {
     "test": "jake test"
   },
-  "main": "./lib/geddy",
+  "main": "./lib/nails",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mde/geddy.git"
+    "url": "git://github.com/mde/nails.git"
   },
   "preferGlobal": true,
   "devDependencies": {

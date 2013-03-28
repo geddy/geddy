@@ -1,16 +1,16 @@
 ### Introduction
 
-In this tutorial we'll learn how to use Geddy by creating a simple todo
+In this tutorial we'll learn how to use Nails by creating a simple todo
 manager applciation. We will create two applications one using
 scaffolding and one using resources. See the [finished
-version](https://github.com/mde/geddy/tree/master/examples/todo_app).
+version](https://github.com/mde/nails/tree/master/examples/todo_app).
 
 #### In this tutorial we'll cover:
 
--   Creating a Geddy application
--   Learning how to use the Geddy executable
--   Using Geddy models
--   How views in Geddy work
+-   Creating a Nails application
+-   Learning how to use the Nails executable
+-   Using Nails models
+-   How views in Nails work
 -   How to use controllers to tie everything together
 
 ### Installation
@@ -18,24 +18,24 @@ version](https://github.com/mde/geddy/tree/master/examples/todo_app).
 If you haven't already, install [Node](http://nodejs.org#download) on
 your machine.
 
-Next, install Geddy from [NPM](http://npmjs.org/), this will also
+Next, install Nails from [NPM](http://npmjs.org/), this will also
 install [Jake](https://github.com/mde/jake):
 
 ```bash
-$ [sudo] npm install -g geddy
+$ [sudo] npm install -g nails
 ```
 
-We need to install it globally (-g) so we can use geddy generators or
+We need to install it globally (-g) so we can use nails generators or
 start the server. More on this later. Note: installing packages globally
 may require super-user access.
 
-#### Using the Geddy command
+#### Using the Nails command
 
-Now that we have Geddy installed we need to learn how to use its command
+Now that we have Nails installed we need to learn how to use its command
 from the CLI. There are a few commands and options that help with the
-development process of creating applications using Geddy. Here we will
-go over what each of them do. Note if no arguments are given Geddy will
-start up the server if it's a Geddy application, otherwise it will show
+development process of creating applications using Nails. Here we will
+go over what each of them do. Note if no arguments are given Nails will
+start up the server if it's a Nails application, otherwise it will show
 the help dialog.
 
 #### Options:
@@ -52,15 +52,15 @@ the help dialog.
     templates(Default: EJS)
 -   `--mustache`, `-m`: When generating views, use Mustache
     templates(Default: EJS)
--   `--version`, `-v`: Output the version of Geddy installed
+-   `--version`, `-v`: Output the version of Nails installed
 -   `--help`, `-h`: Output the list of commands and options
 
 #### Commands:
 
--   `app <name>`: Create a new Geddy application
--   `resource <name> [model attributes]`: Create a new Geddy resource.
+-   `app <name>`: Create a new Nails application
+-   `resource <name> [model attributes]`: Create a new Nails resource.
     Resources include a model, controller and a route
--   `scaffold <name> [model attributes]`: Creates a new Geddy
+-   `scaffold <name> [model attributes]`: Creates a new Nails
     scaffolding. Scaffolding includes everything Resources have as well
     as views
 -   `secret`: Generate a new application secret in
@@ -68,11 +68,11 @@ the help dialog.
 -   `controller <name>`: Generate a new controller including an index
     view and a route
 -   `model <name> [model attributes]`: Generate a new model
--   `console`: opens a console in the context of geddy
+-   `console`: opens a console in the context of nails
 
-#### How to use Geddy commands
+#### How to use Nails commands
 
-Each of Geddy's commands(`app`, `resource`, `controller`, etc.) take a
+Each of Nails's commands(`app`, `resource`, `controller`, etc.) take a
 command or set of commands(excluding `secret` and `console`). Here we'll
 learn how to use those commands.
 
@@ -101,7 +101,7 @@ learn how to use those commands.
     a default model adapter a resource route and will create all views.
     If you also include the options `--jade`, `--handle` or `--mustache`
     you can substitute the template language to your liking.
--   `console` doesn't take any arguments, it will start a geddy console.
+-   `console` doesn't take any arguments, it will start a nails console.
 
 #### Model properties
 
@@ -111,7 +111,7 @@ that include the property, its type and an optional default setting.
 Below are some examples of how they are used in the commands.
 
 ```
-$ geddy scaffold user name:string
+$ nails scaffold user name:string
 ```
 
 The example above will create our normal scaffolding and include a
@@ -119,7 +119,7 @@ The example above will create our normal scaffolding and include a
 `string`.
 
 ```
-$ geddy scaffold user name:default
+$ nails scaffold user name:default
 ```
 
 This example creates scaffolding but includes `name` as the default
@@ -127,11 +127,11 @@ property that will be used when displaying the content in the views. In
 this example the property `name` is given the type `string` because no
 type was given, you could of also writte `name:string:default`, or you
 could've used a different type of course. The `default` setting also
-includes an alias called `def`. If no default property is given Geddy
+includes an alias called `def`. If no default property is given Nails
 will use `id` as the display property.
 
 ```
-$ geddy scaffold user name:default id:int
+$ nails scaffold user name:default id:int
 ```
 
 This time we used `name` type `string` as the default property. We also
@@ -146,16 +146,16 @@ This will be a short tutorial as scaffolding will do almost everything
 for us, I won't go into detail on what it does as it will be covered in
 exstensive detail in the [resources tutorial](#resources). The source
 for this tutorial can be found 
-[here](https://github.com/mde/geddy/tree/master/examples/todo_app).
+[here](https://github.com/mde/nails/tree/master/examples/todo_app).
 
 First we'll create our application, this will create a base so we can
 start on.
 
 ```
-$ geddy app todo_app
+$ nails app todo_app
 ```
 
-Let's spend some time reviewing what geddy did. The previous command
+Let's spend some time reviewing what nails did. The previous command
 created a lot. During the tutorial we will edit and review some of these
 files, but we'll briefly explain what they are now so you get familiar
 with the base application.
@@ -174,21 +174,21 @@ with the base application.
 -   `config/production.js`: configuration for the production environment
 -   `config/router.js`: contains route settings. It has some examples
     and you can learn more about [routes from the
-    Wiki.](https://github.com/mde/geddy/wiki/Using-the-Router)
+    Wiki.](https://github.com/mde/nails/wiki/Using-the-Router)
 -   `public/`: contains static assets that will be served directly by
-    geddy's server
--   `public/css/`: Geddy uses [twitter
+    nails's server
+-   `public/css/`: Nails uses [twitter
     bootstrap](http://twitter.github.com/bootstrap/). These are
     referenced by the layout file (`application.html.ejs`)
 -   `public/img/`: contains a few images used by twitter bootstrap. Your
     images will usually go here as well
 -   `public/js/`: bootstrap and jquery scripts
 
-Now from your app's root simply start geddy
+Now from your app's root simply start nails
 
 ```
 $ cd todo_app 
-$ geddy
+$ nails
 ```
 
 Then open your browser to [localhost:4000](http://localhost:4000/), and
@@ -199,13 +199,13 @@ create a title and status property so that we have some attributes to
 use.
 
 ```
-$ geddy scaffold todo title:default status
+$ nails scaffold todo title:default status
 ```
 
-We are almost done. Now you have to restart geddy
+We are almost done. Now you have to restart nails
 
 ```
-$ geddy
+$ nails
 ```
 
 Open your browser to [localhost:4000/todos](http://localhost:4000/todos)
@@ -229,7 +229,7 @@ var Todo = function () {
   });
 ...
 };
-Todo = geddy.model.register('Todo', Todo);
+Todo = nails.model.register('Todo', Todo);
 ```
 
 Here we are making it so the title property is required and have a
@@ -239,7 +239,7 @@ also change our `edit` and `add` views to limit the options, but we will
 do it as part of the [resources tutorial](#resources), for now we will
 leave the views the way they are.
 
-Now that we've made the needed changes, restart Geddy to update our
+Now that we've made the needed changes, restart Nails to update our
 model changes. Go and play with the app again, create a todo item, try
 to edit and test the validation rules. We've got a good todo application
 running and didn't really have to do much. Scaffolding is very good when
@@ -249,19 +249,19 @@ tutorial](#resources).
 
 ### Without scaffolding
 
-Let's start by using the `geddy` executable to generate a basic
+Let's start by using the `nails` executable to generate a basic
 app-structure.
 
 ```
-$ geddy app todo_app
+$ nails app todo_app
 ```
 
-Now let's try out our new application by running geddy from your
+Now let's try out our new application by running nails from your
 application's root
 
 ```
 $ cd todo_app 
-$ geddy
+$ nails
 ```
 
 Your app should be running on port 4000. Visit
@@ -279,11 +279,11 @@ your app.
 ### Resource
 
 Now, let's get started building our To Do list manager. First, we'll
-need to generate the `todo` resource. We do this using the `geddy`
+need to generate the `todo` resource. We do this using the `nails`
 executable as well:
 
 ```
-$ geddy resource todo title:string status
+$ nails resource todo title:string status
 ```
 
 What did that do?
@@ -371,7 +371,7 @@ Here we created a couple variables so we can tell if it's for a edit or
 add action, then if we have any errors we dislay them. Also we are using
 a couple view helpers (contentTag) which are helpful with dealing with
 assets, links, etc. You can read more about our view helpers
-[here](https://github.com/mde/geddy/wiki/View-Helpers).
+[here](https://github.com/mde/nails/wiki/View-Helpers).
 
 Now that we've created a base for our add and edit actions, we'll do
 them now. They're simple they just use the \_form partial. Add the
@@ -435,7 +435,7 @@ specified.
 
 ### Model
 
-We're ready to start in on modeling our data. Geddy provides us with
+We're ready to start in on modeling our data. Nails provides us with
 some pretty cool tools to do this:
 
 -   Validation
@@ -464,7 +464,7 @@ var Todo = function () {
 
 };
 
-Todo = geddy.model.register('Todo', Todo);
+Todo = nails.model.register('Todo', Todo);
 ```
 
 The `defineProperties` method takes any number of properties to be added
@@ -472,7 +472,7 @@ to the model. The keys in the object will be added as properties on the
 model. The values are just objects that describe the properties. When we
 ran the scaffold command it created these for us. But we want to change
 it so they are all \`required\`. To learn more, check out the
-[readme](https://github.com/mde/geddy/blob/master/README.md).
+[readme](https://github.com/mde/nails/blob/master/README.md).
 
 There's also a more detailed validation API. While we're here, let's add
 some validation as well. The final code should look like this:
@@ -493,7 +493,7 @@ var Todo = function () {
   });
 };
 
-Todo = geddy.model.register('Todo', Todo);
+Todo = nails.model.register('Todo', Todo);
 ```
 
 For the `title` property, we made sure that the property is always
@@ -503,13 +503,13 @@ characters long.
 For the `status` property, we used a function to validate that the
 property is always set to either `open` or `done`.
 
-For more information about Geddy's Models, you can check out the [Model
-wiki page](https://github.com/mde/geddy/wiki/Models).
+For more information about Nails's Models, you can check out the [Model
+wiki page](https://github.com/mde/nails/wiki/Models).
 
 #### Model-adapter
 
 Now that we've set up our `todo` model, we need to define a way to store
-it. To keep our models persistance agnostic, Geddy uses model-adapters.
+it. To keep our models persistance agnostic, Nails uses model-adapters.
 By default it will store objects in memory using the `memory` model
 adapter. You can change the default memoryAdapter in
 `config/development.js`.
@@ -549,7 +549,7 @@ modify it a little bit.
 ```
 this.create = function (req, resp, params) {
   var self = this
-    , todo = geddy.model.Todo.create({title:params.title, status:'open'});
+    , todo = nails.model.Todo.create({title:params.title, status:'open'});
 
   todo.save(function(err, data) {
     if (err) {
@@ -563,7 +563,7 @@ this.create = function (req, resp, params) {
 ```
 
 First, we create a new instance of the `Todo` model with
-`geddy.model.Todo.create`, passing in the title that our form will post
+`nails.model.Todo.create`, passing in the title that our form will post
 up to us, and setting up the default status.
 
 Then we call we call the `save` method. Internally, save does two
@@ -587,17 +587,17 @@ implementaton with the following code.
 this.index = function (req, resp, params) {
   var self = this;
 
-  geddy.model.Todo.all(function(err, todos) {
+  nails.model.Todo.all(function(err, todos) {
     self.respond({params: params, todos: todos});
   });
 };
 ```
 
 This part is a bit simpler and it follows a similar pattern. Instead of
-calling create in `geddy.model.Todo` this time we simply call `all` and
+calling create in `nails.model.Todo` this time we simply call `all` and
 we pass the data back to the view for rendering
 
-Now that we can can load todo items you can test it by starting up Geddy
+Now that we can can load todo items you can test it by starting up Nails
 and going to [localhost:4000/todos](http://localhost:4000/todos) and you
 can view the list of items.
 
@@ -610,7 +610,7 @@ the `show` controller action to display todo details.
 this.show = function (req, resp, params) {
   var self = this;
 
-  geddy.model.Todo.load(params.id, function(err, todo) {
+  nails.model.Todo.load(params.id, function(err, todo) {
     self.respond({params: params, todo: todo});
   });
 };
@@ -628,7 +628,7 @@ like this:
 this.edit = function (req, resp, params) {
   var self = this;
 
-  geddy.model.Todo.load(params.id, function(err, todo) {
+  nails.model.Todo.load(params.id, function(err, todo) {
     self.respond({params: params, todo: todo});
   });
 };
@@ -636,7 +636,7 @@ this.edit = function (req, resp, params) {
 this.update = function (req, resp, params) {
   var self = this;
 
-  geddy.model.Todo.load(params.id, function(err, todo) {
+  nails.model.Todo.load(params.id, function(err, todo) {
     todo.updateAttributes(params);
 
     todo.save(function(err, data) {
@@ -657,7 +657,7 @@ The delete is really simple specially now that you're familiar with the
 pattern. This time you will have to call remove passing the id of the
 todo you want to delete. We will leave the details as an excercise.
 Remember that you can always compare your solution to the [final
-version](https://github.com/mde/geddy/tree/master/examples/todo_app).
+version](https://github.com/mde/nails/tree/master/examples/todo_app).
 
 ### API
 
@@ -677,6 +677,6 @@ could do:
 
 -   Change the `Main#index` route to point to the `Todos#index` action
     (hint, check out `config/router.js`)
--   Add some logging with `geddy.log`
+-   Add some logging with `nails.log`
 -   Configure mongo, riak or postgress and use it instead of the memory
     modelAdapter. See how easy it's to switch
