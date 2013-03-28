@@ -15,5 +15,5 @@ var Todo = function () {
 
 };
 
-Todo = geddy.model.register('Todo', Todo);
+Todo = nails.model.register('Todo', Todo);
 

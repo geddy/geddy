@@ -1,5 +1,5 @@
 /*
- * Geddy JavaScript Web development framework
+ * Nails JavaScript Web development framework
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -65,7 +65,7 @@ var Main = function () {
     , getTree = function (url, callback) {
         var tree;
         opts.url = url;
-        geddy.request(opts, function (err, trees) {
+        nails.request(opts, function (err, trees) {
           if (err || !trees) {
             params.error = err;
             return self.error(req, resp, params);
@@ -84,7 +84,7 @@ var Main = function () {
         url: paths[i].url
       , dataType: 'json'
       }
-      geddy.request(options, function (err, resp) {
+      nails.request(options, function (err, resp) {
 
         if (err) {
           params.error = err;
@@ -97,7 +97,7 @@ var Main = function () {
           , lines = content.split('\n');
         for (var l in lines) {
           if (lines[l].indexOf('#### ') == 0) {
-            subs.push(geddy.string.trim(lines[l].replace('#### ', '')));
+            subs.push(nails.string.trim(lines[l].replace('#### ', '')));
           }
         }
         docs[parseInt(name[0]) - 1] = {
@@ -135,10 +135,10 @@ var Main = function () {
 
     // inital call to get the commits
     , opts = {
-        url: 'https://api.github.com/repos/mde/geddy/commits'
+        url: 'https://api.github.com/repos/mde/nails/commits'
       , dataType: 'json'
     }
-    geddy.request(opts, gotCommits);
+    nails.request(opts, gotCommits);
   };
 
   this.tutorial = function (req, resp, params) {
@@ -159,14 +159,14 @@ var Main = function () {
       var sections = [];
       for (var i in lines) {
         if (lines[i].indexOf('### ') == 0) {
-          sections.push(geddy.string.trim(lines[i].replace("###", '')));
+          sections.push(nails.string.trim(lines[i].replace("###", '')));
         }
       }
       respond(sections, content);
     }
 
     // get the tutorial markdown file
-    geddy.request({url: 'https://raw.github.com/mde/geddy/master/tutorial.md'}, gotTutorial);
+    nails.request({url: 'https://raw.github.com/mde/nails/master/tutorial.md'}, gotTutorial);
   };
 
   this.changelog = function (req, resp, params) {
@@ -187,14 +187,14 @@ var Main = function () {
       var sections = [];
       for (var i in lines) {
         if (lines[i].indexOf('### ') == 0) {
-          sections.push(geddy.string.trim(lines[i].replace("###", '')));
+          sections.push(nails.string.trim(lines[i].replace("###", '')));
         }
       }
       respond(sections, content);
     }
 
     // get the tutorial markdown file
-    geddy.request({url: 'https://raw.github.com/mde/geddy/master/changelog.md'}, gotTutorial);
+    nails.request({url: 'https://raw.github.com/mde/nails/master/changelog.md'}, gotTutorial);
   };
 
   this.community = function (req, resp, params) {
@@ -208,10 +208,10 @@ var Main = function () {
 
     // get stargazers
     var opts = {
-      url: 'https://api.github.com/repos/mde/geddy/stargazers?page='+(Math.floor(Math.random()*10)+1)
+      url: 'https://api.github.com/repos/mde/nails/stargazers?page='+(Math.floor(Math.random()*10)+1)
     , dataType: 'json'
     };
-    geddy.request(opts, gotStars);
+    nails.request(opts, gotStars);
   };
 
   this.faq = function (req, resp, params) {

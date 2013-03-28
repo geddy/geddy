@@ -1,4 +1,4 @@
-Geddy provides tons of useful utilities to make tasks easier, they are provided by the `utilities` module in NPM. All the utilities are availble through the `geddy` global object(e.g., `geddy.array.humanize()`).
+Nails provides tons of useful utilities to make tasks easier, they are provided by the `utilities` module in NPM. All the utilities are availble through the `nails` global object(e.g., `nails.array.humanize()`).
 
 * * *
 
@@ -807,11 +807,11 @@ Merge merges `otherObject` into `object` and takes care of deep merging of objec
 
 #####Examples
 ```
-merge({user: 'geddy'}, {key: 'key'})
-// => {user: 'geddy', key: 'key'}
+merge({user: 'nails'}, {key: 'key'})
+// => {user: 'nails', key: 'key'}
 
-merge({user: 'geddy', key: 'geddyKey'}, {key: 'key'})
-// => {user: 'geddy', key: 'key'}
+merge({user: 'nails', key: 'nailsKey'}, {key: 'key'})
+// => {user: 'nails', key: 'key'}
 ```
 
 * * *
@@ -823,11 +823,11 @@ ReverseMerge merges `object` into `defaultObject`
 
 #####Examples
 ```
-reverseMerge({user: 'geddy'}, {key: 'key'})
-// => {user: 'geddy', key: 'key'}
+reverseMerge({user: 'nails'}, {key: 'key'})
+// => {user: 'nails', key: 'key'}
 
-reverseMerge({user: 'geddy', key: 'geddyKey'}, {key: 'key'})
-// => {user: 'geddy', key: 'geddyKey'}
+reverseMerge({user: 'nails', key: 'nailsKey'}, {key: 'key'})
+// => {user: 'nails', key: 'nailsKey'}
 ```
 
 * * *
@@ -839,7 +839,7 @@ isEmpty checks if an Object is empty
 
 #####Examples
 ```
-isEmpty({user: 'geddy'})
+isEmpty({user: 'nails'})
 // => false
 
 isEmpty({})
@@ -855,8 +855,8 @@ Converts an object to an array of objects each including the original key/value
 
 #####Examples
 ```
-toArray({user: 'geddy'})
-// => [{key: 'user', value: 'geddy'}]
+toArray({user: 'nails'})
+// => [{key: 'user', value: 'nails'}]
 ```
 
 * * *
@@ -1119,7 +1119,7 @@ Converts a string to an array
 
 #####Examples
 ```
-toArray('geddy')
+toArray('nails')
 // => ['g', 'e', 'd', 'd', 'y']
 ```
 
@@ -1132,7 +1132,7 @@ Reverses a string
 
 #####Examples
 ```
-reverse('geddy')
+reverse('nails')
 // => 'yddeg'
 ```
 
@@ -1145,11 +1145,11 @@ Ltrim trims `char` from the left of a `string` and returns it if no `char` is gi
 
 #####Examples
 ```
-ltrim('&geddy', '&')
-// => 'geddy'
+ltrim('&nails', '&')
+// => 'nails'
 
-ltrim('    geddy')
-// => 'geddy'
+ltrim('    nails')
+// => 'nails'
 ```
 
 * * *
@@ -1161,11 +1161,11 @@ Rtrim trims `char` from the right of a `string` and returns it if no `char` is g
 
 #####Examples
 ```
-rtrim('geddy&', '&')
-// => 'geddy'
+rtrim('nails&', '&')
+// => 'nails'
 
-rtrim('geddy    ')
-// => 'geddy'
+rtrim('nails    ')
+// => 'nails'
 ```
 
 * * *
@@ -1177,11 +1177,11 @@ Trim trims `char` from the left and right of a `string` and returns it if no `ch
 
 #####Examples
 ```
-trim('&&&&geddy&', '&')
-// => 'geddy'
+trim('&&&&nails&', '&')
+// => 'nails'
 
-trim('    geddy    ')
-// => 'geddy'
+trim('    nails    ')
+// => 'nails'
 ```
 
 * * *
@@ -1193,8 +1193,8 @@ Returns a new String with the last character removed. If the string ends with \r
 
 #####Examples
 ```
-chop('geddy&')
-// => 'geddy'
+chop('nails&')
+// => 'nails'
 ```
 
 * * *
@@ -1206,8 +1206,8 @@ Lpad adds `char` to the left of `string` until the length of `string` is more th
 
 #####Examples
 ```
-lpad('geddy', '&', 6)
-// => '&geddy'
+lpad('nails', '&', 6)
+// => '&nails'
 ```
 
 * * *
@@ -1219,8 +1219,8 @@ Rpad adds `char` to the right of `string` until the length of `string` is more t
 
 #####Examples
 ```
-rpad('geddy', '&', 7)
-// => 'geddy&'
+rpad('nails', '&', 7)
+// => 'nails&'
 ```
 
 * * *
@@ -1232,8 +1232,8 @@ Pad adds `char` to the left and right of `string` until the length of `string` i
 
 #####Examples
 ```
-rpad('geddy', '&', 6)
-// => '&geddy&'
+rpad('nails', '&', 6)
+// => '&nails&'
 ```
 
 * * *
@@ -1299,8 +1299,8 @@ Nl2br returns a string where all newline chars are turned into line break HTML t
 
 #####Examples
 ```
-nl2br("geddy\n")
-// => 'geddy<br />'
+nl2br("nails\n")
+// => 'nails<br />'
 ```
 
 * * *
@@ -1312,11 +1312,11 @@ Snakeize converts camelCase and CamelCase strings to snake_case strings
 
 #####Examples
 ```
-snakeize("geddyJs")
-// => 'geddy_js'
+snakeize("nailsJs")
+// => 'nails_js'
 
-snakeize("GeddyJs")
-// =>  'geddy_js'
+snakeize("NailsJs")
+// =>  'nails_js'
 ```
 
 * * *
@@ -1332,17 +1332,17 @@ Camelize takes a string and optional options and returns a camelCase version of 
 
 #####Examples
 ```
-camelize("geddy_js")
-// => 'geddyJs'
+camelize("nails_js")
+// => 'nailsJs'
 
-camelize("geddy_js", {initialCap: true})
-// => 'GeddyJs'
+camelize("nails_js", {initialCap: true})
+// => 'NailsJs'
 
-camelize("geddy_js", {leadingUnderscore: true})
-// => 'geddyJs'
+camelize("nails_js", {leadingUnderscore: true})
+// => 'nailsJs'
 
-camelize("_geddy_js", {leadingUnderscore: true})
-// => '_geddyJs'
+camelize("_nails_js", {leadingUnderscore: true})
+// => '_nailsJs'
 ```
 
 * * *
@@ -1354,8 +1354,8 @@ Decapitalize returns the given string with the first letter uncapitalized.
 
 #####Examples
 ```
-decapitalize("Geddy")
-// => 'geddy'
+decapitalize("Nails")
+// => 'nails'
 ```
 
 * * *
@@ -1367,8 +1367,8 @@ capitalize returns the given string with the first letter capitalized.
 
 #####Examples
 ```
-decapitalize("geddy")
-// => 'Geddy'
+decapitalize("nails")
+// => 'Nails'
 ```
 
 * * *
@@ -1380,11 +1380,11 @@ Dasherize returns the given `string` converting camelCase and snakeCase to dashe
 
 #####Examples
 ```
-dasherize("geddyJs")
-// => 'geddy-js'
+dasherize("nailsJs")
+// => 'nails-js'
 
-dasherize("geddyJs", "_")
-// => 'geddy_js'
+dasherize("nailsJs", "_")
+// => 'nails_js'
 ```
 
 * * *
@@ -1396,10 +1396,10 @@ Searches for a particular string in another string
 
 #####Examples
 ```
-include('geddy', 'js')
+include('nails', 'js')
 // => false
 
-include('geddyjs', 'js')
+include('nailsjs', 'js')
 // => true
 ```
 

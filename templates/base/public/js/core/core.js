@@ -396,7 +396,7 @@ require.define("/node_modules/model/package.json",function(require,module,export
 });
 
 require.define("/node_modules/model/lib/index.js",function(require,module,exports,__dirname,__filename,process,global){/*
- * Geddy JavaScript Web development framework
+ * Nails JavaScript Web development framework
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -505,7 +505,7 @@ utils.mixin(model, new (function () {
         @name ModelBase#save
         @public
         @function
-        @description Saves an instance of a Geddy ModelBase
+        @description Saves an instance of a Nails ModelBase
         @param {Object} [opts]
           @param {String} [opts.locale=null] Optional locale for
           localizing error messages from validations
@@ -526,7 +526,7 @@ utils.mixin(model, new (function () {
         @name ModelBase#updateProperties
         @public
         @function
-        @description Updates the attributes an instance of a Geddy
+        @description Updates the attributes an instance of a Nails
         ModelBase, and validate the changes
         @param {Object} params Object-literal with updated values for
         the instance
@@ -700,7 +700,7 @@ utils.mixin(model, new (function () {
       @public
       @static
       @function
-      @description Creates an instance of a Geddy ModelBase, validating
+      @description Creates an instance of a Nails ModelBase, validating
       the input parameters
       @param {Object} params Object-literal with updated values for
       the instance
@@ -3143,12 +3143,12 @@ chain have completed.
   var asyncChain = new async.AsyncChain([
     {
       func: app.trainToBangkok,
-      args: [geddy, neil, alex],
+      args: [nails, neil, alex],
       callback: null, // No callback for this action
     },
     {
       func: fs.readdir,
-      args: [geddy.config.dirname + '/thailand/express'],
+      args: [nails.config.dirname + '/thailand/express'],
       callback: function (err, result) {
         if (err) {
           // Bail out completely
@@ -7701,7 +7701,7 @@ module.exports = adapters;
 });
 
 require.define("/node_modules/model/lib/validators.js",function(require,module,exports,__dirname,__filename,process,global){/*
- * Geddy JavaScript Web development framework
+ * Nails JavaScript Web development framework
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7830,11 +7830,11 @@ module.exports = validators;
 require.define("/node_modules/model/lib/formatters.js",function(require,module,exports,__dirname,__filename,process,global){
 var formatters = new function () {
   this.date = function (val) {
-    return geddy.date.strftime(val, geddy.config.dateFormat);
+    return nails.date.strftime(val, nails.config.dateFormat);
   };
 
   this.time = function (val) {
-    return geddy.date.strftime(val, geddy.config.timeFormat);
+    return nails.date.strftime(val, nails.config.timeFormat);
   };
 
 }();
@@ -8460,7 +8460,7 @@ module.exports = comparison;
 });
 
 require.define("/node_modules/model/lib/datatypes.js",function(require,module,exports,__dirname,__filename,process,global){/*
- * Geddy JavaScript Web development framework
+ * Nails JavaScript Web development framework
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12660,20 +12660,20 @@ var swfobject=function(){var D="undefined",r="object",S="Shockwave Flash",W="Sho
 })();
 });
 
-require.define("/templates/build/build.js",function(require,module,exports,__dirname,__filename,process,global){window.geddy = {}
+require.define("/templates/build/build.js",function(require,module,exports,__dirname,__filename,process,global){window.nails = {}
 
 // require model
-geddy.model = require('model');
+nails.model = require('model');
 
-// mix utilities into geddy
+// mix utilities into nails
 var utilities = require('utilities');
-utilities.mixin(geddy, utilities);
+utilities.mixin(nails, utilities);
 
 // require socket.io-client
-geddy.io = require('socket.io-client');
-geddy.socket = geddy.io.connect('/');
+nails.io = require('socket.io-client');
+nails.socket = nails.io.connect('/');
 
-geddy.io.listenForModelEvents = function (model) {
+nails.io.listenForModelEvents = function (model) {
   var events = [
     'save'
   , 'update'
@@ -12682,7 +12682,7 @@ geddy.io.listenForModelEvents = function (model) {
 
   for (var e in events) {
     (function (event) {
-      geddy.socket.on(model.modelName + ':' + event, function (data) {
+      nails.socket.on(model.modelName + ':' + event, function (data) {
         var instance;
         if (typeof data != 'string') {
           instance = model.create(data);
@@ -12690,7 +12690,7 @@ geddy.io.listenForModelEvents = function (model) {
         else {
          instance = data;
         }
-        if (geddy.debug == true) {
+        if (nails.debug == true) {
           console.log(event, instance);
         }
         model.emit(event, instance);
@@ -12699,11 +12699,11 @@ geddy.io.listenForModelEvents = function (model) {
   };
 }
 
-geddy.io.addListenersForModels = function (models) {
+nails.io.addListenersForModels = function (models) {
   for (var i in models) {
     (function (model) {
-      geddy.io.listenForModelEvents(model);
-    })(geddy.model[models[i]]);
+      nails.io.listenForModelEvents(model);
+    })(nails.model[models[i]]);
   }
 }
 

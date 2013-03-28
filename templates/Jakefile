@@ -1,5 +1,5 @@
-// Load the basic Geddy toolkit
-require('../lib/geddy')
+// Load the basic Nails toolkit
+require('../lib/nails')
 
 // Dependencies
 var cwd = process.cwd()
@@ -7,7 +7,7 @@ var cwd = process.cwd()
   , path = require('path')
   , utils = require('../lib/utils')
   , Adapter = require('../lib/template/adapters')
-  , geddyPassport = 'geddy-passport@0.0.x'
+  , nailsPassport = 'nails-passport@0.0.x'
   , getRouterPath
   , getRoutes
   , addRoute
@@ -40,7 +40,7 @@ getRouterPath = function () {
 
 getRoutes = function (resource) {
   if (!resource) {
-    return geddy.router.toString();
+    return nails.router.toString();
   }
 
   var rts = []
@@ -53,8 +53,8 @@ getRoutes = function (resource) {
       , cont = res[0]
       , action = res[1];
 
-    for (i in geddy.router.routes) {
-      _rt = geddy.router.routes[i];
+    for (i in nails.router.routes) {
+      _rt = nails.router.routes[i];
 
         if (_rt.params.controller.match(cont) &&
           _rt.params.action.match(action)) {
@@ -63,8 +63,8 @@ getRoutes = function (resource) {
     }
   }
   else {
-    for (i in geddy.router.routes) {
-      _rt = geddy.router.routes[i];
+    for (i in nails.router.routes) {
+      _rt = nails.router.routes[i];
 
       if (_rt.params.controller.match(resource) ||
           _rt.params.action.match(resource)) {
@@ -125,17 +125,17 @@ namespace('env', function () {
       jake.Task['env:cleanup'].invoke();
     });
 
-    geddy.config = require('../lib/config').readConfig(cfg);
-    geddy.model = require('model');
+    nails.config = require('../lib/config').readConfig(cfg);
+    nails.model = require('model');
 
-    require('../lib/init').init(geddy, function () {
+    require('../lib/init').init(nails, function () {
       complete();
     });
   }, {async: true});
 
   task('cleanup', function () {
     // Disconnect all the adapters
-    var adapters = geddy.model.loadedAdapters
+    var adapters = nails.model.loadedAdapters
       , adapter;
 
     for (var p in adapters) {
@@ -245,11 +245,11 @@ namespace('db', function () {
 
         // Make sure this is a correct model-name
         m = utils.string.getInflections(m).constructor.singular;
-        if (!geddy.model[m]) {
+        if (!nails.model[m]) {
           throw new Error(m + ' is not a known model.');
         }
 
-        adapter = geddy.model.adapters[m];
+        adapter = nails.model.adapters[m];
         if (adapter) {
           console.log('Creating table for ' + m);
           adapter.createTable(m, function (err, data) {
@@ -272,7 +272,7 @@ namespace('db', function () {
   }, {async: true});
 
   task('init', ['env:init'], function () {
-    var modelNames = Object.keys(geddy.model.descriptionRegistry)
+    var modelNames = Object.keys(nails.model.descriptionRegistry)
       , createTask = jake.Task['db:createTable'];
       createTask.once('complete', function () {
         complete();
@@ -398,7 +398,7 @@ namespace('gen', function () {
     return obj;
   };
 
-  // Creates a new Geddy app scaffold
+  // Creates a new Nails app scaffold
   task('app', function (name, engine, realtime) {
     var basePath = path.join(__dirname, 'base')
       , mkdirs
@@ -836,13 +836,13 @@ namespace('gen', function () {
 namespace('auth', function () {
 
   task('update', {async: true}, function () {
-    var updatePath = path.join('geddy-passport', 'app', 'helpers', 'passport')
+    var updatePath = path.join('nails-passport', 'app', 'helpers', 'passport')
       , from
       , to;
 
-    console.log('Updating passport helpers from', geddyPassport);
-    jake.exec('npm uninstall ' + geddyPassport +
-      ' && npm install ' + geddyPassport, function () {
+    console.log('Updating passport helpers from', nailsPassport);
+    jake.exec('npm uninstall ' + nailsPassport +
+      ' && npm install ' + nailsPassport, function () {
       from = path.join(cwd, 'node_modules', updatePath);
       to = path.join(cwd, 'app', 'helpers');
 
@@ -850,7 +850,7 @@ namespace('auth', function () {
       jake.cpR(from, to, {silent: true});
 
       console.log("\nCleaning up...");
-      jake.exec('npm uninstall ' + geddyPassport, function () {
+      jake.exec('npm uninstall ' + nailsPassport, function () {
         complete();
       });
     }, {printStdout: true});
@@ -860,7 +860,7 @@ namespace('auth', function () {
     var env = process.env
       , readline = require('readline')
       , fromBase = env.srcDir ||
-            path.join(cwd, 'node_modules', 'geddy-passport')
+            path.join(cwd, 'node_modules', 'nails-passport')
       , install = false
       , rl, installPackages, passportCopy;
 
@@ -895,13 +895,13 @@ namespace('auth', function () {
         installPackages();
       }
       else {
-        console.log('Installing', geddyPassport);
-        jake.exec('npm uninstall ' + geddyPassport +
-          ' && npm install ' + geddyPassport, installPackages, {printStdout: true});
+        console.log('Installing', nailsPassport);
+        jake.exec('npm uninstall ' + nailsPassport +
+          ' && npm install ' + nailsPassport, installPackages, {printStdout: true});
       }
     });
 
-    // Gets the package versions from geddy-passport's package.json
+    // Gets the package versions from nails-passport's package.json
     // and installs them, then calls passportCopy
     installPackages = function () {
       var deps = require(path.join(fromBase, 'package')).dependencies
@@ -919,7 +919,7 @@ namespace('auth', function () {
         ' && npm install ' + packages, passportCopy, {printStdout: true});
     };
 
-    // Copy the contents of geddy-passport into the application
+    // Copy the contents of nails-passport into the application
     passportCopy = function () {
       var list = require(path.join(fromBase, 'file_list'))
         , routerPath = getRouterPath()
@@ -1005,9 +1005,9 @@ namespace('auth', function () {
         path.join(cwd, 'config', 'secrets.json'), {silent: true});
       jake.Task['gen:secret'].invoke();
 
-      // Remove geddy-passport as it isn't needed anymore
+      // Remove nails-passport as it isn't needed anymore
       console.log('\nCleaning up...');
-      jake.exec('npm uninstall geddy-passport', function () {
+      jake.exec('npm uninstall nails-passport', function () {
         console.log('Please set up your Passport config in config/secrets.json');
         complete();
       });

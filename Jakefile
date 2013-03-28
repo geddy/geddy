@@ -1,5 +1,5 @@
-// Load the basic Geddy toolkit
-require('./lib/geddy')
+// Load the basic Nails toolkit
+require('./lib/nails')
 
 var fs = require('fs')
   , createPackageTask
@@ -27,7 +27,7 @@ namespace('doc', function () {
 
 });
 
-desc('Generate the geddy core files');
+desc('Generate the nails core files');
 task('buildjs', function(){
   var cmd = 'browserify templates/build/build.js' +
             ' -o templates/base/public/js/core/core.js -i ./logger'
@@ -39,10 +39,10 @@ task('buildjs', function(){
   })
 }, {async: true});
 
-desc('Generate docs for Geddy');
+desc('Generate docs for Nails');
 task('doc', ['doc:generate']);
 
-var p = new jake.NpmPublishTask('geddy', [
+var p = new jake.NpmPublishTask('nails', [
   'Makefile'
 , 'Jakefile'
 , 'README.md'
@@ -54,14 +54,14 @@ var p = new jake.NpmPublishTask('geddy', [
 , 'test/**'
 ]);
 
-testTask = new jake.TestTask('Geddy', function () {
+testTask = new jake.TestTask('Nails', function () {
   this.testName = 'testBase';
   this.testFiles.include('test/*.js');
   this.testFiles.include('test/**/*.js');
   this.showDescription = false;
 });
 
-desc('Run the Geddy tests');
+desc('Run the Nails tests');
 task('test', function () {
   var t = jake.Task.testBase;
   t.addListener('error', function (err) {

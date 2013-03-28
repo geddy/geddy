@@ -4,7 +4,7 @@ var Todos = function () {
 
   this.index = function (req, resp, params) {
     var self = this;
-    geddy.model.Todo.all(function(err, todos){
+    nails.model.Todo.all(function(err, todos){
       self.respond({params: params, todos: todos});
     });
   };
@@ -15,7 +15,7 @@ var Todos = function () {
 
   this.create = function (req, resp, params) {
     var self = this
-      , todo = geddy.model.Todo.create({
+      , todo = nails.model.Todo.create({
           title: params.title
         , status: 'open'
         });
@@ -32,21 +32,21 @@ var Todos = function () {
 
   this.show = function (req, resp, params) {
     var self = this;
-    geddy.model.Todo.first(params.id, function(err, todo){
+    nails.model.Todo.first(params.id, function(err, todo){
       self.respond({params: params, todo: todo});
     });
   };
 
   this.edit = function (req, resp, params) {
     var self = this;
-    geddy.model.Todo.first(params.id, function(err, todo){
+    nails.model.Todo.first(params.id, function(err, todo){
       self.respond({params: params, todo: todo});
     });
   };
 
   this.update = function (req, resp, params) {
     var self = this;
-    geddy.model.Todo.first(params.id, function (err, todo) {
+    nails.model.Todo.first(params.id, function (err, todo) {
       todo.updateProperties(params);
 
       todo.save(function (err, data) {
@@ -63,7 +63,7 @@ var Todos = function () {
 
   this.remove = function (req, resp, params) {
     var self = this;
-    geddy.model.Todo.remove(params.id, function(err){
+    nails.model.Todo.remove(params.id, function(err){
       if (err) {
         params.errors = err;
         self.transfer('edit');

@@ -1,20 +1,20 @@
-# Geddy
+# Nails
 ####A simple, structured web framework for Node
 
 ```
-$ npm install -g geddy
-$ geddy app my_app
+$ npm install -g nails
+$ nails app my_app
 $ cd my_app
-$ geddy
+$ nails
 // app now running on localhost:4000
 ```
 
 
-[![build status](https://secure.travis-ci.org/mde/geddy.png)](http://travis-ci.org/mde/geddy)
+[![build status](https://secure.travis-ci.org/mde/nails.png)](http://travis-ci.org/mde/nails)
 
 ### Documentation
 
-Docs are located on the GeddyJS website: http://geddyjs.org/documentation
+Docs are located on the NailsJS website: http://nailsjs.org/documentation
 
 ### Goals
 
@@ -22,7 +22,7 @@ Docs are located on the GeddyJS website: http://geddyjs.org/documentation
   * Modular
   * Fast
 
-Geddy should make things easy for the most basic applications,
+Nails should make things easy for the most basic applications,
 but still let you get under the hood and tinker if you want.
 
 ### Features
@@ -35,7 +35,7 @@ but still let you get under the hood and tinker if you want.
   * Session support (in-memory, cookie)
   * Multiple template engine support (EJS, Jade, Mustache, Handlebars)
   * Real Time API generation (socket.io integration)
-  * View helpers ([Docs](https://github.com/mde/geddy/wiki/View-Helpers))
+  * View helpers ([Docs](https://github.com/mde/nails/wiki/View-Helpers))
   * Fully non-blocking
 
 ### License
@@ -44,52 +44,52 @@ Apache License, Version 2
 
 ### Prerequisites
 
-Geddy requires version 0.6.x of Node.js or higher, and the
+Nails requires version 0.6.x of Node.js or higher, and the
 [Jake](https://github.com/mde/jake) JavaScript build-tool.
 
 ### Installing with [NPM](http://npmjs.org/)
 
 ```
-[sudo] npm -g install geddy
+[sudo] npm -g install nails
 ```
 
-Note: Geddy (specifically, the generators) is a system-level
+Note: Nails (specifically, the generators) is a system-level
 tool, and wants to be installed globally.
 
 ### Installing from Github
 
-To get Geddy from Github and install it do:
+To get Nails from Github and install it do:
 
 ```
-git clone git@github.com:mde/geddy.git
-cd geddy
+git clone git@github.com:mde/nails.git
+cd nails
 make && sudo make install
 ```
 
-By default Geddy is installed in "/usr/local." To install it into a
+By default Nails is installed in "/usr/local." To install it into a
 different directory (e.g., one that doesn't require super-user
 privilege), pass the PREFIX variable to the `make install` command.
-For example, to install it into a "geddy" directory in your home
+For example, to install it into a "nails" directory in your home
 directory, you could use this:
 
 ```
-make && make install PREFIX=~/geddy
+make && make install PREFIX=~/nails
 ```
 
-If you do install Geddy somewhere special, you'll need to add the
+If you do install Nails somewhere special, you'll need to add the
 "bin" directory in the install target to your PATH to get access
-to the `geddy` executable.
+to the `nails` executable.
 
-### Creating a Geddy application
+### Creating a Nails application
 
-To create Geddy applications simply run `geddy app <name>`.
-Then you can run `geddy` inside the application to start the server.
+To create Nails applications simply run `nails app <name>`.
+Then you can run `nails` inside the application to start the server.
 
 ```
-mde@localhost:~/work$ geddy app bytor
+mde@localhost:~/work$ nails app bytor
 Created app bytor.
 mde@localhost:~/work$ cd bytor
-mde@localhost:~/work/bytor$ geddy
+mde@localhost:~/work/bytor$ nails
 Server running at http://127.0.0.1:4000/
 ```
 
@@ -97,19 +97,19 @@ Go to http://localhost:4000/, and you should see the introduction page.
 
 ### Generating resources
 
-Use `geddy resource <name> [model properties]` to generate a resource in your application.
+Use `nails resource <name> [model properties]` to generate a resource in your application.
 A resources does not generate a view, but creates a view directory. A resource route will be
 created for you.
 
 ````
-mde@localhost:~/work$ geddy resource snow_dog breed:string name:string color:string
+mde@localhost:~/work$ nails resource snow_dog breed:string name:string color:string
 [Added] app/models/snow_dog.js
 [Added] app/controllers/snow_dogs.js
 [Added] Resource snow_dogs route added to config/router.js
 [Added] snow_dogs view directory
 ```
 
-Now start your Geddy server and your new route will work. Trying this for example
+Now start your Nails server and your new route will work. Trying this for example
 will return the params for the index action in JSON:
 
 ```
@@ -117,17 +117,17 @@ $ curl localhost:4000/snow_dogs.json
 {"params":{"method":"GET","controller":"SnowDogs","action":"index","format":"json"}}
 ```
 
-Geddy generators handle plural inflections for model and controller names (e.g., "person" to "people").
+Nails generators handle plural inflections for model and controller names (e.g., "person" to "people").
 To read about the model properties argument, see [Model properties](#model-properties).
 
 ### Generating scaffolding
 
-Use `geddy scaffold <name> [model properties]` to generate scaffoling in your application.
+Use `nails scaffold <name> [model properties]` to generate scaffoling in your application.
 Scaffolding creates full CRUD actions, includes views, and will default your configuration to use
 [Mongodb](http://www.mongodb.org/). Resource routes will be created for you.
 
 ````
-mde@localhost:~/work$ geddy scaffold snow_dog breed:string name:string color:string
+mde@localhost:~/work$ nails scaffold snow_dog breed:string name:string color:string
 [Added] app/models/snow_dog.js
 [Added] app/controllers/snow_dogs.js
 [Added] Resource snow_dogs route added to config/router.js
@@ -135,7 +135,7 @@ mde@localhost:~/work$ geddy scaffold snow_dog breed:string name:string color:str
 [Added] Database configuration to config/environment.js
 ```
 
-Now start your Geddy server and you'll have new views created from scaffolding. Trying this for example
+Now start your Nails server and you'll have new views created from scaffolding. Trying this for example
 will return the content for the index action in HTML:
 
 ```
@@ -144,7 +144,7 @@ $ curl localhost:4000/snow_dogs
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Geddy App | This app uses Geddy.js</title>
+    <title>Nails App | This app uses Nails.js</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -160,20 +160,20 @@ $ curl localhost:4000/snow_dogs
 
 ### Model properties
 
-Some Geddy generators (resource, scaffold, and model) have an argument that takes a list of model
+Some Nails generators (resource, scaffold, and model) have an argument that takes a list of model
 properties. Here's an example of a resource with some properties:
 
 ```
-geddy resource user name admin:boolean lastLogin:datetime
+nails resource user name admin:boolean lastLogin:datetime
 ```
 
 Each of these items include a name and an optional type. If there's no type given, it will default
-to string. The list of supported types are listed in the [model](https://github.com/mde/geddy/wiki/Models) documentation.
+to string. The list of supported types are listed in the [model](https://github.com/mde/nails/wiki/Models) documentation.
 If no id property is given, then a default id property will be created with the type of string.
 
 You can also use custom default properties:
 ```
-geddy resource user name:default admin:boolean
+nails resource user name:default admin:boolean
 ```
 The above example will use the property `name`(string) to display the items in the views instead of the default ID property. This way when generating scaffolds, it will look better out of the box.
 
@@ -201,7 +201,7 @@ router.resource('hemispheres');
 
 ### Resources and controllers
 
-Geddy's resource-based routes create url/request-method mappings
+Nails's resource-based routes create url/request-method mappings
 for easy CRUD operations:
 
 ```
@@ -265,7 +265,7 @@ exports.SnowDogs = SnowDogs;
 
 ## Content-negotiation
 
-Geddy can perform content-negotiation, and respond with with the
+Nails can perform content-negotiation, and respond with with the
 correct format based on the requested filename extension.
 
 If you have a JSON-serializable JavaScript object you want to
@@ -282,7 +282,7 @@ this.show = function (params) {
 ```
 ## Models and validations
 
-Geddy has a simple way of defining models with a full-featured
+Nails has a simple way of defining models with a full-featured
 set of data validations. The syntax is similar to models in
 Ruby's ActiveRecord or DataMapper.
 
@@ -315,7 +315,7 @@ User.prototype.someOtherMethod = function () {
   // Do some other stuff
 };
 
-User = geddy.model.register('User', User);
+User = nails.model.register('User', User);
 ```
 
 Alternatively, you can use the `defineProperties` method to lay out your model:
@@ -364,11 +364,11 @@ util.puts(user.errors.password);
 
 ## Running the tests
 
-In the geddy project directory, run `jake test`. The tests simply
+In the nails project directory, run `jake test`. The tests simply
 use NodeJS's `assert` module, which throws an error on failure.
 If there are no errors, the tests all ran successfully.
 
 - - -
-Geddy Web-app development framework copyright 2112
+Nails Web-app development framework copyright 2112
 mde@fleegix.org.
 

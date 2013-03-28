@@ -1,4 +1,4 @@
-Geddy uses the [Model](http://github.com/mde/model) module for its model layer. Model is an abstract ORM that is compatible with many different types of databases, including Postgres, in-memory, MongoDB and Riak.
+Nails uses the [Model](http://github.com/mde/model) module for its model layer. Model is an abstract ORM that is compatible with many different types of databases, including Postgres, in-memory, MongoDB and Riak.
 
 * * *
 
@@ -334,8 +334,8 @@ If a model has a hasMany relationship established with another model, you can us
 
 ##### example
 ```
-var user = geddy.model.User.create(userParams);
-var post = geddy.model.Post.create(postParams);
+var user = nails.model.User.create(userParams);
+var post = nails.model.Post.create(postParams);
 user.addPost(post);
 ```
 
@@ -352,8 +352,8 @@ If a model has a hasOne relationship established with another model, you can use
 
 ##### example
 ```
-var user = geddy.model.User.create(userParams);
-var account = geddy.model.Account.create(accountParams);
+var user = nails.model.User.create(userParams);
+var account = nails.model.Account.create(accountParams);
 user.setAccount(account);
 ```
 
@@ -371,7 +371,7 @@ If a model has a hasOne relationship established with another model, you can use
 
 ##### example
 ```
-var user = geddy.model.User.create(params);
+var user = nails.model.User.create(params);
 
 // hasOne
 user.getAccount(function (err, account) {

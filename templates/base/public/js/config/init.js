@@ -6,22 +6,22 @@
  *  pass an array of model names into the method
  *  below:                                         */
 
-// geddy.io.addListenersForModels();
+// nails.io.addListenersForModels();
 
 /*
  *  example:
  *
- *  geddy.io.addListenersForModels(['Item']);
+ *  nails.io.addListenersForModels(['Item']);
  *
- *  geddy.model.Item.on('save', function (item) {
+ *  nails.model.Item.on('save', function (item) {
  *    console.log(item);
  *  });
  *
- *  geddy.model.Item.on('update', function (item) {
+ *  nails.model.Item.on('update', function (item) {
  *    console.log(item);
  *  });
  *
- *  geddy.model.Item.on('remove', function (id) {
+ *  nails.model.Item.on('remove', function (id) {
  *    console.log(id);
  *  });
  *

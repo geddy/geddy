@@ -1,4 +1,4 @@
-Along with flexible template system in Geddy you have access to various built in helpers and custom helpers.
+Along with flexible template system in Nails you have access to various built in helpers and custom helpers.
 
 ### custom helpers
 When you create your application a `helpers` directory will be added to the `app` directory, all the files in this directory will be required when you start the server up.
@@ -19,9 +19,9 @@ Now when we start the server up we can access it in our views by doing:
 ```
 All the exported helpers are global to the templates, so any of them can be accessed from any template.
 
-You can also access them from controllers/models and any other part of your application by using `geddy.viewHelpers` here's an example using our upperCase helper:
+You can also access them from controllers/models and any other part of your application by using `nails.viewHelpers` here's an example using our upperCase helper:
 ```
-console.log(geddy.viewHelper.upperCase("some string"));
+console.log(nails.viewHelper.upperCase("some string"));
 // => "SOME STRING"
 ```
 
@@ -226,7 +226,7 @@ Returns a URL based on the `options` provided
 
 #####Options [Object]:
 - `relPath` [Boolean] If true, the relative URL is returned(Default: false)
-- `protocol` [String] The protocol to use(Default: What your Geddy instance is using('http' default))
+- `protocol` [String] The protocol to use(Default: What your Nails instance is using('http' default))
 - `username` [String] Includes a username in the path. Requires `password` or it'll be ignored
 - `password` [String] Includes a username in the path. Requires `password` or it'll be ignored
 - `subdomain` [String] Specifies the subdomain to prepend to `domain`
@@ -336,8 +336,8 @@ Creates a HTML select tag using the given `optionsArray` to create HTML option e
 
 #####Examples:
 ```
-selectTag(['geddy', 'alex', 'neil'])
-// => '<select><option value="geddy">geddy</option><option value="alex">alex</option><option value="neil">neil</option></select>'
+selectTag(['nails', 'alex', 'neil'])
+// => '<select><option value="nails">nails</option><option value="alex">alex</option><option value="neil">neil</option></select>'
 
 selectTag(['open', 'close'], todo.status, { class:'span6', name:'status' })
 // => '<select class="span6" name="status"><option selected="selected" value="open">open</option><option value="close">close</option></select>'

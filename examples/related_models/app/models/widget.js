@@ -9,4 +9,4 @@ var Widget = function () {
   this.adapter = 'mongo';
 
 };
-Widget = geddy.model.register('Widget', Widget);
+Widget = nails.model.register('Widget', Widget);

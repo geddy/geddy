@@ -2,7 +2,7 @@
 html(lang="en")
   head
     meta(charset="utf-8")
-    title Geddy App | This app uses Geddy.js
+    title Nails App | This app uses Nails.js
     meta(name="description", content="")
     meta(name="author", content="")
     meta(name="viewport", content="width=device-width")
@@ -34,15 +34,15 @@ html(lang="en")
           a.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
             span.i-bar
               i.icon-chevron-down.icon-white
-          != linkTo('Geddy App', mainsPath, { class: 'brand' })
+          != linkTo('Nails App', mainsPath, { class: 'brand' })
           .nav-collapse
             ul.nav
               li.active
                 != linkTo('Home', mainsPath)
               li
-                != linkTo('Tutorial', 'http://geddyjs.org/tutorial')
+                != linkTo('Tutorial', 'http://nailsjs.org/tutorial')
               li
-                != linkTo('Docs', 'http://geddyjs.org/documentation')
+                != linkTo('Docs', 'http://nailsjs.org/documentation')
 
     .container
       != yield()
