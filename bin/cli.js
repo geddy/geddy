@@ -67,6 +67,7 @@ usage = [
   , '  routes [query]              Shows routes for a given resource route or all '
   , '                                routes if empty'
   , '  auth[:update]               Creates user authentication for you, using Passport.'
+  , '  db:init                     Creates or updates the database schema.'
   , ''
   , 'Examples:'
   , '  geddy                    Start Geddy on localhost:4000 in development mode'
