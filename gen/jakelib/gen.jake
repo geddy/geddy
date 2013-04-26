@@ -1,294 +1,25 @@
 // Load the basic Geddy toolkit
-require('../lib/geddy')
+require('../../lib/geddy')
 
 // Dependencies
 var cwd = process.cwd()
   , fs = require('fs')
   , path = require('path')
-  , utils = require('../lib/utils')
-  , Adapter = require('../lib/template/adapters')
-  , geddyPassport = 'geddy-passport@0.0.x'
-  , getRouterPath
-  , getRoutes
-  , addRoute
-  , mixinJSONData;
-
-getRouterPath = function () {
-  var beginPath
-    , jsRouter = path.normalize('config/router.js')
-    , coffeeRouter = path.normalize('config/router.coffee')
-    , routerPath;
-  // Check if the router file exists
-  beginPath = path.join(cwd, 'config');
-  utils.file.searchParentPath(jsRouter, function (err) {
-    if (err) {
-      var jsErr = err;
-      // If jsEnvironment wasn't found, try finding coffee variant
-      utils.file.searchParentPath(coffeeRouter, beginPath, function (err) {
-        if (err) {
-          throw jsErr;
-        } else {
-          routerPath = coffeeRouter;
-        }
-      });
-    } else {
-      routerPath = jsRouter;
-    }
-  });
-  return routerPath;
-};
-
-getRoutes = function (resource) {
-  if (!resource) {
-    return geddy.router.toString();
-  }
-
-  var rts = []
-    , _rt
-    , i;
-
-  // If a full route name was given add it to the list(e,g,. users.index)
-  if (resource.match(/.+\..+/)) {
-    var res = resource.split('.')
-      , cont = res[0]
-      , action = res[1];
-
-    for (i in geddy.router.routes) {
-      _rt = geddy.router.routes[i];
-
-        if (_rt.params.controller.match(cont) &&
-          _rt.params.action.match(action)) {
-        rts.push(_rt);
-      }
-    }
-  }
-  else {
-    for (i in geddy.router.routes) {
-      _rt = geddy.router.routes[i];
-
-      if (_rt.params.controller.match(resource) ||
-          _rt.params.action.match(resource)) {
-        rts.push(_rt);
-      }
-    }
-  }
-
-  return rts.map(function (rt) {
-    return rt.toString();
-  }).join('\n');
-};
-
-addRoute = function (routerPath, newRoute) {
-  var text = fs.readFileSync(routerPath, 'utf8')
-    , routerArr;
-  // Don't add the same route over and over
-  if (text.indexOf(newRoute) == -1) {
-    // Add the new resource route just above the export
-    routerArr = text.split('exports.router');
-    routerArr[0] += newRoute + '\n';
-
-    text = routerArr.join('exports.router');
-    fs.writeFileSync(routerPath, text, 'utf8');
-    return true;
-  }
-  else {
-    return false;
-  }
-};
-
-mixinJSONData = function (file, obj) {
-  var data = obj || {};
-
-  if (utils.file.existsSync(file)) {
-    try {
-      var content = JSON.parse(fs.readFileSync(file, 'utf8'));
-      utils.object.merge(content, data);
-      fs.writeFileSync(file, JSON.stringify(content, null, 2));
-    }
-    catch (e) {
-      throw new Error("Could not parse " + file);
-    }
-  }
-  else {
-    console.log("There is no file " + file + " to add data to.");
-  }
-};
-
-namespace('env', function () {
-  task('init', function () {
-    var cfg = {};
-    if (process.env.environment) {
-      cfg.environment = process.env.environment;
-    }
-
-    jake.addListener('complete', function (e) {
-      jake.Task['env:cleanup'].invoke();
-    });
-
-    geddy.config = require('../lib/config').readConfig(cfg);
-    geddy.model = require('model');
-    geddy.controller = require('../lib/controller');
-
-    require('../lib/init').init(geddy, function () {
-      complete();
-    });
-  }, {async: true});
-
-  task('cleanup', function () {
-    // Disconnect all the adapters
-    var adapters = geddy.model.loadedAdapters
-      , adapter;
-
-    for (var p in adapters) {
-      adapter = adapters[p];
-      if (typeof adapter.disconnect == 'function') {
-        adapter.disconnect();
-      }
-    }
-  });
-
-});
-
-namespace('console', function () {
-  task('start', ['env:init'], {async: true}, function () {
-    var t = jake.Task['env:init'];
-
-    t.addListener('complete', function () {
-      var repl = require('repl')
-        , rl;
-
-      rl = repl.start({
-          prompt: '>>> '
-        , input: process.stdin
-        , output: process.stdout
-      });
-
-      rl.on('close', function () {
-        console.log('Exiting...');
-        return complete();
-      })
-
-      rl.context.capture = function (err, data) {
-        return rl.context.results = {
-            err: err
-          , data: data
-        };
-      };
-
-      rl.context.echo = function (err, data) {
-        rl.context.capture(err, data);
-        if (err) {
-          console.log('Error: ', err);
-        }
-
-        if (data) {
-          if (data.length) {
-            for (var i in data) {
-              if (data[i] && data[i].toData) {
-                console.log(data[i].toData());
-              } else {
-                console.log(data[i]);
-              }
-            }
-          }
-          else {
-            if (data && data.toData) {
-              console.log(data.toData());
-            } else {
-              console.log(data);
-            }
-          }
-        } else {
-          console.log('No data');
-        }
-      };
-
-      rl.context.routes = function (resource) {
-        console.log(getRoutes(resource));
-      };
-    });
-
-    t.invoke();
-  });
-});
-
-namespace('routes', function () {
-
-  task('show', ['env:init'], {async: true}, function (resource) {
-    console.log('Showing route results for "' + resource + '"');
-    console.log(getRoutes(resource));
-  });
-
-});
-
-namespace('db', function () {
-  task('createTable', ['env:init'], function (name) {
-
-    var modelName
-      , createTable
-      , adapters
-      , adapter;
-
-    if (typeof name == 'string') {
-      if (name.indexOf('%') > -1) {
-        modelNames = name.split('%');
-      }
-      else {
-        modelNames = [name];
-      }
-    }
-    else {
-      modelNames = name;
-    }
-
-    createTable = function () {
-      if ((m = modelNames.shift())) {
-
-        // Make sure this is a correct model-name
-        m = utils.string.getInflections(m).constructor.singular;
-        if (!geddy.model[m]) {
-          throw new Error(m + ' is not a known model.');
-        }
-
-        adapter = geddy.model.adapters[m];
-        if (adapter) {
-          console.log('Creating table for ' + m);
-          adapter.createTable(m, function (err, data) {
-            if (err) { throw err }
-            createTable();
-          });
-        }
-        else {
-          createTable();
-        }
-      }
-      else {
-        complete();
-      }
-    };
-    // Defer until associations are set up
-    setTimeout(function () {
-      createTable();
-    }, 0);
-  }, {async: true});
-
-  task('init', ['env:init'], function () {
-    var modelNames = Object.keys(geddy.model.descriptionRegistry)
-      , createTask = jake.Task['db:createTable'];
-      createTask.once('complete', function () {
-        complete();
-      });
-      createTask.invoke(modelNames);
-  }, {async: true});
-
-});
+  , utils = require('../../lib/utils')
+  , Adapter = require('../../lib/template/adapters')
+  , helpers = require('./helpers')
+  , mixinJSONData = helpers.mixinJSONData
+  , getRouterPath = helpers.getRouterPath
+  , getRoutes = helpers.getRoutes
+  , addRoute = helpers.addRoute
+  , genDirname = path.join(__dirname, '..');
 
 namespace('gen', function () {
 
   var _writeTemplate = function (name, filename, dirname, opts) {
     var options = opts || {}
       , names = utils.string.getInflections(name)
-      , text = fs.readFileSync(path.join(__dirname, filename + '.ejs'), 'utf8').toString()
+      , text = fs.readFileSync(path.join(genDirname, filename + '.ejs'), 'utf8').toString()
       , bare = options.bare || false // Default to full controller
       , adapter
       , templContent
@@ -401,7 +132,7 @@ namespace('gen', function () {
 
   // Creates a new Geddy app scaffold
   task('app', function (name, engine, realtime) {
-    var basePath = path.join(__dirname, 'base')
+    var basePath = path.join(genDirname, 'base')
       , mkdirs
       , cps
       , text
@@ -453,7 +184,7 @@ namespace('gen', function () {
 
     // one offs
     if (realtime) {
-      jake.cpR(path.join(__dirname, '..', 'node_modules', 'socket.io' ), path.join(name, 'node_modules'), {silent: true});
+      jake.cpR(path.join(genDirname, '..', 'node_modules', 'socket.io' ), path.join(name, 'node_modules'), {silent: true});
     }
 
     // Compile Jakefile
@@ -664,7 +395,7 @@ namespace('gen', function () {
     var names = utils.string.getInflections(name)
       , engine = options.engine
       , appViewDir = path.join('app', 'views', names.filename.plural)
-      , templateViewDir = path.join(__dirname, 'views', engine)
+      , templateViewDir = path.join(genDirname, 'views', engine)
       , cmds = []
       , ext = '.html'
       , appLayoutPath
@@ -771,8 +502,8 @@ namespace('gen', function () {
 
     // Get view path
     templateViewDir = options.realtime ?
-                      path.join(__dirname, 'scaffold', 'realtime', 'views', engine) :
-                      path.join(__dirname, 'scaffold', 'views', engine);
+                      path.join(genDirname, 'scaffold', 'realtime', 'views', engine) :
+                      path.join(genDirname, 'scaffold', 'views', engine);
 
 
     // Set application layout path
@@ -839,185 +570,3 @@ namespace('gen', function () {
 
 });
 
-namespace('auth', function () {
-
-  task('update', {async: true}, function () {
-    var updatePath = path.join('geddy-passport', 'app', 'helpers', 'passport')
-      , from
-      , to;
-
-    console.log('Updating passport helpers from', geddyPassport);
-    jake.exec('npm uninstall ' + geddyPassport +
-      ' && npm install ' + geddyPassport, function () {
-      from = path.join(cwd, 'node_modules', updatePath);
-      to = path.join(cwd, 'app', 'helpers');
-
-      jake.rmRf(path.join(cwd, 'passport'), {silent: true});
-      jake.cpR(from, to, {silent: true});
-
-      console.log("\nCleaning up...");
-      jake.exec('npm uninstall ' + geddyPassport, function () {
-        complete();
-      });
-    }, {printStdout: true});
-  });
-
-  task('init', {async: true}, function (engine) {
-    var env = process.env
-      , readline = require('readline')
-      , fromBase = env.srcDir ||
-            path.join(cwd, 'node_modules', 'geddy-passport')
-      , install = false
-      , rl, installPackages, passportCopy;
-
-    if (!engine || engine == 'default') {
-      engine = 'ejs';
-    }
-
-    // Create and start the prompt
-    rl = readline.createInterface({
-        input: process.stdin
-      , output: process.stdout
-    });
-    rl.setPrompt("WARNING: This command will create/overwrite files in your app.\n" +
-      "Do you wish to continue?(yes|no)\n\n");
-    rl.prompt();
-
-    rl.on('line', function (line) {
-      if (line === 'yes' || line === 'y') {
-        install = true;
-      }
-
-      rl.close();
-    });
-
-    rl.on('close', function () {
-      if (!install) {
-        return;
-      }
-
-      if (env.srcDir) {
-        console.log('Installing from ' + fromBase);
-        installPackages();
-      }
-      else {
-        console.log('Installing', geddyPassport);
-        jake.exec('npm uninstall ' + geddyPassport +
-          ' && npm install ' + geddyPassport, installPackages, {printStdout: true});
-      }
-    });
-
-    // Gets the package versions from geddy-passport's package.json
-    // and installs them, then calls passportCopy
-    installPackages = function () {
-      var deps = require(path.join(fromBase, 'package')).dependencies
-        , packages = ''
-        , k;
-
-      mixinJSONData(path.join(cwd, 'package.json'), {dependencies: deps});
-
-      for (k in deps) {
-        packages += k + '@' + deps[k] + ' ';
-      }
-
-      console.log("\nInstalling", packages);
-      jake.exec('npm uninstall ' + packages +
-        ' && npm install ' + packages, passportCopy, {printStdout: true});
-    };
-
-    // Copy the contents of geddy-passport into the application
-    passportCopy = function () {
-      var list = require(path.join(fromBase, 'file_list'))
-        , routerPath = getRouterPath()
-        , newRoute
-        , from
-        , to
-        , p
-        , i
-        , engineExt = {
-            ejs: '.ejs'
-          , jade: '.jade'
-          , handlebars: '.hbs'
-          , mustache: '.ms'
-          };
-
-      // Copy files to the application
-      for (i = 0; i < list.length; i++) {
-        item = list[i];
-        from = path.join(fromBase, item);
-        to = path.dirname(path.join(cwd, item));
-
-        if (item.match('/app/views')) {
-          from = from.replace('/app/views', '/app/views_' + engine);
-          from = from.replace(/\[\.ext\]$/, engineExt[engine]);
-          to = to.replace(/\[\.ext\]$/, engineExt[engine]);
-        }
-
-        jake.mkdirP(to);
-        console.log('Creating file:', path.join(to, path.basename(from)));
-
-        // Delete any existing interferring templates
-        if (item.match('/app/views')) {
-          ['.jade', '.ejs', '.ms', '.mustache', '.hbs', '.handlebars'].forEach(function (ext) {
-            p = path.basename(item, path.extname(item)) + ext;
-
-            jake.rmRf(path.join(to, p), {silent: true});
-          });
-        }
-
-        jake.cpR(from, to, {silent: true});
-      }
-
-      // Add new routes to router
-      if (routerPath) {
-        // CoffeeScript routes
-        if (routerPath.match('.coffee')) {
-          newRoute = "router.get('/login').to 'Main.login'\n" +
-            "router.get('/logout').to 'Main.logout'\n" +
-            "router.post('/auth/local').to 'Auth.local'\n" +
-            "router.get('/auth/twitter').to 'Auth.twitter'\n" +
-            "router.get('/auth/twitter/callback').to 'Auth.twitterCallback'\n" +
-            "router.get('/auth/facebook').to 'Auth.facebook'\n" +
-            "router.get('/auth/facebook/callback').to 'Auth.facebookCallback'\n" +
-            "router.get('/auth/yammer').to 'Auth.yammer'\n" +
-            "router.get('/auth/yammer/callback').to 'Auth.yammerCallback'\n" +
-            "router.resource 'users'";
-        } else {
-          newRoute = "router.get('/login').to('Main.login');\n" +
-            "router.get('/logout').to('Main.logout');\n" +
-            "router.post('/auth/local').to('Auth.local');\n" +
-            "router.get('/auth/twitter').to('Auth.twitter');\n" +
-            "router.get('/auth/twitter/callback').to('Auth.twitterCallback');\n" +
-            "router.get('/auth/facebook').to('Auth.facebook');\n" +
-            "router.get('/auth/facebook/callback').to('Auth.facebookCallback');\n" +
-            "router.get('/auth/yammer').to('Auth.yammer');\n" +
-            "router.get('/auth/yammer/callback').to('Auth.yammerCallback');\n" +
-            "router.resource('users');";
-        }
-
-        if (addRoute(routerPath, "\n" + newRoute)) {
-          console.log('\nAdded authentication routes:\n' + newRoute);
-        } else {
-          console.log('\nAuthentication routes already defined in', routerPath);
-        }
-      }
-      else {
-        console.log('\nThere is no router file to add routes too.');
-      }
-
-      // Create secrets and copy the secrets template
-      console.log("\nCreating secrets.json file with stubbed-out Passport config.");
-      jake.cpR(path.join(fromBase, 'config', 'secrets.json.template'),
-        path.join(cwd, 'config', 'secrets.json'), {silent: true});
-      jake.Task['gen:secret'].invoke();
-
-      // Remove geddy-passport as it isn't needed anymore
-      console.log('\nCleaning up...');
-      jake.exec('npm uninstall geddy-passport', function () {
-        console.log('Please set up your Passport config in config/secrets.json');
-        complete();
-      });
-    };
-  });
-
-});
