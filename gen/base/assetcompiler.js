@@ -175,7 +175,7 @@ var compileAsset = function(outputFile, inputFiles, minify, cb) {
 var compileJS = function(output, inputFiles, minify, cb) {
   //Minify? Easy top level function...
   if(minify) {
-    var uglifyjs = require('uglify-js2');
+    var uglifyjs = require('uglify-js');
     cb(null, uglifyjs.minify(inputFiles).code);
   }
   else {
