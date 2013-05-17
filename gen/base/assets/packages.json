@@ -1,8 +1,8 @@
 {
   "css/styles.css":[
-    "css/bootstrap.css",
-    "css/style.css",
-    "css/bootstrap.responsive.css"
+    "less/bootstrap.less",
+    "less/style.less",
+    "less/responsive.less"
   ],
   "js/scripts.js":[
     "js/jquery.js",
