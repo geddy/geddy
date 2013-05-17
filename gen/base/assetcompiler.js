@@ -105,6 +105,12 @@ var compile = function(source, output, ignoredExts, minify) {
 var compileAsset = function(outputFile, inputFiles, minify, cb) {
   var self = this;
   
+  /*
+  * Deps
+  */
+  var fs = require('fs');
+  var nodefs = require('node-fs');
+  
   //Check if we are compiling a supported format
   var supportedFormats = ['js','css'];
   var outputFormat = outputFile.split('.').pop();
@@ -122,7 +128,6 @@ var compileAsset = function(outputFile, inputFiles, minify, cb) {
     else {
       //Buffer will contain the compiled asset data, this function writes it
       var writeFile = function() {
-        var fs = require('fs');
         fs.writeFile(outputFile, buffer, function(err) {
           if(err) {
             cb(err);
@@ -137,7 +142,8 @@ var compileAsset = function(outputFile, inputFiles, minify, cb) {
       if(outputFile.indexOf('/') > 0) {
         //If so, make sure it exists
         var targetDir = outputFile.substring(0, outputFile.lastIndexOf('/'));
-        self.prepare(targetDir,function(err) {
+        
+        nodefs.mkdir(targetDir, 511, true, function(err) {
           if(err) {
             cb(err);
           }
