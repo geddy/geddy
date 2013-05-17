@@ -8,14 +8,15 @@ var run = function() {
   var minify = true;
   var source = 'assets';
   var output = 'public';
+  var ignoredExts = ['less'];
   
-  this.compile(source, output, minify);
+  this.compile(source, output, ignoredExts, minify);
 };
 
 /*
 * Compiles a directory of assets into another
 */
-var compile = function(source, output, minify) {
+var compile = function(source, output, ignoredExts, minify) {
   var self = this;
   
   /*
@@ -84,7 +85,7 @@ var compile = function(source, output, minify) {
           console.log("Compiled "+results.length+" assets from "+packagedFiles.length+" files"+(minify?" with":" without")+" minification.");
           
           //Copy over any assets that were not part of a package
-          self.copyDir(source, output, packagedFiles, function(err, copied) {
+          self.copyDir(source, output, packagedFiles, ignoredExts, function(err, copied) {
             if(err) {
               console.log("Failed to copy: " + err);
             }
@@ -183,8 +184,32 @@ var compileJS = function(output, inputFiles, minify, cb) {
 var compileCSS = function(output, inputFiles, minify, cb) {
   var self = this;
   var cleanCSS = require('clean-css');
+  var less = require('less');
+  
+  var lessHander = function(filename, data, handler_cb) {
+    var filedir = filename.substring(0, filename.lastIndexOf('/'));
+    
+    if(filename.split('.').pop().toLowerCase()==='less') {
+      var parser = new(less.Parser)({
+          paths: [filedir], // Specify search paths for @import directives
+          filename: filename // Specify a filename, for better error messages
+      });
+      
+      parser.parse(data, function (err, tree) {
+        if(err) {
+          handler_cb(err);
+        }
+        else {
+          handler_cb(null,tree.toCSS({ compress: minify }));
+        }
+      });
+    }
+    else {
+      handler_cb(null, data);
+    }
+  };
 
-  self.concat(inputFiles, function(err,buffer) {
+  self.concat(inputFiles, lessHander, function(err,buffer) {
     if(err) {
       cb(err);
     }
@@ -201,18 +226,29 @@ var compileCSS = function(output, inputFiles, minify, cb) {
 /*
 * Concatenates files
 */
-var concat = function(inputFiles, cb) {
+var concat = function(inputFiles, handler, cb) {
   var async = require('async');
   var fs = require('fs');
+  
+  if(cb === undefined) {
+    cb = handler;
+    handler = null;
+  }
 
   //Returns an async worker
   var loadFile = function(path) {
     return function(async_cb) {
       fs.readFile(path, 'utf-8', function(err, data) {
-        if (!err) {
-          async_cb(null, data);
-        } else {
+        if (err) {
           async_cb(err);
+        } else {
+          //Do we have to run a handler?
+          if(handler) {
+            handler(path,data,async_cb);
+          }
+          else {
+            async_cb(null, data);
+          }
         }
       });
     };
@@ -361,7 +397,7 @@ var copyFile = function(source, target, cb) {
 /*
 * Copies a directory into another, ignoring some files
 */
-var copyDir = function(source, target, ignoreFiles, cb) {
+var copyDir = function(source, target, ignoreFiles, ignoreExts, cb) {
   var self = this;
   var walk = require('walk');
   var async = require('async');
@@ -393,9 +429,10 @@ var copyDir = function(source, target, ignoreFiles, cb) {
   
   walker.on('file', function(root, stat, next) {
     var filename = path.join(root,stat.name);
+    var fileext = stat.name.split('.').pop().toLowerCase();
     
     //Don't copy ignored files
-    if(ignoreFiles.indexOf(filename) < 0) {
+    if(ignoreFiles.indexOf(filename) < 0 && ignoreExts.indexOf(fileext) < 0) {
       fileWorkers.push(processFile(filename));
     }
     
