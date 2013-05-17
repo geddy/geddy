@@ -40,7 +40,7 @@ var compile = function(source, output, ignoredExts, minify) {
   var packages = require(packages_def);
   
   //Remember packaged files so we don't copy them later
-  var packagedFiles = [];
+  var packagedFiles = ['packages.json'];
   
   //Append the source prefix to package definitions
   for(var key in packages) {
