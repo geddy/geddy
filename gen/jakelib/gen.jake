@@ -151,6 +151,7 @@ namespace('gen', function () {
     mkdirs = [
       ''
     , 'config'
+    , 'public'
     , 'app/models'
     , 'app/controllers'
     , 'app/helpers'
@@ -162,7 +163,8 @@ namespace('gen', function () {
     ];
     cps = [
       (realtime) ? ['realtime/views/' + engine, 'app/views'] : ['views/' + engine, 'app/views']
-    , ['public', '']
+    , ['assets', '']
+    , ['assetcompiler.js', 'lib']
     , ['router.js', 'config']
     , ['init.js', 'config']
     , (realtime) ? ['realtime/environment.js', 'config'] : ['environment.js', 'config']

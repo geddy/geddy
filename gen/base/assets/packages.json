@@ -1,0 +1,13 @@
+{
+  "css/styles.css":[
+    "less/bootstrap.less",
+    "less/style.less",
+    "less/responsive.less"
+  ],
+  "js/scripts.js":[
+    "js/jquery.js",
+    "js/bootstrap.js",
+    "js/core/core.js",
+    "js/config/init.js"
+  ]
+}

@@ -11,15 +11,10 @@
     <!--[if lt IE 9]>
       {{ scriptLink('http://html5shim.googlecode.com/svn/trunk/html5.js', {type: 'text/javascript'}) }}
     <![endif]-->
-    {{ scriptLink('/js/jquery.min.js', {type: 'text/javascript'}) }}
-    {{ scriptLink('/js/bootstrap.min.js', {type: 'text/javascript'}) }}
-    {{ scriptLink('/js/core/core.js', {type: 'text/javascript'}) }}
+    {{ scriptLink('/js/scripts.js', {type: 'text/javascript'}) }}
     <!-- {{ scriptLink('/js/models/your_model.js', {type: 'text/javascript'}) }} -->
-    {{ scriptLink('/js/config/init.js', {type: 'text/javascript'}) }}
 
-    {{ styleLink('/css/bootstrap.min.css', {rel:'stylesheet'}) }}
-    {{ styleLink('/css/style.css', {rel:'stylesheet'}) }}
-    {{ styleLink('/css/bootstrap.responsive.min.css', {rel:'stylesheet'}) }}
+    {{ styleLink('/css/styles.css', {rel:'stylesheet'}) }}
 
     <!-- The fav and touch icons -->
     <link rel="shortcut icon" href="/images/favicon.ico">
@@ -46,7 +41,25 @@
       </div>
     </div>
     <div class="container">
+      <!-- Displays flash messages -->
+      <div id="flash-container">
+        {% for msg in flash.messages %}
+            <div class="{{ msg.displayClass }}">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              {% if msg.isInline %}
+                <strong>{{ msg.heading }}:</strong>&nbsp;
+              {% else %}
+                <h4>{{ msg.heading }}</h4>
+              {% endif %}
+              {{msg.description}}
+            </div>
+        {% endfor %}
+      </div>
       {{ yield() }}
     </div>
+    <script type="text/javascript">
+      /* Initializes the dismiss buttons on the flash messages */
+      $("#flash-container .alert").alert();
+    </script>
   </body>
 </html>
