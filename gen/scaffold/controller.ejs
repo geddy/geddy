@@ -1,5 +1,6 @@
 var <%= names.constructor.plural %> = function () {
   this.respondsWith = ['html', 'json', 'xml', 'js', 'txt'];
+  this.apiFormats = ['json','xml','js','txt'];
 
   this.index = function (req, resp, params) {
     var self = this;
@@ -15,20 +16,23 @@ var <%= names.constructor.plural %> = function () {
 
   this.create = function (req, resp, params) {
     var self = this
+      , onError = { redirect: {controller: "<%= names.property.plural %>", action: "add"} }
+      , onSuccess = { redirect: {controller: "<%= names.property.plural %>"} }
       , <%= names.property.singular %> = geddy.model.<%= names.constructor.singular %>.create(params);
 
     if (!<%= names.property.singular %>.isValid()) {
-      this.flash.error(<%= names.property.singular %>.errors);
-      this.redirect({action: 'add'});
+      self.displayError(<%= names.property.singular %>.errors, onError);
     }
     else {
       <%= names.property.singular %>.save(function(err, data) {
         if (err) {
-          self.flash.error(err);
-          self.redirect({action: 'add'});
+          self.displayError(err, onError);
         }
         else {
-          self.redirect({controller: self.name});
+          onSuccess.redirect.id = data.id;
+          params.id = data.id;
+          
+          self.displaySuccess("<%= names.constructor.singular %> Created", onSuccess);
         }
       });
     }
@@ -36,6 +40,14 @@ var <%= names.constructor.plural %> = function () {
 
   this.show = function (req, resp, params) {
     var self = this;
+    
+    if(!params.id) {
+        self.respond({
+          params: params
+        , errors:self.flash.error()
+        });
+      return;
+    }
 
     geddy.model.<%= names.constructor.singular %>.first(params.id, function(err, <%= names.property.singular %>) {
       if (!<%= names.property.singular %>) {
@@ -44,7 +56,11 @@ var <%= names.constructor.plural %> = function () {
         self.error(err);
       }
       else {
-        self.respond({params: params, <%= names.property.singular %>: <%= names.property.singular %>.toObj()});
+          self.respond({
+            params: params
+          , <%= names.property.singular %>: <%= names.property.singular %>.toObj()
+          , errors:self.flash.error()
+          });
       }
     });
   };
@@ -65,22 +81,26 @@ var <%= names.constructor.plural %> = function () {
   };
 
   this.update = function (req, resp, params) {
-    var self = this;
+    var self = this
+      , onError = {
+          redirect: {controller: "<%= names.property.plural %>", action: "edit", id: params.id}
+        }
+      , onSuccess = {
+          redirect: {controller: "<%= names.property.plural %>", id:params.id}
+        };
 
     geddy.model.<%= names.constructor.singular %>.first(params.id, function(err, <%= names.property.singular %>) {
       <%= names.property.singular %>.updateProperties(params);
       if (!<%= names.property.singular %>.isValid()) {
-        this.flash.error(<%= names.property.singular %>.errors);
-        this.redirect({action: 'edit'});
+        self.displayError(<%= names.property.singular %>.errors, onError);
       }
       else {
         <%= names.property.singular %>.save(function(err, data) {
           if (err) {
-            self.flash.error(err);
-            self.redirect({action: 'edit'});
+            self.displayError(err, onError);
           }
           else {
-            self.redirect({controller: self.name});
+            self.displaySuccess("<%= names.constructor.singular %> Updated", onSuccess);
           }
         });
       }
@@ -88,15 +108,19 @@ var <%= names.constructor.plural %> = function () {
   };
 
   this.destroy = function (req, resp, params) {
-    var self = this;
+    var self = this
+      , onError = { redirect: {controller: "<%= names.property.plural %>", action: "edit", id: params.id} }
+      , onSuccess = {
+          redirect: {controller: "<%= names.property.plural %>", action: "index"}
+        , transfer: null
+        };
 
     geddy.model.<%= names.constructor.singular %>.remove(params.id, function(err) {
       if (err) {
-        self.flash.error(err);
-        self.redirect({action: 'edit'});
+        self.displayError(err, onError);
       }
       else {
-        self.redirect({controller: self.name});
+        self.displaySuccess("<%= names.constructor.singular %> Deleted", onSuccess);
       }
     });
   };
