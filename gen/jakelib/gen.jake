@@ -131,7 +131,7 @@ namespace('gen', function () {
   };
 
   // Creates a new Geddy app scaffold
-  task('app', function (name, engine, realtime) {
+  task('app', function (name, engine, realtime, coffee) {
     var basePath = path.join(genDirname, 'base')
       , mkdirs
       , cps
@@ -251,7 +251,7 @@ namespace('gen', function () {
   });
 
   // Creates a resource with a model, controller and a resource route
-  task('resource', function (name, modelProperties) {
+  task('resource', function (name, modelProperties, coffee) {
     var names
       , modelTask = jake.Task['gen:model'];
 
@@ -275,7 +275,7 @@ namespace('gen', function () {
   }, {async: true});
 
   // Creates a full scaffold with views, a model, controller and a resource route
-  task('scaffold', function (name, modelProperties, engine, realtime) {
+  task('scaffold', function (name, modelProperties, engine, realtime, coffee) {
     var modelTask = jake.Task['gen:model'];
 
     if (!name) {
@@ -302,7 +302,7 @@ namespace('gen', function () {
 
   }, {async: true});
 
-  task('model', {async: true}, function (name, properties, modelPath) {
+  task('model', {async: true}, function (name, properties, modelPath, coffee) {
     var props = _formatModelProperties(properties)
       , createTableTask;
     if (!name) {
@@ -328,7 +328,7 @@ namespace('gen', function () {
 
   });
 
-  task('controller', function (name) {
+  task('controller', function (name, coffee) {
     if (!name) {
       throw new Error('No controller name specified.');
     }
