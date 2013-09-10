@@ -16,9 +16,10 @@ for (var i in properties) {
   }
 }
 %>
-	@defineProperties {
+	@defineProperties
 		<%- propertyOutput.join(",\n    "); %>
-	}
+	
+	@
 
 <% for(var i in properties) { -%>
 <% if(properties[i].name === 'id' && properties[i].type === 'int') { -%>
@@ -38,7 +39,7 @@ for (var i in properties) {
 	# Use with the name of the other parameter to compare with
 	@validatesConfirmed('password', 'confirmPassword')
 	# Use with any  that returns a Boolean
-	@validatesWith('password',  (s) ->
+	@validatesWith 'password',  (s) ->
 		s.length > 0
   
 
@@ -46,7 +47,7 @@ for (var i in properties) {
 	@someMethod =  () ->
 		# Do some stuff
 ###
-
+    
 
 ###
 # Can also define them on the prototype

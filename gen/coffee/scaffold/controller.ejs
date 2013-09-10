@@ -16,9 +16,8 @@
 
 	    <%= names.property.singular %>.save (err, data) =>
 	      throw err if err
-	      @respondWith(<%= names.property.singular %>, {status: err})
-    
-  
+	      @respondWith(<%= names.property.singular %>, {status: err}) 
+
 
 	@show = (req, resp, params) ->
 
