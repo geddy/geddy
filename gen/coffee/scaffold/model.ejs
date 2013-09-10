@@ -1,0 +1,63 @@
+<%= names.constructor.singular %> = () ->
+<%
+	var propertyOutput = [],
+	currentProperty;
+
+for (var i in properties) {
+  if (properties[i].name && properties[i].name !== "id") {
+    currentProperty = properties[i].name + ": {type: '" + properties[i].type + "'";
+
+    if (i === "default") {
+      currentProperty += ", required: true";
+    }
+
+    currentProperty += "}";
+    propertyOutput.push(currentProperty);
+  }
+}
+%>
+	@defineProperties {
+		<%- propertyOutput.join(",\n    "); %>
+	}
+
+<% for(var i in properties) { -%>
+<% if(properties[i].name === 'id' && properties[i].type === 'int') { -%>
+	@autoIncrementId = true;
+
+<% } -%>
+<% } -%>
+###
+	@property('login', 'string', {required: true})
+	@property('password', 'string', {required: true})
+	@property('lastName', 'string')
+	@property('firstName', 'string')
+
+	@validatesPresent('login')
+	@validatesFormat('login', /[a-z]+/, {message: 'Subdivisions!'})
+	@validatesLength('login', {min: 3})
+	# Use with the name of the other parameter to compare with
+	@validatesConfirmed('password', 'confirmPassword')
+	# Use with any  that returns a Boolean
+	@validatesWith('password',  (s) ->
+		s.length > 0
+  
+
+	#Can define methods for instances like this
+	@someMethod =  () ->
+		# Do some stuff
+###
+
+
+###
+# Can also define them on the prototype
+<%= names.constructor.singular %>.prototype.someOtherMethod = () ->
+	# Do some other stuff
+# Can also define static methods and properties
+<%= names.constructor.singular %>.someStaticMethod = () ->
+	# Do some other stuff
+
+<%= names.constructor.singular %>.someStaticProperty = 'YYZ'
+###
+
+exports.<%= names.constructor.singular %> = <%= names.constructor.singular %>
+

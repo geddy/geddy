@@ -1,0 +1,3 @@
+inflections = {};
+module.exports = inflections;
+

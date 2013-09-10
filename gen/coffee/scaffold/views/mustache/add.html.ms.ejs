@@ -1,0 +1,20 @@
+<div class="hero-unit">
+  <form id="<%= names.property.singular %>-form" class="form-horizontal" action="/<%= names.filename.plural %>" method="POST">
+    <fieldset>
+      <legend>Create a new <%= names.constructor.singular %></legend>
+      <div class="control-group">
+        <ul>
+        {{#params.errors}}
+          <li>{{.}}</li>
+          {{/params.errors}}
+        </ul>
+      </div>
+      
+      {{{partial "form" this}}}
+
+      <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Add" />
+      </div>
+    </fieldset>
+  </form>
+</div>
