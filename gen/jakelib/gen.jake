@@ -21,6 +21,7 @@ namespace('gen', function () {
       , names = utils.string.getInflections(name)
       , text = fs.readFileSync(path.join(genDirname, filename + '.ejs'), 'utf8').toString()
       , bare = options.bare || false // Default to full controller
+	  , ext  = options.ext || 'js'
       , adapter
       , templContent
       , fileDir
@@ -36,7 +37,7 @@ namespace('gen', function () {
       fs.mkdirSync(fileDir);
     }
 
-    filePath = path.join(fileDir, names.filename[options.inflection] + '.js');
+    filePath = path.join(fileDir, names.filename[options.inflection] + '.' + ext);
     fs.writeFileSync(filePath, templContent, 'utf8');
 
     console.log('[Added] ' + filePath);
@@ -131,8 +132,15 @@ namespace('gen', function () {
   };
 
   // Creates a new Geddy app scaffold
-  task('app', function (name, engine, realtime) {
-    var basePath = path.join(genDirname, 'base')
+  task('app', function (name, engine, realtime, coffee) {
+	
+	var langDirectory = 'base', ext = 'js';
+	if(coffee === 'coffee'){ 
+		langDirectory = 'coffee/base';
+		ext = coffee;		
+	}
+	
+    var basePath = path.join(genDirname, langDirectory)
       , mkdirs
       , cps
       , text
@@ -163,14 +171,14 @@ namespace('gen', function () {
     cps = [
       (realtime) ? ['realtime/views/' + engine, 'app/views'] : ['views/' + engine, 'app/views']
     , ['public', '']
-    , ['router.js', 'config']
-    , ['init.js', 'config']
-    , (realtime) ? ['realtime/environment.js', 'config'] : ['environment.js', 'config']
-    , ['development.js', 'config']
-    , ['production.js', 'config']
+    , ['router.' + ext, 'config']
+    , ['init.' + ext, 'config']
+    , (realtime) ? ['realtime/environment.' + ext, 'config'] : ['environment.' + ext, 'config']
+    , ['development.' + ext, 'config']
+    , ['production.' + ext, 'config']
     , ['secrets.json', 'config']
-    , ['main.js', 'app/controllers']
-    , ['application.js', 'app/controllers']
+    , ['main.' + ext, 'app/controllers']
+    , ['application.' + ext, 'app/controllers']
     , ['favicon.ico', 'public']
     , ['gitignore.txt', '.gitignore']
     ];
@@ -251,7 +259,7 @@ namespace('gen', function () {
   });
 
   // Creates a resource with a model, controller and a resource route
-  task('resource', function (name, modelProperties) {
+  task('resource', function (name, modelProperties, coffee) {
     var names
       , modelTask = jake.Task['gen:model'];
 
@@ -275,7 +283,7 @@ namespace('gen', function () {
   }, {async: true});
 
   // Creates a full scaffold with views, a model, controller and a resource route
-  task('scaffold', function (name, modelProperties, engine, realtime) {
+  task('scaffold', function (name, modelProperties, engine, realtime, coffee) {
     var modelTask = jake.Task['gen:model'];
 
     if (!name) {
@@ -290,33 +298,44 @@ namespace('gen', function () {
 
     modelTask.on('complete', function () {
       jake.Task['gen:test'].invoke(name,
-          {properties: modelProperties});
+          {properties: modelProperties}, coffee);
       jake.Task['gen:controllerScaffold'].invoke(name,
-          {properties: modelProperties});
+          {properties: modelProperties}, coffee);
       jake.Task['gen:route'].invoke(name);
       jake.Task['gen:viewsScaffold'].invoke(name,
           {engine: engine, properties: modelProperties, realtime: realtime});
       complete();
     });
-    modelTask.invoke(name, modelProperties, 'scaffold');
+    modelTask.invoke(name, modelProperties, 'scaffold', coffee);
 
   }, {async: true});
 
-  task('model', {async: true}, function (name, properties, modelPath) {
+  task('model', {async: true}, function (name, properties, modelPath, coffee) {
     var props = _formatModelProperties(properties)
-      , createTableTask;
+      , createTableTask
+	  , opts
+	  , _modelPath;
+	  
     if (!name) {
       throw new Error('No model name specified.');
     }
-    if (!modelPath) {
-      modelPath = 'resource';
+	
+	_modelPath = (typeof modelPath === "undefined")? "" : modelPath;
+	opts = {inflection: 'singular', properties: props};
+	if(!modelPath){
+		_modelPath = 'resource';
+	}
+	_modelPath += '/model';
+	
+    if(coffee == 'coffee'){
+	  if(!modelPath){
+		_modelPath = 'resource'
+	  }
+      modelPath = 'coffee/' + _modelPath ;  	  
+	  opts.ext = 'coffee';
     }
-    modelPath += '/model';
 
-    _writeTemplate(name, modelPath, path.join('app', 'models'), {
-        inflection: 'singular'
-      , properties: props
-    });
+    _writeTemplate(name, modelPath, path.join('app', 'models'), opts);
 
     // Create the corresponding migration
     createTableTask = jake.Task['migration:createForTable'];
@@ -328,38 +347,57 @@ namespace('gen', function () {
 
   });
 
-  task('controller', function (name) {
+  task('controller', function (name, template, coffee) {
+	var opts = {}, controllerPath;
     if (!name) {
       throw new Error('No controller name specified.');
     }
-
-
-    _writeTemplate(name, 'resource/controller', path.join('app', 'controllers'),
-        {inflection: 'plural', bare: false});
+	
+	opts = {inflection: 'plural', bare: false};
+	controllerPath = 'resource/controller';
+	if(coffee === 'coffee'){
+	    opts.ext = 'coffee';
+		controllerPath = 'coffee/' + controllerPath;
+	}
+	_writeTemplate(name, controllerPath, path.join('app', 'controllers'), opts);
+	
   });
 
-  task('test', function (name) {
+  task('test', function (name, properties, coffee) {
+	var testModelPath = 'resource/test_model'
+	, testControllerPath = 'resource/test_controller'
+	, lang = 'js' ;
+	
     if (!name) {
       throw new Error('No test name specified.');
     }
+	
+	if(coffee == 'coffee'){
+	  testModelPath = 'coffee/' + testModelPath;
+	  testControllerPath = 'coffee/' + testControllerPath;
+	  lang = 'coffee';
+	}
 
-    _writeTemplate(name, 'resource/test_model', 'test/models',
-        {inflection: 'singular'});
-    _writeTemplate(name, 'resource/test_controller', 'test/controllers',
-        {inflection: 'plural'});
+    _writeTemplate(name, testModelPath, 'test/models',
+        {inflection: 'singular', ext: lang});
+    _writeTemplate(name, testControllerPath, 'test/controllers',
+        {inflection: 'plural', ext: lang});
   });
 
-  task('controllerScaffold', function (name, options) {
+  task('controllerScaffold', function (name, options, coffee) {
+	var opts = {}
     if (!name) {
       throw new Error('No controller name specified.');
     }
     options = options || {};
-
-    _writeTemplate(name, 'scaffold/controller', path.join('app', 'controllers'), {
-        inflection: 'plural'
-      , bare: false
-      , properties: _formatModelProperties(options.properties)
-    });
+	
+	opts = {inflection: 'plural' , bare: false , properties: _formatModelProperties(options.properties) }
+	controllerPath = 'scaffold/controller';
+	if(coffee == 'coffee'){
+		controllerPath = 'coffee/' + controllerPath;
+		opts.ext = 'coffee';
+	}
+    _writeTemplate(name, controllerPath, path.join('app', 'controllers'), opts);
   });
 
   task('bareController', function (name, engine) {

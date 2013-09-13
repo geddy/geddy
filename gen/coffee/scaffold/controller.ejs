@@ -1,0 +1,74 @@
+<%= names.constructor.plural %> = () ->
+	@respondsWith = ['html', 'json', 'xml', 'js', 'txt']
+
+	@index = (req, resp, params) ->
+		geddy.model.<%= names.constructor.singular %>.all (err, <%= names.property.plural %>) =>
+			@respondWith(<%= names.property.plural %>, {type:'<%= names.constructor.singular; %>'})
+    
+
+	<% if(!bare) { %>
+	@add = (req, resp, params) ->
+	    @respond({params: params})
+ 
+
+	@create = (req, resp, params) ->
+	    <%= names.property.singular %> = geddy.model.<%= names.constructor.singular %>.create(params);
+
+	    <%= names.property.singular %>.save (err, data) =>
+	      throw err if err
+	      @respondWith(<%= names.property.singular %>, {status: err}) 
+
+
+	@show = (req, resp, params) ->
+
+	    geddy.model.<%= names.constructor.singular %>.first params.id, (err, <%= names.property.singular %>) =>
+	      throw err if err
+	      unless <%= names.property.singular %>
+	      	throw new geddy.errors.NotFoundError()
+	      else 
+	      	@respondWith <%= names.property.singular %>
+	      
+
+	@edit = (req, resp, params) ->
+
+	    geddy.model.<%= names.constructor.singular %>.first params.id, (err, <%= names.property.singular %>) =>
+	      throw err if err
+	      unless <%= names.property.singular %>
+	        throw new geddy.errors.BadRequestError()
+	      else 
+	        @respondWith(<%= names.property.singular %>)
+	      
+	    
+
+	@update = (req, resp, params) ->
+
+	    geddy.model.<%= names.constructor.singular %>.first params.id, (err, <%= names.property.singular %>) =>
+	      throw err if err
+		  
+	      <%= names.property.singular %>.updateProperties(params)
+
+	      unless <%= names.property.singular %>.isValid()
+	      	@respondWith(<%= names.property.singular %>)
+	      
+	      else 
+	        <%= names.property.singular %>.save (err, data) =>
+	          throw err if err
+	           @respondWith(<%= names.property.singular %>, {status: err})
+	        
+	      
+	   
+	  
+	@remove = (req, resp, params) ->
+		geddy.model.<%= names.constructor.singular %>.first params.id, (err, <%= names.property.singular %>) =>
+			throw err if err
+			unless <%= names.property.singular %>
+	        	throw new geddy.errors.BadRequestError()	      
+			else 
+	        	geddy.model.<%= names.constructor.singular %>.remove params.id, (err) =>
+					throw err if err
+					@respondWith(<%= names.property.singular %>)
+	
+	<% } %>
+	@
+
+exports.<%= names.constructor.plural %> = <%= names.constructor.plural %>
