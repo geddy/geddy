@@ -22,8 +22,23 @@ if (args[0] == 'jake') {
 // the args into commands and opts
 else if (args[0] == 'gen') {
   args.shift();
-  var c = new cmd.Cmd(args);
-  c.run();
+
+  var generatorName = args[0];
+  args.shift();
+  // try to load the generator module
+  var generatorModuleName = 'geddy-gen-' + generatorName;
+  try {
+    var generator = require(generatorModuleName);
+  } catch(error) {
+    console.warn('There is no generator with the name "' + generatorName + '"');
+    console.info('Try installing it using: npm install -g geddy-gen-' + generatorName);
+    process.exit();
+  }
+
+  if (typeof generator === 'function') {
+    var appPath = path.normalize(path.join(__dirname, '..'));
+    generator(appPath, args);
+  }
 }
 // Run the server
 else {
