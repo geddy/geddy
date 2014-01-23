@@ -39,20 +39,24 @@ else if (args[0] == 'gen') {
 
       if (generator) {
         cbSuccess();
+        return;
       }
       else {
         cbFail();
+        return;
       }
 
     } catch(error) {
-      // module could not be found
-      if (error.code && error.code === 'MODULE_NOT_FOUND') {
+      // generator module could not be found
+      if (!generator && error.code && error.code === 'MODULE_NOT_FOUND') {
         cbFail();
+        return;
       }
       // module found, but it throwed an error
       else {
         console.log(error.stack);
         process.exit();
+        return;
       }
     }
   };
@@ -60,7 +64,7 @@ else if (args[0] == 'gen') {
   function installGenerator()
   {
     // try to install the generator module
-    console.warn('There is no generator with the name "' + generatorName + '"');
+    console.warn('There is no generator with the name "' + generatorName + '" installed.');
     console.info('I will install it for you now ...');
 
     var cp = require('child_process');
