@@ -25,20 +25,76 @@ else if (args[0] == 'gen') {
 
   var generatorName = args[0];
   args.shift();
+
   // try to load the generator module
   var generatorModuleName = 'geddy-gen-' + generatorName;
-  try {
-    var generator = require(generatorModuleName);
-  } catch(error) {
-    console.warn('There is no generator with the name "' + generatorName + '"');
-    console.info('Try installing it using: npm install -g geddy-gen-' + generatorName);
-    process.exit();
-  }
+  var generator;
 
-  if (typeof generator === 'function') {
-    var appPath = path.normalize(path.join(__dirname, '..'));
-    generator(appPath, args);
-  }
+  loadGenerator(runGenerator, installGenerator);
+
+  function loadGenerator(cbSuccess, cbFail)
+  {
+    try {
+      generator = require(generatorModuleName);
+
+      if (generator) {
+        cbSuccess();
+      }
+      else {
+        cbFail();
+      }
+
+    } catch(error) {
+      // module could not be found
+      if (error.code && error.code === 'MODULE_NOT_FOUND') {
+        cbFail();
+      }
+      // module found, but it throwed an error
+      else {
+        console.log(error.stack);
+        process.exit();
+      }
+    }
+  };
+
+  function installGenerator()
+  {
+    // try to install the generator module
+    console.warn('There is no generator with the name "' + generatorName + '"');
+    console.info('I will install it for you now ...');
+
+    var cp = require('child_process');
+    cp.exec('npm install ' + generatorModuleName + ' -g', function(error, stdout, stderr) {
+      if (stderr && !error) {
+        error = stderr;
+      }
+
+      if (error) {
+        console.log(error);
+        console.error('I wasn\'t able to install the generator "' + generatorName + '". Aborting ...');
+        process.exit();
+        return;
+      }
+
+      if (stdout) {
+        console.log(stdout);
+        console.success('Generator "' + generatorName + '" installed successfully.');
+
+        // try to load it again
+        loadGenerator(runGenerator, function() {
+          console.error('I wasn\'t able to load the generator "' + generatorName + '". Aborting ...');
+          process.exit();
+        });
+      }
+    });
+  };
+
+  function runGenerator() {
+    if (typeof generator === 'function') {
+      var appPath = path.normalize(path.join(__dirname, '..'));
+      generator(appPath, args);
+    }
+  };
 }
 // Run the server
 else {
