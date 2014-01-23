@@ -21,6 +21,10 @@ if (args[0] == 'jake') {
 // Generator commands -- the Cmd object will parse
 // the args into commands and opts
 else if (args[0] == 'gen') {
+  var generatorModules = {
+    'geddy-gen-app': 'github der-On/geddy-gen-app'
+  };
+
   args.shift();
 
   var generatorName = args[0];
@@ -68,11 +72,7 @@ else if (args[0] == 'gen') {
     console.info('I will install it for you now ...');
 
     var cp = require('child_process');
-    cp.exec('npm install ' + generatorModuleName + ' -g', function(error, stdout, stderr) {
-      if (stderr && !error) {
-        error = stderr;
-      }
-
+    var npmInstall = cp.exec('npm install ' + (generatorModules[generatorModuleName] || generatorModuleName), function(error, stdout, stderr) {
       if (error) {
         console.log(error);
         console.error('I wasn\'t able to install the generator "' + generatorName + '". Aborting ...');
@@ -80,17 +80,17 @@ else if (args[0] == 'gen') {
         return;
       }
 
-      if (stdout) {
-        console.log(stdout);
-        console.success('Generator "' + generatorName + '" installed successfully.');
+      console.log(stdout);
+      console.info('Generator "' + generatorName + '" installed successfully.');
 
-        // try to load it again
-        loadGenerator(runGenerator, function() {
-          console.error('I wasn\'t able to load the generator "' + generatorName + '". Aborting ...');
-          process.exit();
-        });
-      }
+      // try to load it again
+      loadGenerator(runGenerator, function() {
+        console.error('I wasn\'t able to load the generator "' + generatorName + '". Aborting ...');
+        process.exit();
+      });
     });
+    npmInstall.stdout.pipe(process.stdout);
+    npmInstall.stderr.pipe(process.stderr);
   };
 
   function runGenerator() {
