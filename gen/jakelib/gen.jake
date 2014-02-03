@@ -133,26 +133,19 @@ namespace('gen', function () {
   // Creates a new Geddy app scaffold
   task('app', function (name, engine, realtime) {
     var basePath = path.join(genDirname, 'base')
-      , envPath
       , mkdirs
       , cps
-      , text
-      , adapter;
+      , text;
 
     if (!name) {
       throw new Error('No app name specified.');
-    }
-    if (!engine || engine == 'default') {
-      engine = 'ejs';
-    }
-    if (realtime == 'default') {
-      realtime = false;
     }
 
     mkdirs = [
       ''
     , 'config'
     , 'app/models'
+    , 'app/views'
     , 'app/controllers'
     , 'app/helpers'
     , 'lib'
@@ -162,16 +155,13 @@ namespace('gen', function () {
     , 'test/controllers'
     ];
     cps = [
-      (realtime) ? ['realtime/views/' + engine, 'app/views'] : ['views/' + engine, 'app/views']
-    , ['public', '']
+      ['public', '']
     , ['router.js', 'config']
     , ['init.js', 'config']
-    //, (realtime) ? ['realtime/environment.js', 'config'] : ['environment.js', 'config']
     , ['development.js', 'config']
     , ['production.js', 'config']
     , ['secrets.json', 'config']
-    , ['main.js', 'app/controllers']
-    , ['application.js', 'app/controllers']
+    , ['index.html', 'public']
     , ['favicon.ico', 'public']
     , ['gitignore.txt', '.gitignore']
     ];
@@ -184,8 +174,7 @@ namespace('gen', function () {
     });
 
     // Compile base environment.js
-    envPath = realtime ? 'realtime/environment.js.ejs' : 'environment.js.ejs';
-    text = fs.readFileSync(path.join(basePath, envPath), 'utf8').toString();
+    text = fs.readFileSync(path.join(basePath, 'environment.js.ejs'), 'utf8').toString();
     adapter = new Adapter({engine: 'ejs', template: text});
     fs.writeFileSync(path.join(name, 'config', 'environment.js'),
         adapter.render({version: geddy.version}), 'utf8');
@@ -200,24 +189,7 @@ namespace('gen', function () {
     adapter = new Adapter({engine: 'ejs', template: text});
     fs.writeFileSync(path.join(name, 'package.json'), adapter.render({appName: name}), 'utf8');
 
-    // Add engine to package.json if it's not EJS
-    if (engine !== 'ejs') {
-      // Change to handlebars as we use it behind the scenes
-      if (engine === 'mustache') {
-        engine = 'handlebars';
-      }
-      var data = {dependencies: {}};
-      data.dependencies[engine] = "*";
-
-      mixinJSONData(path.join(name, 'package.json'), data);
-    }
-
     console.log('Created app ' + name + '.');
-    // one offs
-    if (realtime) {
-      console.log('This is a realtime app. Please `npm install socket.io --save` in your app.');
-    }
-
   });
 
   task('upgrade', {async: true}, function () {
