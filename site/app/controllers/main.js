@@ -17,10 +17,16 @@
 */
 
 var fs = require('fs')
+  , path = require('path')
   , md = require('marked')
   , hljs = require('highlight.js');
 
-var BRANCH = 'v0.11';
+var BRANCH = 'v0.12'
+  , URL_PREFIX = 'https://raw.github.com/mde/geddy/' +
+        BRANCH + '/docs/'
+  // If set to true, uses the local copy on the filesystem
+  // Use for development work
+  , USE_LOCAL = false;
 
 md.setOptions({
   gfm: true
@@ -31,6 +37,66 @@ md.setOptions({
 });
 
 var Main = function () {
+
+  // Utility methods
+  // =====================
+  // Fetch from either GH or from the local FS inside the repo
+  var fetch = function (p, cb) {
+        var opts
+          , filePath;
+        if (USE_LOCAL) {
+          filePath = path.join('../docs', p);
+          fs.readFile(filePath, function (err, data) {
+            if (err) { throw err; }
+            cb(data.toString());
+          });
+        }
+        else {
+          opts = {
+            url: URL_PREFIX + p
+          , headers: {'User-Agent': 'GeddyJS documentation site'}
+          , dataType: 'txt'
+          };
+          geddy.request(opts, function (err, data) {
+            if (err) { throw err; }
+            cb(data);
+          });
+        }
+      }
+
+    // Get the list of topics either for Ref or Guide
+    // Parse the JSON data and return as JS obj
+    , getTopicsForDocType = function (docType, callback) {
+        fetch(docType + '/topics.json', function (data) {
+          console.log(data);
+          callback(JSON.parse(data));
+        });
+      }
+
+    // Get the doc content for a particular topic
+    // Convert MD to HTML, return with name and list of subheads
+    , getDocForTopic = function (docType, topic, callback) {
+        fetch(docType + '/' + topic.path + '.md', function (data) {
+          var content = data
+            , name = topic.name
+            , subHeads = []
+            , lines = content.split('\n');
+          for (var l in lines) {
+            if (lines[l].indexOf('#### ') == 0) {
+              subHeads.push(geddy.string.trim(lines[l].replace('#### ', '')));
+            }
+          }
+          content = md(content);
+          callback({
+            name: name
+          , content: content
+          , subs: subHeads
+          });
+        });
+      };
+
+  // Cache the response for ref and guide in-process
+  this.cacheResponse(['reference', 'guide']);
 
   this.index = function (req, resp, params) {
     this.respond(params, {
@@ -47,89 +113,28 @@ var Main = function () {
   };
 
   var self = this;
-  ['reference', 'guide'].forEach(function (type) {
-    self[type] = function (req, resp, params) {
-      var self = this
-      , docs = []
-      , count = 0
-
-      , getBlob = function (paths, i, callback) {
-        var options = {
-          url: paths[i].url
-        , headers: {'User-Agent': 'GeddyJS documentation site'}
-        }
-        geddy.request(options, function (err, resp) {
-
-          if (err) {
-            throw err;
-          }
-
-          var content = resp
-            , name = paths[i].name
-            , subs = []
-            , lines = content.split('\n');
-          for (var l in lines) {
-            if (lines[l].indexOf('#### ') == 0) {
-              subs.push(geddy.string.trim(lines[l].replace('#### ', '')));
-            }
-          }
-          content = md(content);
-          docs[i] = {
-            name: name
-          , content: content
-          , subs: subs
-          };
-          return respond(paths.length);
-        });
-      }
-
-      // once we've got the 'docs' tree,
-      // parse it and call getBlob for each file
-      , gotTree = function (err, tree) {
-        if (err) {
-          params.error = err;
-          return self.error(req, resp, params);
-        }
-
-        for (var i in tree) {
-          getBlob(tree, i, respond);
-        }
-      }
-
-      // once we've got everything done, respond with data
-      , respond = function (total) {
-        count++;
-        if (count == total) {
-          self.respond({docs: docs}, {
-            format: 'html'
-          , template: 'app/views/main/' + type
-          });
-        }
-      }
-
-      // inital call to get the commits
-      , opts = {
-          url: 'https://raw.github.com/mde/geddy/' + BRANCH +
-              '/docs/' + type + '/topics.json'
-        , dataType: 'json'
-        , headers: {'User-Agent': 'GeddyJS documentation site'}
-      }
-      geddy.request(opts, function (err, data) {
-        var topics
-          , paths = [];
-        if (err) {
-          throw err;
-        }
-        topics = data.topics;
+  ['reference', 'guide'].forEach(function (docType) {
+    self[docType] = function (req, resp, params) {
+      var self = this;
+      // Get this list of topics, array of obj in the form of
+      // {name: 'Foo', path: 'foo'}
+      getTopicsForDocType(docType, function (topics) {
+        var count = topics.length
+          , docs = [];
+        // Pull down and format the content for each topic
         topics.forEach(function (t) {
-          paths.push(
-            { name: t
-            , url: 'https://raw.github.com/mde/geddy/' + BRANCH +
-                '/docs/' + type + '/' + t + '.md'
+          getDocForTopic(docType, t, function (content) {
+            docs.push(content);
+            count--;
+            // Render when they're all assembled
+            if (count == 0) {
+              self.respond({docs: docs}, {
+                format: 'html'
+              , template: 'app/views/main/' + docType
+              });
             }
-          );
+          });
         });
-        gotTree(null, paths);
       });
 
     };

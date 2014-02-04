@@ -118,6 +118,18 @@ tests = {
     assert.equal(string, "<select><option value=\"1\">Text 1</option><option selected=\"selected\" value=\"2\">Text 2</option></select>"); 
   }
 
+, 'test select tag with selected options in single mode': function() { 
+    var choices = [{value: 1, text: "Text 1"}, {value: 2, text: "Text 2"}]
+      , string = helpers.selectTag(choices, [2,1]);
+    assert.equal(string, "<select><option value=\"1\">Text 1</option><option selected=\"selected\" value=\"2\">Text 2</option></select>"); 
+  }
+
+, 'test select tag with selected options in multiple mode': function() { 
+    var choices = [{value: 1, text: "Text 1"}, {value: 2, text: "Text 2"}]
+      , string = helpers.selectTag(choices, [2,1], { multiple: true });
+    assert.equal(string, "<select multiple=\"multiple\"><option selected=\"selected\" value=\"1\">Text 1</option><option selected=\"selected\" value=\"2\">Text 2</option></select>"); 
+  }
+
 , 'test select tag with html options': function() {
     var choices = [{value: 1, text: "Text 1"}, {value: 2, text: "Text 2"}]
       , string = helpers.selectTag(choices, 2, {class: 'myclass'});
@@ -146,6 +158,12 @@ tests = {
     var choices = [{value: 1, text: "Text 1", attrs: {data: {thing: "avalue"}, selected: true}}, {value: 2, text: "Text 2", attrs: {data: {thing: "avalue"}}}]
       , string = helpers.selectTag(choices, 2);
     assert.equal(string, "<select><option data-thing=\"avalue\" value=\"1\">Text 1</option><option data-thing=\"avalue\" selected=\"selected\" value=\"2\">Text 2</option></select>");
+  }
+
+, 'test select tag in mutiple mode with text/attrs and selected option using a selected in attrs and an outer one too to make sure the outer takes precedence': function() {
+    var choices = [{value: 1, text: "Text 1", attrs: {data: {thing: "avalue"}, selected: true}}, {value: 2, text: "Text 2", attrs: {data: {thing: "avalue"}}}]
+      , string = helpers.selectTag(choices, [1,2], {multiple: true});
+    assert.equal(string, "<select multiple=\"multiple\"><option data-thing=\"avalue\" selected=\"selected\" value=\"1\">Text 1</option><option data-thing=\"avalue\" selected=\"selected\" value=\"2\">Text 2</option></select>");
   }
 
 , 'test single tags in truncateHTML': function () {
@@ -189,43 +207,43 @@ tests = {
   }
 
 , 'test standard for imageLink': function () {
-    var string = helpers.imageLink('images/google.png', 'http://google.com');
-    assert.equal(string, '<a href="http://google.com"><img alt="images/google.png" src="images/google.png" /></a>');
+    var string = helpers.imageLink('google.png', 'http://google.com');
+    assert.equal(string, '<a href="http://google.com"><img alt="/img/google.png" src="/img/google.png" /></a>');
   }
 
 , 'test custom alt text for image in imageLink': function () {
-    var string = helpers.imageLink('images/google.png', 'http://google.com', { alt: '' });
-    assert.equal(string, '<a href="http://google.com"><img alt="" src="images/google.png" /></a>');
+    var string = helpers.imageLink('google.png', 'http://google.com', { alt: 'zerp zerp' });
+    assert.equal(string, '<a href="http://google.com"><img alt="zerp zerp" src="/img/google.png" /></a>');
   }
 
 , 'test custom alt text for image and using custom size option in imageLink': function () {
-    var string = helpers.imageLink('images/google.png', 'http://google.com', { alt: '', size: '40x50' });
-    assert.equal(string, '<a href="http://google.com"><img alt="" height="50" src="images/google.png" width="40" /></a>');
+    var string = helpers.imageLink('google.png', 'http://google.com', { alt: '', size: '40x50' });
+    assert.equal(string, '<a href="http://google.com"><img alt="" height="50" src="/img/google.png" width="40" /></a>');
   }
 
 , 'test custom alt text for image and data object for link in imageLink': function () {
-    var string = helpers.imageLink('images/google.png', 'http://google.com', { alt: '' }, { data: {goTo: 'http://google.com'} });
-    assert.equal(string, '<a data-go-to="http://google.com" href="http://google.com"><img alt="" src="images/google.png" /></a>');
+    var string = helpers.imageLink('google.png', 'http://google.com', { alt: '' }, { data: {goTo: 'http://google.com'} });
+    assert.equal(string, '<a data-go-to="http://google.com" href="http://google.com"><img alt="" src="/img/google.png" /></a>');
   }
 
 , 'test standard for imageTag': function () {
-    var string = helpers.imageTag('images/google.png');
-    assert.equal(string, '<img alt="images/google.png" src="images/google.png" />');
+    var string = helpers.imageTag('google.png');
+    assert.equal(string, '<img alt="/img/google.png" src="/img/google.png" />');
   }
 
 , 'test custom alt text for image in imageTag': function () {
-    var string = helpers.imageTag('images/google.png', { alt: '' });
-    assert.equal(string, '<img alt="" src="images/google.png" />');
+    var string = helpers.imageTag('google.png', { alt: '' });
+    assert.equal(string, '<img alt="" src="/img/google.png" />');
   }
 
 , 'test custom size attribute for image in imageTag': function () {
-    var string = helpers.imageTag('images/google.png', { size: '40x50' });
-    assert.equal(string, '<img alt="images/google.png" height="50" src="images/google.png" width="40" />');
+    var string = helpers.imageTag('google.png', { size: '40x50' });
+    assert.equal(string, '<img alt="/img/google.png" height="50" src="/img/google.png" width="40" />');
   }
 
 , 'test malformed size attribute for image in imageTag': function () {
-    var string = helpers.imageTag('images/google.png', { size: 'a string' });
-    assert.equal(string, '<img alt="images/google.png" src="images/google.png" />');
+    var string = helpers.imageTag('google.png', { size: 'a string' });
+    assert.equal(string, '<img alt="/img/google.png" src="/img/google.png" />');
   }
 
 , 'test standard in linkTo': function () {

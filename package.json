@@ -8,12 +8,12 @@
     "MVC",
     "realtime"
   ],
-  "version": "0.11.9",
+  "version": "0.12.3",
   "author": "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
   "dependencies": {
     "jake": "0.7.x",
     "utilities": "0.0.x",
-    "model": "0.4.x",
+    "model": "0.5.x",
     "barista": "0.2.x",
     "mime": "1.2.x",
     "tlsopts": "0.0.1"
@@ -34,7 +34,7 @@
     "browserify": "1.16.x",
     "socket.io-client": "0.9.x",
     "handlebars": "latest",
-    "jade": "0.35.x",
+    "jade": "latest",
     "swig": "latest",
     "ejs": "latest",
     "request": "latest"

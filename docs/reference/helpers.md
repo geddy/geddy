@@ -1,6 +1,6 @@
 Along with flexible template system in Geddy you have access to various built in helpers and custom helpers.
 
-### custom helpers
+#### custom helpers
 When you create your application a `helpers` directory will be added to the `app` directory, all the files in this directory will be required when you start the server up.
 
 The exported helpers, are available in your views and throughout your application.
@@ -139,7 +139,7 @@ contentTag('a', 'hey there', {href: 'http://google.com', data_go_to: 'http://goo
 ```
 
 #### selectTag
-`selectTag(data<Array>, selectedOption, options<Object>)
+`selectTag(data<Array>, selectedOption, options<Object>)`
 
 Creates a HTML select tag using the given `data` array to create HTML option
 elements.
@@ -156,6 +156,10 @@ your data just to set a text/value -- see `options` below.
 
 `selectedOption` should be a string whose value matches the value of the option
 element you want to be pre-selected.
+If the select has multiple selection enabled, you can pass an array to selecteOption
+and all those values that match will be selected.
+If you pass an array when multiple selection is disable, only the first element
+of the array will be checked for matches.
 
 `options` is the list of HTML attributes you want to set on the select element
 itself. This is where you will set the 'name' attribute needed when submitting
@@ -178,6 +182,9 @@ selectTag([{value: 1, text: "Text 1"}, {value: 2, text: "Text 2"}], 2)
 
 selectTag([{text: "Text 1", attrs: {value: 1, class: 'anoption', data: {thing: 'vip', rate: '0.99'}}}, {value: 2, text: "Text 2", attrs: {value: 0, data: {thing: 'basic'}}}], 2)
 // => <select><option data-thing="vip" data-rate="0.99" class="anoption" value="1">Text 1</option><option data-thing="basic" selected="selected" value="2">Text 2</option></select>
+
+selectTag([{value: 1, text: "Text 1"}, {value: 2, text: "Text 2"}], [1, 2], {multiple: true})
+// => <select><option selected="selected" value="1">Text 1</option><option selected="selected" value="2">Text 2</option></select>
 
 ```
 
@@ -355,7 +362,7 @@ scriptLink('/js/script.js', {type: 'text/javascript'})
 
 * * *
 
-####
+#### linkTo
 `linkTo(content<String>, options<String/Object>, htmlOptions<Object>)`
 
 Generates a link from the given `options`, then returns a anchor tag with the `content` and the `htmlOptions` provided
