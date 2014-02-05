@@ -22,7 +22,12 @@ if (args[0] == 'jake') {
 // the args into commands and opts
 else if (args[0] == 'gen') {
   var generatorModules = {
-    'geddy-gen-app': 'github der-On/geddy-gen-app'
+    'geddy-gen-app': 'github der-On/geddy-gen-app',
+    'geddy-gen-gen': 'github der-On/geddy-gen-gen',
+    'geddy-gen-model': 'github der-On/geddy-gen-model',
+    'geddy-gen-controller': 'github der-On/geddy-gen-controller',
+    'geddy-gen-resource': 'github der-On/geddy-gen-resource',
+    'geddy-gen-scaffold': 'github der-On/geddy-gen-scaffold'
   };
 
   args.shift();
