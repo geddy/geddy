@@ -723,6 +723,113 @@ if (!someTeam.players) {
 }
 ```
 
+#### Adapters
+
+You can specify a different adapter for each model or apply the same adapter to all models.
+
+An adapter is added to a specific model like this:
+
+```javascript
+var adapter = model.createAdapter('postgres', {
+  host: 'localhost',
+  username: 'user',
+  password: 'password',
+  dbname: 'mydb'
+});
+
+model.User.adapter = adapter;
+model.Zerb.adapter = adapter;
+```
+
+You can also define a defaultAdapter which will be used by default.
+Then you can override it on individual models.
+
+```javascript
+model.defaultAdapter = model.createAdapter('memory');
+
+var postgresAdapter = model.createAdapter('postgres', {
+  host: 'localhost',
+  username: 'user',
+  password: 'password',
+  dbname: 'mydb'
+});
+
+// User model gets the defaultAdapter
+model.Zerb.adapter = postgresAdapter;
+```
+
+If using Geddy, the default adapter can be configured by environment in the `/config` folder.  For example, to use the filesystem for development, in `/config/development.js` you might write:
+
+```
+var config = {
+  appName: 'Geddy App (development)'
+, model: {
+    defaultAdapter: 'filesystem'
+  }
+};
+module.exports = config;
+```
+#### Configurations for other supported database types
+
+Postgresql
+```
+var config = {
+  appName: 'Geddy App (development)'
+, model: {
+    defaultAdapter: 'postgres'
+  }
+, db: {
+  postgresql: {
+    port:5432,
+    password:'yourPasswordHere',
+    database:'databaseName',
+    host:'localhost',
+    user:'yourUserName'
+  }
+}
+};
+
+module.exports = config;
+```
+MySQL
+```javascript
+ // Using MySQL as the default, with only a MySQL DB
+, model: {
+    defaultAdapter: 'mysql'
+  }
+, db: {
+    mysql: {
+      host: 'localhost'
+    , user: process.env.USER
+    , database: process.env.USER
+    , password: null
+    }
+  }
+```
+Postgres as default, with both a Postgres and Riak model
+```javascript
+ // Using Postgres as the default, with both Postgres and Riak
+, model: {
+    defaultAdapter: 'postgres'
+  }
+, db: {
+    postgres: {
+      user: process.env.USER
+    , database: process.env.USER
+    , password: null
+    , host: null
+    , port: 5432
+    , ssl: true
+    }
+  , riak: {
+      protocol: 'http'
+    , host: 'localhost'
+    , port: 8098
+  }
+}
+```
+(I've left out non-related configuration fields).
+
 #### Migrations (SQL adapters only)
 
 Migrations are a convenient way to make changes to your SQL database schema over
