@@ -3,7 +3,7 @@
 In this tutorial we'll learn how to use Geddy by creating a simple To-Do
 Manager applciation.
 
-#### In this tutorial we'll cover:
+In this tutorial we'll cover:
 
 -   Creating a Geddy application
 -   Learning how to use the Geddy executable
@@ -466,6 +466,47 @@ this yet, but it will come into play when we begin editing Steps.
 Refresh your 'Create a new Step' page, and you should see a select box at the
 top with all your ToDos in it.
 
+##### Working with Handlebars
+
+Using helpers like selectTag in Handlebars works differently as compared to 
+EJS. Since you cannot pass JSON as an argument, you will have to pass JSON 
+arguments from the controller.
+
+Inside the `all` method on Geddy's ORM, include the selectTag helper options:
+
+```
+  this.add = function (req, resp, params) {
+    var self = this;
+    geddy.model.ToDo.all(function (err, data) {
+      if (err) {
+        throw err;
+      }
+      self.respond({params: params, 
+        toDos: data,
+        selectOpts: 
+          name: 'toDoId', 
+          valueField: 'id', 
+          textField: 'title'
+        }});
+    });
+  };
+```
+
+As opposed to the EJS example above, you need not change the scaffolded code 
+in app/views/steps/add.html.hbs because all the arguments are automatically 
+passed so leave the code like this:
+
+```
+  {{{partial "form" this}}}
+```
+
+And lastly, the selectTag helper in app/views/steps/form.html.hbs would look 
+like this:
+
+```
+  {{#selectTag toDos step.toDoId selectOpts}}{{/selectTag}}
+```
+
 #### Save your Step
 
 Select a ToDo for this step, and save it. If you remembered to add a title and a
@@ -725,6 +766,11 @@ $ geddy jake db:migrate
 Then start up your app, and navigate to
 [http://localhost/to_dos](http://localhost/to_dos). Verify that things work correctly
 -- create some ToDos, and some Steps, and associate each step with a ToDo.
+
+If you want to rollback (down) to a specific version, provide the version number:
+```bash
+$ geddy jake db:migrate[1392335995]
+```
 
 #### Doing the eager-fetch of Steps
 
