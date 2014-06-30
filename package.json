@@ -8,11 +8,11 @@
     "MVC",
     "realtime"
   ],
-  "version": "0.9.9007",
+  "version": "0.9.9008",
   "author": "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
   "dependencies": {
     "jake": "0.7.x",
-    "utilities": "0.0.35",
+    "utilities": "0.0.34",
     "model": "git+ssh://stash.hpiconsumer.net:7999/co/hpi.geddy.model.git#v0.4.9-hpi-0001",
     "barista": "0.2.x",
     "mime": "1.2.x",
