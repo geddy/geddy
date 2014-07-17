@@ -74,7 +74,9 @@ namespace('migration', function () {
         var pathName = migration + '.js' // TODO: What about the Coffee crazies
         , inst
         , ctorName
-        , ctor;
+        , ctor
+		, ctorFileName
+		, ctorLocations = ['/db/migrations'];
 
         // Pull off the date-stamp, get the underscoreized
         // migration-name
@@ -83,8 +85,23 @@ namespace('migration', function () {
 
         // Grab the exported migration ctor
         ctorName = geddy.string.camelize(ctorName, {initialCap: true});
-        ctor = require(path.join(process.cwd(), '/db/migrations/',
-            pathName))[ctorName];
+
+        // Are there other include paths for migrations?
+        if((geddy.config.includePaths) && (geddy.config.includePaths.migrations)) {
+          ctorLocations = ctorLocations.concat(geddy.config.includePaths.migrations);
+		}
+
+        // Search all locations for the constructor file
+        for(var i = 0; i < ctorLocations.length; i++) {
+		  ctorFileName = path.join(process.cwd(), ctorLocations[i] + '/', pathName);
+
+		  if(fs.existsSync(ctorFileName)) {
+		    break;
+		  }
+		}
+
+        ctor = require(ctorFileName)[ctorName];
+
         // Inherit all the Migration methods
         // TODO: Should this be a mixin to preserve statics?
         ctor.prototype = Object.create(Migration.prototype);
@@ -190,6 +207,14 @@ namespace('migration', function () {
       , runnerTask
       , alreadyRunMigrations = []
       , notYetRunMigrations = [];
+
+    if((geddy.config.includePaths) && (geddy.config.includePaths.migrations))
+    {
+      for(var i = 0; i < geddy.config.includePaths.migrations.length; i++)
+      {
+        files = files.concat(fs.readdirSync(geddy.config.includePaths.migrations[i]));
+	  }
+    }
 
     geddy.model.Migration.all({}, {sort: 'migration'},
         function (err, data) {
