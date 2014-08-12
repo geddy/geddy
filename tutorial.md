@@ -1,9 +1,9 @@
 ### Introduction
 
 In this tutorial we'll learn how to use Geddy by creating a simple To-Do
-Manager applciation.
+Manager application.
 
-#### In this tutorial we'll cover:
+In this tutorial we'll cover:
 
 -   Creating a Geddy application
 -   Learning how to use the Geddy executable
@@ -28,7 +28,7 @@ start the server. More on this later. (Note: installing packages globally
 may require super-user access `sudo npm install -g geddy`)
 
 Now that we have Geddy installed we need to learn how to use its generator
-commands from the CLI.  If no commands are given, Geddy will start up the server.
+commands from the CLI. If no commands are given, Geddy will start up the server.
 (if you try to run the `geddy` command outside the directory for a Geddy app, it
 will output a message prompting you to view the help.)
 
@@ -46,7 +46,7 @@ takes an or set of arguments (excluding `secret`).
 `app <name>`: Create a new Geddy application.
 
 `app` takes a single argument: the name for your application's top-level
-directory.  You must include a name.
+directory. You must include a name.
 
 `secret`: Create an app-secret.
 
@@ -71,13 +71,13 @@ appropriate CRUD actions, and views.
 If you also include the options `--swig`, `--jade`, `--handle`
 or `--mustache` you can substitute the template language to your liking.
 
-`resource <name> [model attributes]`: Create a plain resource.
+`resource <name> [model attributes]`: Creates a plain resource.
 
 `resource` takes one or more arguments: a name, followed by a set of model
 properties. You can specify the datatype for the property after a colon (e.g.,
 foo:string or bar:number).
 
-Simple resources include a model, REST routes, a controlle with minimal CRUD
+Simple resources include a model, REST routes, a controller with minimal CRUD
 actions. It does not include views.
 
 `controller <name>`: Generates a bare controller.
@@ -89,7 +89,7 @@ A bare controller includes a controller, REST routes, and an index view.
 If you also include the options `--swig`, `--jade`, `--handle`
 or `--mustache` you can substitute the template language to your liking.
 
-`model <name> [model attributes]`: Generate a new model.
+`model <name> [model attributes]`: Generates a new model.
 
 `model` takes one or more arguments: a name, followed by a set of model
 properties. You can specify the datatype for the property after a colon (e.g.,
@@ -99,8 +99,8 @@ Generating models this way will only create a model file, and nothing else.
 
 #### Model properties
 
-There are a three commands (`scaffold`, `resource`, `model`) that also include
-model property arguments. This is a list seperated by spaces that include the
+There are three commands (`scaffold`, `resource`, `model`) that also include
+model property arguments. This is a list seperated by spaces that includes the
 property, its datatype and an optional flag for setting the 'default' property.
 
 [Click here](http://geddyjs.org/guide#modelsDefining%20models) to see how Geddy
@@ -128,13 +128,13 @@ was given. You could have also written `name:string:default` (or some other type
 in place of 'string'). If no default property is given Geddy will use `id` as
 the default display property.
 
-Note: the id property is *always* be created, and managed internally by Geddy's
+Note: the id property is *always* created, and managed internally by Geddy's
 ORM.
 
 ### Building an app
 
 This will be a short tutorial as scaffolded resources make things incredibly
-easy. First we'll create our application --this will create a base so we can
+easy. First we'll create our application -- this will create a base that we can
 start on:
 
 ```
@@ -151,12 +151,12 @@ layout.
 -   `app/controllers`: contains the base controller and the main
     controller. All controllers will go in this folder
 -   `app/models`: Models you create will go in this folder
--   `app/view`: All templates for rendering views go here
+-   `app/views`: All templates for rendering views go here
 -   `app/views/layouts/application.html.ejs`: layout used by default by
     all the views
 -   `app/views/main/index.html.ejs`: main view displayed when you visit
     the root of your web application
--   `app/views/errors/not_found.html.ejs`: used to render 404 rror pages
+-   `app/views/errors/not_found.html.ejs`: used to render 404 error pages
 -   `app/views/errors/default.html.ejs`: used to render all other error pages
 -   `config/development.js`: configuration for the development
     environment
@@ -168,7 +168,7 @@ layout.
     and you can learn more about [routes from the
     Wiki.](https://github.com/mde/geddy/wiki/Using-the-Router)
 -   `public/`: contains static assets that will be served directly by
-    geddy's server
+    Geddy's server
 -   `public/css/`: Geddy uses [twitter
     bootstrap](http://twitter.github.com/bootstrap/). These are
     referenced by the layout file (`application.html.ejs`)
@@ -179,11 +179,11 @@ layout.
 -   `log`: Your app writes logs to this folder
 -   `node_modules`: Node modules your app depends on will be installed
     here by `npm install`.
--   `package.json` Defines all the important info about your app
--   `test` Tests for your app go here. Always write tests
+-   `package.json`: Defines all the important info about your app
+-   `test`: Tests for your app go here. Always write tests
 -   `Jakefile` Used for defining the various build tasks for your app
 
-Now from your app's root, simply start geddy
+Now from your app's root, simply start Geddy
 
 ```
 $ cd to_do
@@ -289,7 +289,7 @@ The auto process-restart for development-mode should pick up the changes we've
 just made, so go and play with the app again.
 
 Create a few ToDo items, try to edit them, and test the validation rules. When
-an item can't be saved bcause it's not valid, you'll see an error message on the
+an item can't be saved because it's not valid, you'll see an error message on the
 page in the session flash.
 
 [Click here](http://geddyjs.org/reference#controllers.flash) to learn more about
@@ -372,7 +372,7 @@ Now you can restart Geddy to pick up the new Step files, and navigate to
 for Steps.
 
 When you click the "Create a new Step" button, you can see the expected Title
-and Description field, but no way to link them with any of the ToDo items we
+and Description fields, but no way to link them with any of the ToDo items we
 created earlier. Let's fix that.
 
 When we handle the 'add' action (later, the 'edit' action as well) for a Step,
@@ -403,7 +403,7 @@ before rendering out the 'edit' page, like this:
 What did we do here? We grabbed all the ToDo items we've created, and in the
 callback, rendered our 'edit' action, passing the items (`data`) to the response
 as the `toDos` param. Because we're grabbing all the ToDos, we're only passing a
-callback and no query query object to the `all` call. We want *everything.*
+callback and no query object to the `all` call. We want *everything*.
 
 Remember, this callback is an asynchronous function, so you need to declare a
 `self` variable to keep a reference to the controller instance so you can call
@@ -420,7 +420,7 @@ We need to pass this list of ToDos down into the partial. Where you see the call
 to `partial`, make the code look like this:
 
 ```
-<%- partial('form', {step: {}, toDos: toDos}) %>
+<%- partial('form', {step: params, toDos: toDos}) %>
 ```
 
 The params you pass in the object literal that is the second arg will become
@@ -441,12 +441,13 @@ here](http://geddyjs.org/reference#helpers).
 Just inside the container div with the class 'control-group', add this code:
 
 ```
-  <label for="title" class="control-label">To-Do for this step</label>
-  <div>
+  <label for="toDoId" class="control-label">To-Do for this step</label>
+  <div class="controls">
     <%- selectTag(toDos, step.toDoId, {
       name: 'toDoId'
     , valueField: 'id'
     , textField: 'title'
+    , class:'span6'
     }); %>
   </div>
 ```
@@ -460,11 +461,52 @@ property of each ToDo as the value of its option element, and the Step's 'title'
 as the text displayed.
 
 You can see that in the second param of this call, we're passing `step.toDoId`
--- this specifies the what option element should be preselected. We're not using
+-- this specifies what option element should be preselected. We're not using
 this yet, but it will come into play when we begin editing Steps.
 
 Refresh your 'Create a new Step' page, and you should see a select box at the
 top with all your ToDos in it.
+
+##### Working with Handlebars
+
+Using helpers like selectTag in Handlebars works differently as compared to 
+EJS. Since you cannot pass JSON as an argument, you will have to pass JSON 
+arguments from the controller.
+
+Inside the `all` method on Geddy's ORM, include the selectTag helper options:
+
+```
+  this.add = function (req, resp, params) {
+    var self = this;
+    geddy.model.ToDo.all(function (err, data) {
+      if (err) {
+        throw err;
+      }
+      self.respond({params: params, 
+        toDos: data,
+        selectOpts: 
+          name: 'toDoId', 
+          valueField: 'id', 
+          textField: 'title'
+        }});
+    });
+  };
+```
+
+As opposed to the EJS example above, you need not change the scaffolded code 
+in app/views/steps/add.html.hbs because all the arguments are automatically 
+passed so leave the code like this:
+
+```
+  {{{partial "form" this}}}
+```
+
+And lastly, the selectTag helper in app/views/steps/form.html.hbs would look 
+like this:
+
+```
+  {{#selectTag toDos step.toDoId selectOpts}}{{/selectTag}}
+```
 
 #### Save your Step
 
@@ -607,7 +649,7 @@ could do:
 -   Change the `Main#index` route to point to the `ToDos#index` action
     (hint, check out `config/router.js`)
 -   Add some logging with `geddy.log`
--   Configure mongo, riak or postgress and use it instead of the memory
+-   Configure mongo, riak or postgres and use it instead of the memory
     modelAdapter. See how easy it's to switch
 
 ### Next: Eager-fetch associations (SQL adapters)
@@ -726,6 +768,11 @@ Then start up your app, and navigate to
 [http://localhost/to_dos](http://localhost/to_dos). Verify that things work correctly
 -- create some ToDos, and some Steps, and associate each step with a ToDo.
 
+If you want to rollback (down) to a specific version, provide the version number:
+```bash
+$ geddy jake db:migrate[1392335995]
+```
+
 #### Doing the eager-fetch of Steps
 
 Now we'll add the code that fetches all associated Steps along with the list of
@@ -770,7 +817,7 @@ that. Replace the entire bottom section of the code with this:
 <% if (toDos) { %>
   <% for (var i = 0, ii = toDos.length; i < ii; i++) { %>
     <div class="row list-item" id="toDo-<%= toDos[i].id; %>">
-      <div class="span8">
+      <div class="span12">
         <h3><%- linkTo(toDos[i].title, toDoPath(toDos[i].id)); %></h3>
         <% var steps = toDos[i].steps || [];
           steps.forEach(function (step) { %>
@@ -789,7 +836,7 @@ that. Replace the entire bottom section of the code with this:
 
 What does this code do? It adds a section underneath the title of each ToDo that
 renders the list of any Steps associated with it. It will do this for the entire
-list of ToDos, without you having to iterate of the list of them, and run a
+list of ToDos, without you having to iterate on them, and run a
 query to fetch the Steps. This is the advantage that eager-fetch of associations
 gives you.
 

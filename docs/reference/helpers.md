@@ -25,6 +25,22 @@ console.log(geddy.viewHelpers.upperCase("some string"));
 // => "SOME STRING"
 ```
 
+##### ejs
+
+Calling a view helper in ejs is just like executing a javascript function:
+
+```
+<%= selectTag(options, selected) %>
+```
+
+##### handlebars
+
+Use the block helper syntax to call helpers:
+
+```
+{{#selectTag options selected}}{{/selectTag}}
+```
+
 * * *
 
 #### urlFor
@@ -339,7 +355,7 @@ styleLink('/css/styles.css')
 // => '<link href="/css/style.css" />'
 
 
-styleLink('/css/styles.css', {type: 'text/javascript'})
+styleLink('/css/styles.css', {rel: 'stylesheet'})
 // => '<link href="/css/style.css" rel="stylesheet" />'
 ```
 

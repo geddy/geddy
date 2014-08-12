@@ -197,7 +197,9 @@ Sets up a validation to make sure that the property has been confirmed.
 - `property [string]`: the name of the property to validate
 
 ##### fn
-- `fn [function]`: a function which, when passed the value of the property, will return true or false
+- `fn [function]`: a function which will return true or false. It is passed two 
+arguments: the value of the property, and an object mapping from the model instance's 
+properties to the values for those properties
 
 ##### options
 - `on [string|array]`: specifies when validation happens (defaults to ['create', 'update'])
@@ -205,11 +207,11 @@ Sets up a validation to make sure that the property has been confirmed.
 
 ##### example
 ```
-this.validatesWithFunction('password', function (val) {
+this.validatesWithFunction('password', function (val, params) {
       // Something that returns true or false
       return val.length > 0;
 });
-// uses the function to see if th length of password is greater than 0
+// uses the function to see if the length of password is greater than 0
 ```
 
 * * *
@@ -490,7 +492,8 @@ Use the `all` method to find lots of items. Pass it a set of query parameters in
 - `query [object]`: if the query is an object, it will be interpreted as a Query object
 
 ##### options
-- `sort [object]`: each key is a property name, each value can either be `asc` or `desc`
+- `sort [object]`: each key is a property name, each value can either be `asc` or `desc`.
+- `includes [array]`: Using SQL adapters, you may supply an array of model association names to eager-load.
 
 ##### example
 ```
@@ -501,6 +504,11 @@ User.all({location: 'san francisco'}, function (err, users) {
 
 User.all({location: 'san francisco'}, {sort: {createdAt: 'desc'}}, function (err, users) {
   // do stuff with users
+});
+
+// Eager-load associations of this model. (Only works on SQL adapters.)
+User.all({location: 'san francisco'}, {includes: ['posts']}, function (err, users) {
+  // do stuff with users - each "user" will have a "posts" property eager-loaded from the DB
 });
 ```
 
@@ -517,6 +525,20 @@ Remove an instance from the database by id.
 ##### examples
 ```
 User.remove('abc-123', function (err, data) {
+  // do something now that it's removed.
+});
+```
+
+`remove(condition, fn)`
+
+Remove instances from the database by condition
+
+##### condition
+- `condition [object]`: the query condition of instances to be removed
+
+##### examples
+```
+User.remove({state: "inactive"}, function (err, data) {
   // do something now that it's removed.
 });
 ```
