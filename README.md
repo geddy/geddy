@@ -1,5 +1,6 @@
 # Geddy
 #### A simple, structured web framework for Node
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/geddy/geddy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Build Status](https://travis-ci.org/geddy/geddy.png?branch=master)](https://travis-ci.org/geddy/geddy)
 
