@@ -42,3 +42,20 @@ For example, when you use Gmail as an SMTP server:
     }
   }
 ```
+
+For more email servers you can specify in `service`, see [this page](https://github.com/andris9/nodemailer-wellknown#supported-services).
+
+You can send email as follows:
+
+```javascript
+geddy.mailer.sendMail({
+  from: "noreply@geddyjs.org"
+, to: params.email
+, subject: "Email title"
+, text: "Email Content"
+}, function(err, info) {
+  if (err) {
+    throw err;
+  }
+});
+```
