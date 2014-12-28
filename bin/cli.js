@@ -32,7 +32,7 @@ else if (args[0] == 'gen') {
 
   args.shift();
 
-  var generatorName = args[0];
+  var generatorName = args[0].split('[')[0];
   args.shift();
 
   // try to load the generator module
