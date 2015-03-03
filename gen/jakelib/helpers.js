@@ -3,8 +3,9 @@ var fs = require('fs')
   , utils = require('utilities')
   , cwd = process.cwd();
 
-exports.mixinJSONData = function (file, obj) {
-  var data = obj || {};
+exports.mixinJSONData = function (file, obj, options) {
+  var data = obj || {}
+    , opts = options || {};
 
   if (utils.file.existsSync(file)) {
     try {
@@ -17,7 +18,13 @@ exports.mixinJSONData = function (file, obj) {
     }
   }
   else {
-    console.log("There is no file " + file + " to add data to.");
+    if (opts.create) {
+      fs.writeFileSync(file, '{}');
+      exports.mixinJSONData(file, obj);
+    }
+    else {
+      console.log("There is no file " + file + " to add data to.");
+    }
   }
 };
 

@@ -640,7 +640,7 @@ namespace('gen', function () {
     var secretsFile = path.join(cwd, 'config', 'secrets.json')
       , secret = utils.string.uuid(128);
 
-    mixinJSONData(secretsFile, {secret: secret});
+    mixinJSONData(secretsFile, {secret: secret}, {create: true});
     console.log('Added app-secret to config/secrets.json.\n' +
         'DO NOT add this file into your revision control.\n' +
         'DO make a backup of it, keep it someplace safe.');
