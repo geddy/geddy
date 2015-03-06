@@ -1,6 +1,8 @@
 language: node_js
 node_js:
+  - "0.12"
   - "0.10"
+  - "iojs"
 
 before_install:
   - npm update -g npm
@@ -11,4 +13,4 @@ before_script:
   - npm install https://github.com/mde/model/archive/master.tar.gz
   - npm install https://github.com/mde/utilities/archive/master.tar.gz
 
-script: node_modules/jake/bin/cli.js test --trace
+script: node --use_strict node_modules/jake/bin/cli.js test --trace
