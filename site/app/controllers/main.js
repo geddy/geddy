@@ -98,7 +98,7 @@ var BRANCH = 'v0.12'
         BRANCH + '/'
   // If set to true, uses the local copy on the filesystem
   // Use for development work
-  , USE_LOCAL = false;
+  , USE_LOCAL = true;
 
 md.setOptions({
   gfm: true
@@ -239,6 +239,9 @@ var Main = function () {
   this.community = function (req, resp, params) {
     var self = this;
     var gotStars = function (err, stars) {
+      if (typeof stars == 'string') {
+        stars = JSON.parse(stars);
+      }
       self.respond({stars: stars}, {
         format: 'html'
       , template: 'app/views/main/community'
@@ -248,8 +251,7 @@ var Main = function () {
     // get stargazers
     var opts = {
       url: 'https://api.github.com/repos/geddy/geddy/stargazers?page='+(Math.floor(Math.random()*10)+1)
-    , dataType: 'json'
-      , headers: {'User-Agent': 'GeddyJS documentation site'}
+    , headers: {'User-Agent': 'GeddyJS documentation site'}
     };
     geddy.request(opts, gotStars);
   };
