@@ -1,4 +1,6 @@
 (function () {
+  'use strict';
+
   var utils = require('utilities')
     , assert = require('assert')
     , request = require('request')

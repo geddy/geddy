@@ -16,87 +16,91 @@
  *
 */
 
-try {
-  require('handlebars');
-} catch (err) {
-  var events = new (require('events').EventEmitter)
+(function() {
+  'use strict';
 
-  events.emit('error', err);
-}
+  try {
+    require('handlebars');
+  } catch (err) {
+    var events = new (require('events').EventEmitter)
 
-var adapter = require('../../../lib/template/adapters')
-  , assert = require('assert')
-  , tests
-  , render = function (str, data) {
-      data = data || {};
-      var ad = new adapter.HandlebarsAdapter(str);
-      return ad.render(data);
-    };
-
-tests = {
-
-  'test rendering passed-in data': function () {
-    var str = "{{foo}}"
-      , actual = render(str, {foo: 'FOO'});
-    assert.equal('FOO', actual);
+    events.emit('error', err);
   }
 
-, 'test comments': function () {
-    var str = "{{! Blah blah blah }}{{foo}}"
-      , actual = render(str, {foo: 'FOO'});
-    assert.equal('FOO', actual);
-  }
+  var adapter = require('../../../lib/template/adapters')
+    , assert = require('assert')
+    , tests
+    , render = function (str, data) {
+        data = data || {};
+        var ad = new adapter.HandlebarsAdapter(str);
+        return ad.render(data);
+      };
 
-, 'test escaping': function () {
-    assert.equal('&lt;script&gt;', render('{{script}}', {script: "<script>"}));
-    assert.equal('<script>', render('{{{script}}}', {script: "<script>"}));
-  }
+  tests = {
 
-, 'test HTML equality': function () {
-    assert.equal('<p>yay</p>', render('<p>yay</p>'));
-  }
+    'test rendering passed-in data': function () {
+      var str = "{{foo}}"
+        , actual = render(str, {foo: 'FOO'});
+      assert.equal('FOO', actual);
+    }
 
-, 'test back-slashes in the document': function () {
-    var html = "<p>backslash: '\\'</p>"
-      , str = "<p>backslash: '\\'</p>";
-    assert.equal(html, render(str));
-  }
+  , 'test comments': function () {
+      var str = "{{! Blah blah blah }}{{foo}}"
+        , actual = render(str, {foo: 'FOO'});
+      assert.equal('FOO', actual);
+    }
 
-, 'test double quotes': function () {
-    var html = '<p>WAHOO</p>'
-      , str = '<p>{{up "wahoo"}}</p>'
-      , data = {up: function (str) { return str.toUpperCase(); }};
-    assert.equal(html, render(str, data));
-  }
+  , 'test escaping': function () {
+      assert.equal('&lt;script&gt;', render('{{script}}', {script: "<script>"}));
+      assert.equal('<script>', render('{{{script}}}', {script: "<script>"}));
+    }
 
-, 'test multiple double quotes': function () {
-    var html = '<p>just a "test" wahoo</p>'
-      , str = '<p>just a "test" wahoo</p>';
-    assert.equal(html, render(str));
-  }
+  , 'test HTML equality': function () {
+      assert.equal('<p>yay</p>', render('<p>yay</p>'));
+    }
 
-, 'test iteration': function () {
-    var html = '<p>foo</p>',
-      str = '<p>{{#items}}{{foo}}{{/items}}</p>';
-    assert.equal(html, render(str, {items: [{foo: 'foo'}]}));
-  }
+  , 'test back-slashes in the document': function () {
+      var html = "<p>backslash: '\\'</p>"
+        , str = "<p>backslash: '\\'</p>";
+      assert.equal(html, render(str));
+    }
 
-, 'test hash arguments' : function () {
-    var html = 'foobar.com/main/index'
-      , tpl = "{{url host='foobar.com' controller='main' action='index'}}"
-      , helper
-      , ad;
+  , 'test double quotes': function () {
+      var html = '<p>WAHOO</p>'
+        , str = '<p>{{up "wahoo"}}</p>'
+        , data = {up: function (str) { return str.toUpperCase(); }};
+      assert.equal(html, render(str, data));
+    }
 
-    helper = function (options) {
-      return options.host + '/' + options.controller + '/' + options.action
-    };
+  , 'test multiple double quotes': function () {
+      var html = '<p>just a "test" wahoo</p>'
+        , str = '<p>just a "test" wahoo</p>';
+      assert.equal(html, render(str));
+    }
 
-    var ad = new adapter.HandlebarsAdapter(tpl);
-    ad.registerHelper('url', helper);
+  , 'test iteration': function () {
+      var html = '<p>foo</p>',
+        str = '<p>{{#items}}{{foo}}{{/items}}</p>';
+      assert.equal(html, render(str, {items: [{foo: 'foo'}]}));
+    }
 
-    assert.equal(html, ad.render());
-  }
+  , 'test hash arguments' : function () {
+      var html = 'foobar.com/main/index'
+        , tpl = "{{url host='foobar.com' controller='main' action='index'}}"
+        , helper
+        , ad;
 
-};
+      helper = function (options) {
+        return options.host + '/' + options.controller + '/' + options.action
+      };
 
-module.exports = tests;
+      var ad = new adapter.HandlebarsAdapter(tpl);
+      ad.registerHelper('url', helper);
+
+      assert.equal(html, ad.render());
+    }
+
+  };
+
+  module.exports = tests;
+}());
