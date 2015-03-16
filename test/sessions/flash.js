@@ -79,7 +79,8 @@
     }
 
   , 'flash get previous messages': function () {
-      var flash;
+      var flash
+        , msg;
       sessionMock.data = {
         flashMessages: {
           foo: 'Zerb'

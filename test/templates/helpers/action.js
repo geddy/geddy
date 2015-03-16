@@ -78,7 +78,7 @@
         , actual;
 
       // Check the retrieved helpers
-      for (action in actionHelpers) {
+      for (var action in actionHelpers) {
         actual = actionHelpers[action]
 
         // Find the action helper from the sample data
@@ -98,7 +98,7 @@
       actionHelper.add(helpers)
 
       // Check each of the added helpers
-      for (action in helpers) {
+      for (var action in helpers) {
         actual = helpers[action]
 
         // Find the action helper from the sample data
