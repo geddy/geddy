@@ -45,7 +45,7 @@
       assert.equal(p.opts.howdy, 'bar');
     }
 
-  , 'parse short with cmds': function () {
+  , 'parse short with cmds (with -h option)': function () {
       var p = new Parser(_opts);
       p.parse(['asdf', '-h', 'foo', 'qwer']);
       assert.equal(p.opts.howdy, 'foo');
@@ -53,7 +53,7 @@
       assert.equal(p.cmds[1], 'qwer');
     }
 
-  , 'parse short with cmds': function () {
+  , 'parse short with cmds (with --howdy option)': function () {
       var p = new Parser(_opts);
       p.parse(['asdf', '--howdy=bar', 'qwer']);
       assert.equal(p.opts.howdy, 'bar');
