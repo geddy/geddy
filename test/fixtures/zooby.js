@@ -1,15 +1,14 @@
-var Zooby = function () {
-  this.property('title', 'string');
-  this.property('description', 'text');
-  this.property('body', 'text');
-};
+(function() {
+  'use strict';
 
-Zooby.prototype.someMethod = function () {
-};
+  var Zooby = function () {
+    this.property('title', 'string');
+    this.property('description', 'text');
+    this.property('body', 'text');
+  };
 
-module.exports.Zooby = Zooby;
+  Zooby.prototype.someMethod = function () {
+  };
 
-
-
-
-
+  module.exports.Zooby = Zooby;
+}());

@@ -16,17 +16,19 @@
  *
 */
 
-var config = {
-  detailedErrors: false
-, hostname: null
-, port: 4000
-, sessions: {
-    store: 'cookie'
-  , key: 'sid'
-  , expiry: 14 * 24 * 60 * 60
-  }
-};
+(function() {
+  'use strict';
 
-module.exports = config;
+  var config = {
+    detailedErrors: false
+  , hostname: null
+  , port: 4000
+  , sessions: {
+      store: 'cookie'
+    , key: 'sid'
+    , expiry: 14 * 24 * 60 * 60
+    }
+  };
 
-
+  module.exports = config;
+}());

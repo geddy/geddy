@@ -16,16 +16,19 @@
  *
 */
 
+(function() {
+  'use strict';
 
-var router = new geddy.RegExpRouter();
+  var router = new geddy.RegExpRouter();
 
-router.get('/').to('Main.index');
-router.get('/community(.:format)').to('Main.community');
-router.get('/documentation(.:format)').to('Main.documentation');
-router.get('/reference(.:format)').to('Main.reference');
-router.get('/guide(.:format)').to('Main.guide');
-router.get('/tutorial(.:format)').to('Main.tutorial');
-router.get('/faq(.:format)').to('Main.faq');
-router.get('/changelog(.:format)').to('Main.changelog');
+  router.get('/').to('Main.index');
+  router.get('/community(.:format)').to('Main.community');
+  router.get('/documentation(.:format)').to('Main.documentation');
+  router.get('/reference(.:format)').to('Main.reference');
+  router.get('/guide(.:format)').to('Main.guide');
+  router.get('/tutorial(.:format)').to('Main.tutorial');
+  router.get('/faq(.:format)').to('Main.faq');
+  router.get('/changelog(.:format)').to('Main.changelog');
 
-exports.router = router;
+  exports.router = router;
+}());
