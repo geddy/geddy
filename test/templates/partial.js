@@ -1,40 +1,44 @@
-require('../../lib/geddy');
+(function() {
+  'use strict';
 
-var assert = require('assert')
-  , Partial = require('../../lib/template/partial').Partial
-  , tests;
+  require('../../lib/geddy');
 
-geddy.templateRegistry = {
-  'app/views/foo/baz': {
-    file: 'app/views/foo/baz.html.ejs'
-  , ext: '.ejs'
-  , baseName: 'baz'
-  , baseNamePath: 'app/views/foo/baz'
-  }
+  var assert = require('assert')
+    , Partial = require('../../lib/template/partial').Partial
+    , tests;
 
-, 'app/views/foo/bar': {
-    file: 'app/views/foo/bar.html.ejs'
-  , ext: '.ejs'
-  , baseName: 'bar'
-  , baseNamePath: 'app/views/foo/bar'
-  }
-};
+  geddy.templateRegistry = {
+    'app/views/foo/baz': {
+      file: 'app/views/foo/baz.html.ejs'
+    , ext: '.ejs'
+    , baseName: 'baz'
+    , baseNamePath: 'app/views/foo/baz'
+    }
 
-tests = {
+  , 'app/views/foo/bar': {
+      file: 'app/views/foo/bar.html.ejs'
+    , ext: '.ejs'
+    , baseName: 'bar'
+    , baseNamePath: 'app/views/foo/bar'
+    }
+  };
 
-  'relative template path, top-level partial': function () {
-    var p = new Partial('foo/bar', {})
-      , data = p.getTemplateData();
-    assert.ok(data);
-  }
+  tests = {
 
-, 'relative template path, sub-partial': function () {
-    var pParent = new Partial('app/views/foo/baz', {})
-    var pSub = new Partial('bar', {}, pParent)
-      , data = pSub.getTemplateData();
-    assert.ok(data);
-  }
+    'relative template path, top-level partial': function () {
+      var p = new Partial('foo/bar', {})
+        , data = p.getTemplateData();
+      assert.ok(data);
+    }
 
-};
+  , 'relative template path, sub-partial': function () {
+      var pParent = new Partial('app/views/foo/baz', {})
+      var pSub = new Partial('bar', {}, pParent)
+        , data = pSub.getTemplateData();
+      assert.ok(data);
+    }
 
-module.exports = tests;
+  };
+
+  module.exports = tests;
+}());

@@ -16,98 +16,102 @@
  *
 */
 
-var actionHelper = require('../../../lib/template/helpers/action')
-  , assert = require('assert')
-  , helpers = {}
-  , routeData = []
-  , tests;
+(function() {
+  'use strict';
 
-// name: Used for looping to check created action helpers
-// data: Dummy data similar to what's created by the router
-// expected: The expected outcome of the action helper
-//   (name and action fields are the same as normal helpers)
-//   (Some actions are actual functions(the ones that require args) but below
-//      we use a dummy argument(1) when calling it)
-routeData = [
-    {
-        name: 'tasksPath'
-      , data: {params: {controller: 'tasks', action: 'index'}, parts: ['/tasks', {path: '.:format'}]}
-      , expected: {name: 'tasksPath', action: '/tasks'}
-    }, {
-        name: 'addTaskPath'
-      , data: {params: {controller: 'tasks', action: 'add'}}
-      , expected: {name: 'addTaskPath', action: '/tasks/add'}
-    }, {
-        name: 'taskPath'
-      , data: {params: {controller: 'tasks', action: 'show'}, path: '/tasks/:id(.:format)'}
-      , expected: {name: 'taskPath', action: '/tasks/1'}
-    }, {
-        name: 'editTaskPath'
-      , data: {params: {controller: 'tasks', action: 'edit'}, path: '/tasks/:id/edit(.:format)'}
-      , expected: {name: 'editTaskPath', action: '/tasks/1/edit'}
-    }
-];
+  var actionHelper = require('../../../lib/template/helpers/action')
+    , assert = require('assert')
+    , helpers = {}
+    , routeData = []
+    , tests;
 
-tests = {
-
-  'test get with no helpers': function () {
-    var expected = {}
-      , actual = actionHelper.get();
-    assert.deepEqual(expected, actual);
-  }
-
-, 'test creating action helpers': function () {
-    for (var i = 0, len = routeData.length; i < len; i++) {
-      var actual = actionHelper.create(routeData[i].data);
-
-      // If action is a function(an action that takes an ID), execute the function
-      if (typeof actual.action === 'function') {
-        actual.action = actual.action('1')
+  // name: Used for looping to check created action helpers
+  // data: Dummy data similar to what's created by the router
+  // expected: The expected outcome of the action helper
+  //   (name and action fields are the same as normal helpers)
+  //   (Some actions are actual functions(the ones that require args) but below
+  //      we use a dummy argument(1) when calling it)
+  routeData = [
+      {
+          name: 'tasksPath'
+        , data: {params: {controller: 'tasks', action: 'index'}, parts: ['/tasks', {path: '.:format'}]}
+        , expected: {name: 'tasksPath', action: '/tasks'}
+      }, {
+          name: 'addTaskPath'
+        , data: {params: {controller: 'tasks', action: 'add'}}
+        , expected: {name: 'addTaskPath', action: '/tasks/add'}
+      }, {
+          name: 'taskPath'
+        , data: {params: {controller: 'tasks', action: 'show'}, path: '/tasks/:id(.:format)'}
+        , expected: {name: 'taskPath', action: '/tasks/1'}
+      }, {
+          name: 'editTaskPath'
+        , data: {params: {controller: 'tasks', action: 'edit'}, path: '/tasks/:id/edit(.:format)'}
+        , expected: {name: 'editTaskPath', action: '/tasks/1/edit'}
       }
+  ];
 
-      assert.deepEqual(routeData[i].expected, actual);
-    }
-  }
+  tests = {
 
-, 'test getting with action helpers': function () {
-    var actionHelpers = actionHelper.get()
-      , expected
-      , actual;
-
-    // Check the retrieved helpers
-    for (action in actionHelpers) {
-      actual = actionHelpers[action]
-
-      // Find the action helper from the sample data
-      for (var i = 0, len = routeData.length; i < len; i++) {
-        if (routeData[i].name == action) {
-          expected = routeData[i].expected;
-        }
-      }
-
+    'test get with no helpers': function () {
+      var expected = {}
+        , actual = actionHelper.get();
       assert.deepEqual(expected, actual);
     }
-  }
 
-, 'test adding the action helpers to a object': function () {
-    var expected
-      , actual;
-    actionHelper.add(helpers)
-
-    // Check each of the added helpers
-    for (action in helpers) {
-      actual = helpers[action]
-
-      // Find the action helper from the sample data
+  , 'test creating action helpers': function () {
       for (var i = 0, len = routeData.length; i < len; i++) {
-        if (routeData[i].name == action) {
-          expected = routeData[i].expected;
+        var actual = actionHelper.create(routeData[i].data);
+
+        // If action is a function(an action that takes an ID), execute the function
+        if (typeof actual.action === 'function') {
+          actual.action = actual.action('1')
         }
+
+        assert.deepEqual(routeData[i].expected, actual);
       }
-
-      assert.deepEqual(expected, actual);
     }
-  }
-};
 
-module.exports = tests;
+  , 'test getting with action helpers': function () {
+      var actionHelpers = actionHelper.get()
+        , expected
+        , actual;
+
+      // Check the retrieved helpers
+      for (var action in actionHelpers) {
+        actual = actionHelpers[action]
+
+        // Find the action helper from the sample data
+        for (var i = 0, len = routeData.length; i < len; i++) {
+          if (routeData[i].name == action) {
+            expected = routeData[i].expected;
+          }
+        }
+
+        assert.deepEqual(expected, actual);
+      }
+    }
+
+  , 'test adding the action helpers to a object': function () {
+      var expected
+        , actual;
+      actionHelper.add(helpers)
+
+      // Check each of the added helpers
+      for (var action in helpers) {
+        actual = helpers[action]
+
+        // Find the action helper from the sample data
+        for (var i = 0, len = routeData.length; i < len; i++) {
+          if (routeData[i].name == action) {
+            expected = routeData[i].expected;
+          }
+        }
+
+        assert.deepEqual(expected, actual);
+      }
+    }
+  };
+
+  module.exports = tests;
+}());

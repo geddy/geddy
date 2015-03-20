@@ -15,11 +15,11 @@
  * limitations under the License.
  *
 */
+(function() {
+  'use strict';
 
-var Application = function () {
-};
+  var Application = function () {
+  };
 
-exports.Application = Application;
-
-
-
+  exports.Application = Application;
+}());

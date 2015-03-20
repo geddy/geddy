@@ -16,107 +16,111 @@
  *
 */
 
-try {
-  require('jade');
-} catch (err) {
-  var events = new (require('events').EventEmitter)
+(function() {
+  'use strict';
 
-  events.emit('error', err);
-}
+  try {
+    require('jade');
+  } catch (err) {
+    var events = new (require('events').EventEmitter)
 
-var adapter = require('../../../lib/template/adapters')
-  , assert = require('assert')
-  , tests
-  , render = function (str, data) {
-      data = data || {};
-      var ad = new adapter.JadeAdapter(str);
-      return ad.render(data);
-    };
-
-tests = {
-
-  'test rendering a single variable': function () {
-    var str = "- var foo = 'FOO'\n= foo"
-      , actual = render(str);
-    assert.equal('FOO', actual);
+    events.emit('error', err);
   }
 
-, 'test rendering passed-in data': function () {
-    var str = "= foo"
-      , actual = render(str, {foo: 'FOO'});
-    assert.equal('FOO', actual);
-  }
+  var adapter = require('../../../lib/template/adapters')
+    , assert = require('assert')
+    , tests
+    , render = function (str, data) {
+        data = data || {};
+        var ad = new adapter.JadeAdapter(str);
+        return ad.render(data);
+      };
 
-, 'test comments': function () {
-    var str = "//- Blah blah blah\n- var foo = 'FOO'\n= foo"
-      , actual = render(str);
-    assert.equal('FOO', actual);
-  }
+  tests = {
 
-, 'test escaping': function () {
-    assert.equal('&lt;script&gt;', render('= "<script>"'));
-    assert.equal('<script>', render('!= "<script>"'));
-  }
+    'test rendering a single variable': function () {
+      var str = "- var foo = 'FOO'\n= foo"
+        , actual = render(str);
+      assert.equal('FOO', actual);
+    }
 
-, 'test HTML equality': function () {
-    assert.equal('<p>yay</p>', render('<p>yay</p>'));
-  }
+  , 'test rendering passed-in data': function () {
+      var str = "= foo"
+        , actual = render(str, {foo: 'FOO'});
+      assert.equal('FOO', actual);
+    }
 
-, 'test basic conditional': function () {
-    var str = '- if (name)\n  p= name'
-      , actual = render(str, {name: 'mde'});
-    assert.equal('<p>mde</p>', actual);
-  }
+  , 'test comments': function () {
+      var str = "//- Blah blah blah\n- var foo = 'FOO'\n= foo"
+        , actual = render(str);
+      assert.equal('FOO', actual);
+    }
 
-, 'test single quotes': function () {
-    var html = '<p>WAHOO</p>'
-      , str = "p= up('wahoo')"
-      , data = {up: function (str) { return str.toUpperCase(); }};
-    assert.equal(html, render(str, data));
-  }
+  , 'test escaping': function () {
+      assert.equal('&lt;script&gt;', render('= "<script>"'));
+      assert.equal('<script>', render('!= "<script>"'));
+    }
 
-, 'test single quotes in HTML': function () {
-    var html = "<p>WAHOO that's cool</p>"
-      , str = "p= up('wahoo')\n |  that's cool"
-      , data = {up: function (str) { return str.toUpperCase(); }};
-    assert.equal(html, render(str, data));
-  }
+  , 'test HTML equality': function () {
+      assert.equal('<p>yay</p>', render('<p>yay</p>'));
+    }
 
-, 'test multiple single quotes': function () {
-    var html = "<p>couldn't shouldn't can't</p>"
-      , str = "p couldn't shouldn't can't";
-    assert.equal(html, render(str));
-  }
+  , 'test basic conditional': function () {
+      var str = '- if (name)\n  p= name'
+        , actual = render(str, {name: 'mde'});
+      assert.equal('<p>mde</p>', actual);
+    }
 
-, 'test back-slashes in the document': function () {
-    var html = "<p>backslash: '\\'</p>"
-      , str = "p backslash: '\\'";
-    assert.equal(html, render(str));
-  }
+  , 'test single quotes': function () {
+      var html = '<p>WAHOO</p>'
+        , str = "p= up('wahoo')"
+        , data = {up: function (str) { return str.toUpperCase(); }};
+      assert.equal(html, render(str, data));
+    }
 
-, 'test double quotes': function () {
-    var html = '<p>WAHOO</p>'
-      , str = 'p= up("wahoo")'
-      , data = {up: function (str) { return str.toUpperCase(); }};
-    assert.equal(html, render(str, data));
-  }
+  , 'test single quotes in HTML': function () {
+      var html = "<p>WAHOO that's cool</p>"
+        , str = "p= up('wahoo')\n |  that's cool"
+        , data = {up: function (str) { return str.toUpperCase(); }};
+      assert.equal(html, render(str, data));
+    }
 
-, 'test multiple double quotes': function () {
-    var html = '<p>just a "test" wahoo</p>'
-      , str = 'p just a "test" wahoo';
-    assert.equal(html, render(str));
-  }
+  , 'test multiple single quotes': function () {
+      var html = "<p>couldn't shouldn't can't</p>"
+        , str = "p couldn't shouldn't can't";
+      assert.equal(html, render(str));
+    }
 
-, 'test iteration': function () {
-    var html = '<p>foo</p>',
-      str = '- for (var i in items)\n  p= items[i]';
-    assert.equal(html, render(str, {items: ['foo']}));
+  , 'test back-slashes in the document': function () {
+      var html = "<p>backslash: '\\'</p>"
+        , str = "p backslash: '\\'";
+      assert.equal(html, render(str));
+    }
 
-    var html = '<p>foo</p>',
-      str = '- items.forEach(function (item) {\n  p= item\n- })';
-    assert.equal(html, render(str, {items: ['foo']}));
-  }
+  , 'test double quotes': function () {
+      var html = '<p>WAHOO</p>'
+        , str = 'p= up("wahoo")'
+        , data = {up: function (str) { return str.toUpperCase(); }};
+      assert.equal(html, render(str, data));
+    }
 
-};
+  , 'test multiple double quotes': function () {
+      var html = '<p>just a "test" wahoo</p>'
+        , str = 'p just a "test" wahoo';
+      assert.equal(html, render(str));
+    }
 
-module.exports = tests;
+  , 'test iteration': function () {
+      var html = '<p>foo</p>',
+        str = '- for (var i in items)\n  p= items[i]';
+      assert.equal(html, render(str, {items: ['foo']}));
+
+      var html = '<p>foo</p>',
+        str = '- items.forEach(function (item) {\n  p= item\n- })';
+      assert.equal(html, render(str, {items: ['foo']}));
+    }
+
+  };
+
+  module.exports = tests;
+}());

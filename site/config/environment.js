@@ -1,9 +1,13 @@
-var config = {
-  /*
-  metrics: {
-    port: 4001
-  }
-  */
-};
+(function() {
+  'use strict';
 
-module.exports = config;
+  var config = {
+    /*
+    metrics: {
+      port: 4001
+    }
+    */
+  };
+
+  module.exports = config;
+}());

@@ -1,4 +1,6 @@
 (function () {
+  'use strict';
+
   var utils = require('utilities')
     , assert = require('assert')
     , request = require('request')
@@ -386,7 +388,9 @@
   */
   tests.after = function (next) {
     //Kill all the servers
-    var killers = [];
+    var killers = []
+      , chain;
+
     for(var key in servers) {
       killers.push({
         func: killServer
