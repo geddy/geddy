@@ -1,7 +1,7 @@
 # Geddy
 #### A simple, structured web framework for Node
 
-[![Build Status](https://travis-ci.org/geddy/geddy.png?branch=master)](https://travis-ci.org/geddy/geddy)
+[![Build Status](https://travis-ci.org/geddy/geddy.png?branch=master)](https://travis-ci.org/geddy/geddy) [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/geddy/geddy)
 
 #### Install Geddy:
 
@@ -44,7 +44,7 @@ https://www.digitalocean.com/community/articles/geddy-js-a-no-brainer-mvc-node-j
 #### Community
 
 * Mailing list: [https://groups.google.com/group/geddyjs](https://groups.google.com/group/geddyjs)
-* IRC: #geddy on Freenode
+* [Gitter](https://gitter.im/geddy/geddy)
 
 #### License
 
