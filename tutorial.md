@@ -100,7 +100,7 @@ Generating models this way will only create a model file, and nothing else.
 #### Model properties
 
 There are three commands (`scaffold`, `resource`, `model`) that also include
-model property arguments. This is a list seperated by spaces that includes the
+model property arguments. This is a list separated by spaces that includes the
 property, its datatype and an optional flag for setting the 'default' property.
 
 [Click here](http://geddyjs.org/guide#modelsDefining%20models) to see how Geddy
@@ -231,7 +231,7 @@ You can see the default Model adapter is the Filesystem adapter. That means
 we're just writing stuff to a flat file, and you don't need to install any DB to
 play around with Geddy.
 
-In the prodution environment, you'll likely be using an actual DB like Postgres
+In the production environment, you'll likely be using an actual DB like Postgres
 or MongoDB.
 
 ### Create a resource
@@ -276,7 +276,7 @@ var ToDo = function () {
 ToDo = geddy.model.register('ToDo', ToDo);
 ```
 
-Here we are making it so the title property is required and have a minumum of 5
+Here we are making it so the title property is required and have a minimum of 5
 characters. We also made it so the status acts like a boolean attribute but uses
 custom names instead of true/false. The 'message' property passed in the opts
 sets the error message that will show in the flash-message when an item fails
@@ -349,7 +349,7 @@ var ToDo = function () {
 ToDo = geddy.model.register('ToDo', ToDo);
 ```
 
-This is pretty straighforward, but it basically means that a ToDo can have
+This is pretty straightforward, but it basically means that a ToDo can have
 multiple Steps associated with it.
 
 Add the following line inside your Step model:
@@ -469,8 +469,8 @@ top with all your ToDos in it.
 
 ##### Working with Handlebars
 
-Using helpers like selectTag in Handlebars works differently as compared to 
-EJS. Since you cannot pass JSON as an argument, you will have to pass JSON 
+Using helpers like selectTag in Handlebars works differently as compared to
+EJS. Since you cannot pass JSON as an argument, you will have to pass JSON
 arguments from the controller.
 
 Inside the `all` method on Geddy's ORM, include the selectTag helper options:
@@ -482,26 +482,26 @@ Inside the `all` method on Geddy's ORM, include the selectTag helper options:
       if (err) {
         throw err;
       }
-      self.respond({params: params, 
+      self.respond({params: params,
         toDos: data,
-        selectOpts: 
-          name: 'toDoId', 
-          valueField: 'id', 
+        selectOpts:
+          name: 'toDoId',
+          valueField: 'id',
           textField: 'title'
         }});
     });
   };
 ```
 
-As opposed to the EJS example above, you need not change the scaffolded code 
-in app/views/steps/add.html.hbs because all the arguments are automatically 
+As opposed to the EJS example above, you need not change the scaffolded code
+in app/views/steps/add.html.hbs because all the arguments are automatically
 passed so leave the code like this:
 
 ```
   {{{partial "form" this}}}
 ```
 
-And lastly, the selectTag helper in app/views/steps/form.html.hbs would look 
+And lastly, the selectTag helper in app/views/steps/form.html.hbs would look
 like this:
 
 ```
