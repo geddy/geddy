@@ -98,7 +98,7 @@ learn how to use those.
 #### Model properties
 
 There are a three commands (`resource`, `model` and `scaffold`) that also
-include model property arguments. This is a list seperated by spaces
+include model property arguments. This is a list separated by spaces
 that include the property, its type and an optional default setting.
 Below are some examples of how they are used in the commands.
 
@@ -225,7 +225,7 @@ exports.Todo = Todo;
 ```
 
 Here we are making it so the title property is required and have a
-minumum of 5 characters. We also made it so the status acts like a
+minimum of 5 characters. We also made it so the status acts like a
 boolean attribute but uses custom names instead of true/false. We should
 also change our `edit` and `add` views to limit the options, but we will
 do it as part of the [resources tutorial](#resource), for now we will
@@ -476,7 +476,7 @@ var Todo = function () {
       title: {type: 'string'}
     , status: {type: 'string'}
   });
-  
+
   this.validatesPresent('title');
   this.validatesLength('title', {min: 5});
 
