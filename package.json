@@ -13,6 +13,7 @@
   "dependencies": {
     "barista": "0.2.x",
     "chalk": "^0.4.0",
+    "is-promise": "^2.0.0",
     "jake": "8.0.x",
     "mime": "1.2.x",
     "model": "6.0.x",
