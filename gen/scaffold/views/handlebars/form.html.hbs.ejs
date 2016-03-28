@@ -11,8 +11,10 @@
       <% } -%>
       <% } else if(properties[i].type === 'text') { -%>
           <textarea rows="10" class="form-control" name="<%= properties[i].name %>">{{<%= names.property.singular %>.<%= properties[i].name %>}}</textarea>
-      <% } else if(properties[i].type === 'number' || properties[i].type === 'int') { -%>
+      <% } else if(properties[i].type === 'int') { -%>
           <input type="number" class="form-control" name="<%= properties[i].name %>" value="{{<%= names.property.singular %>.<%= properties[i].name %>}}" />
+      <% } else if(properties[i].type === 'number') { -%>
+          <input type="number" step="any" class="form-control" name="<%= properties[i].name %>" value="{{<%= names.property.singular %>.<%= properties[i].name %>}}" />
       <% } else if(properties[i].type === 'boolean') { -%>
           <select name="<%= properties[i].name %>", class="col-md-1">
             {% if <%= names.property.singular %>.<%= properties[i].name %>  %}
