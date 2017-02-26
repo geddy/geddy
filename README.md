@@ -10,6 +10,11 @@
 $ npm install -g geddy
 ```
 
+> **Note:**
+> Make sure your installed node version is not v6 or higher, as Geddy will not function properly. This will be fixed in the, hopefully, soon future.
+>
+> Consider using '[nvm](https://github.com/creationix/nvm)' to help you manage your node versions.
+
 #### Create an app, start it up:
 
 ```
@@ -54,4 +59,3 @@ Apache License, Version 2
 - - -
 Geddy Web-app development framework copyright 2112
 mde@fleegix.org.
-
