@@ -66,7 +66,7 @@ These are for quick (important) fixes. Please place the incremented version numb
 
 ---
 
-Any questions, create an 'issue'. We would rather make sure that you grasp the branching correctly, instead of creating a load of commits on the wrong branch that you will then need to migrate to another branch.
+Any questions, create an 'issue'. We would rather make sure that you grasp the branching correctly, instead of creating a load of commits on the wrong branch that you will then need to migrate to another branch. If we have time, we might be able to make the changes ourselves if you describe what you are trying to achieve.
 
 If you would like to read up on this branching model, please follow [this link][1].
 
