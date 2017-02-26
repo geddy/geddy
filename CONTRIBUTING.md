@@ -28,6 +28,7 @@ If you do not follow those principles. Your pull request will be rejected. We wo
 >   - `$ git branch -d release-[version number]`
 >   - When pushing the changes to the repo, remember to push the tag as well:
 >     `$ git push origin <tag_name>`
+> - Make sure to delete release, feature and hotfix branches once they have been merged. This will stop branch clutter.
 
 ## Branch structure:
 
