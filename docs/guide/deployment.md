@@ -303,56 +303,47 @@ For more detail, see the [Run Geddy.js on Google App Engine](https://cloud.googl
 
 ##### Pre-requisites
 
-1. Create a project in the [Google Developers Console](https://console.developers.google.com).
-2. [Enable billing](https://console.developers.google.com/project/_/settings) for your project.
+1.  Create a project in the [Google Developers Console](https://console.developers.google.com).
+2.  [Enable billing](https://console.developers.google.com/project/_/settings) for your project.
 
-Enabling billing allows the application to consume billable resources such as running instances and storing data.
+    Enabling billing allows the application to consume billable resources such as running instances and storing data.
 
-3. Install the Google Cloud SDK.
+3.  Install the [Google Cloud SDK](https://cloud.google.com/sdk).
 
-To install on Linux of Mac OS X, run the following command:
-```
-$ curl https://sdk.cloud.google.com | bash
-```
+    To install on Linux or Mac OS X, run the following command:
 
-To install on Windows, run the Google Cloud SDK [installer for Windows](https://cloud.google.com/sdk/).
+        curl https://sdk.cloud.google.com | bash
 
-4. Run the following command to authorize the SDK and configure your project:
+    To install on Windows, run the Google Cloud SDK [installer for Windows](https://cloud.google.com/sdk/).
 
-```
-$ gcloud init
-```
+4.  Run the following command to authorize the SDK and configure your project:
 
-5. Install Geddy. If you're new, you can start with the [tutorial](http://geddyjs.org/tutorial).
+        gcloud init
 
-```
-$ npm install -g geddy
-```
+5.  Install Geddy. If you're new, you can start with the [tutorial](http://geddyjs.org/tutorial).
+
+        npm install -g geddy
 
 ##### Notes
 
 In your geddy project:
 
-1. Create an [app.yaml](https://github.com/GoogleCloudPlatform/nodejs-docs-samples/blob/master/appengine/geddy/app.yaml) file in the root of your application.
+1.  Create an [app.yaml](https://github.com/GoogleCloudPlatform/nodejs-docs-samples/blob/master/appengine/geddy/app.yaml) file in the root of your application.
 
-2. Generate an [app secret](http://geddyjs.org/tutorial#installation_using_the_`geddy_gen`_command).
+2.  Generate an [app secret](http://geddyjs.org/tutorial#installation_using_the_`geddy_gen`_command).
 
-3. Deploy
+3.  Deploy the app to Google App Engine standard environment:
 
-For convenience, you can use an npm script to run the `gcloud` command. Add
-these lines to your `package.json` file:
+    For convenience, you can use an npm script to run the `gcloud` command. Add
+    these lines to your `package.json` file:
 
-```json
-"scripts": {
-  "start": "geddy",
-  "debug": "geddy --debug",
-  "deploy": "gcloud preview app deploy app.yaml --promote --project <your-project-id>"
-}
-```
+        "scripts": {
+          "start": "geddy",
+          "debug": "geddy --debug",
+          "deploy": "gcloud app deploy"
+        }
 
-At the terminal you can now run the following command to deploy your
-application:
+    At the terminal you can now run the following command to deploy your
+    application:
 
-```
-$ npm deploy
-```
+        npm run deploy
