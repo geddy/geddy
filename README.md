@@ -1,16 +1,18 @@
 # Geddy
+
 **`node "~> 5.12.0"`**
+
 #### A simple, structured web framework for Node
 
 [![Build Status](https://travis-ci.org/geddy/geddy.png?branch=master)](https://travis-ci.org/geddy/geddy) [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/geddy/geddy)
 
-#### Install Geddy:
+## Install Geddy:
 
 ```
 $ npm install -g geddy
 ```
 
-#### Create an app, start it up:
+## Create an app, start it up:
 
 ```
 $ geddy gen app my_app
@@ -20,7 +22,7 @@ Creating 1 worker process.
 Server worker running in development on port 4000
 ```
 
-#### Create a CRUD resource
+## Create a CRUD resource
 
 ```
 $ geddy gen scaffold foobar baz:string qux:int
@@ -33,25 +35,25 @@ $ geddy gen scaffold foobar baz:string qux:int
 [Added] View templates
 ```
 
-#### Documentation
+## Documentation
 
 Docs are on the GeddyJS Website: http://geddyjs.org/documentation
 
-#### Community Tutorials
+## Community Tutorials
 
 Geddy.JS: A No-Brainer MVC Node.js Framework - Bhanu Pratap Chaudhary
 https://www.digitalocean.com/community/articles/geddy-js-a-no-brainer-mvc-node-js-framework
 
-#### Community
+## Community
 
 * Mailing list: [https://groups.google.com/group/geddyjs](https://groups.google.com/group/geddyjs)
 * [Gitter](https://gitter.im/geddy/geddy)
 
-#### License
+## License
 
 Apache License, Version 2
 
 - - -
+
 Geddy Web-app development framework copyright 2112
 mde@fleegix.org.
-
