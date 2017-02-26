@@ -10,6 +10,7 @@
   ],
   "version": "13.0.8",
   "author": "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
+  "license": "Apache 2.0",
   "dependencies": {
     "barista": "0.2.x",
     "chalk": "^0.4.0",
