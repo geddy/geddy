@@ -48,6 +48,14 @@ Docs are on the GeddyJS Website: http://geddyjs.org/documentation
 * [Mailing list](https://groups.google.com/group/geddyjs)
 * [Gitter](https://gitter.im/geddy/geddy)
 
+## Contributing
+
+Contributions are definitely welcome, but we will need you to do it in an organised manner. So please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on how to contribute to the project.
+
+Once you have carefully read through the contributing guidelines, fork the repo, make the changes, and open a pull request pointing to the respective branch. We will shortly get back to you.
+
+Thank you for taking time out your day to contribute :+1: :octocat:
+
 ## License
 
 Apache License, Version 2
