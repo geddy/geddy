@@ -1,5 +1,4 @@
 # Geddy
-**`node "~> 5.12.0"`**
 #### A simple, structured web framework for Node
 
 [![Build Status](https://travis-ci.org/geddy/geddy.png?branch=master)](https://travis-ci.org/geddy/geddy) [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/geddy/geddy)
