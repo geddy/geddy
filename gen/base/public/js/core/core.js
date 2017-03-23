@@ -1519,7 +1519,7 @@ var core = new (function () {
   var _mix = function (targ, src, merge, includeProto) {
     for (var p in src) {
       // Don't copy stuff from the prototype
-      if (src.hasOwnProperty(p) || includeProto) {
+      if (Object.prototype.hasOwnProperty.call(src,p) || includeProto) {
         if (merge &&
             // Assumes the source property is an Object you can
             // actually recurse down into
