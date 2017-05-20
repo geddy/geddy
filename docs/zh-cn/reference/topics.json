@@ -1,0 +1,24 @@
+[
+  { "name": "Global",
+    "path": "global"
+  },
+  { "name": "Utilities",
+    "path": "utilities"
+  },
+  { "name": "Router",
+    "path": "router"
+  },
+  { "name": "Controllers",
+    "path": "controllers"
+  },
+  { "name": "Models",
+    "path": "models"
+  },
+  { "name": "Helpers",
+    "path": "helpers"
+  },
+  { "name": "Sessions",
+    "path": "sessions"
+  }
+]
+
