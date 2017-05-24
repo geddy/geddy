@@ -1,8 +1,6 @@
-#### 尚待翻译
-Geddy uses the [Model](http://github.com/mde/model) module for its model layer.
+Geddy 在模型层使用 [Model](http://github.com/mde/model) 模块。
 
-Model is an abstract ORM that is compatible with many different types of
-databases, including:
+Model是抽象对象关系映射，它兼容以下不同类型的数据库：
 
 * Postgres
 * MySQL
@@ -15,18 +13,17 @@ databases, including:
 
 * * *
 
-#### summary
-Model uses a pretty simple syntax for defining a model. (It should look familiar to anyone who has used an ORM like ActiveRecord, DataMapper, Django's models, or SQLAlchemy.)
-
+#### 简介
+Model使用非常简单的语法来定义模型。（它与其它类型的ORM很类似，比如ActiveRecord、DataMapper、Django's models以及SQLAlchemy）。
 * * *
 
 #### .defineProperties
 `defineProperties(properties)`
 
-defines the properties for your model.
+给模型定义属性
 
 ##### properties
-- `properties [object]`: an object keyed by name of properties to define
+- `properties [object]`: 由属性名定义的对象键名
 
 ##### example
 ```
@@ -45,13 +42,13 @@ var User = function () {
 #### .property
 `property(name, type, options)`
 
-defines a single property
+定义单一属性
 
 ##### name
-- `name [string]`: the name of the property
+- `name [string]`: 属性名
 
 ##### type
-- `type [string]`: the type of the property
+- `type [string]`: 属性类型
 	- `'string'`
 	- `'text'`
 	- `'number'`
@@ -63,9 +60,9 @@ defines a single property
 	- `'time'`
 
 ##### options
-- `required [boolean]`: sets the property to be required
+- `required [boolean]`: 设置要求的属性
 
-##### examples
+##### 例子
 ```
 this.property('login', 'string', {required: true});
 this.property('password', 'string', {required: true});
@@ -78,16 +75,16 @@ this.property('premium', 'boolean');
 #### .validatesPresent
 `validatesPresent(property, options)`
 
-Sets up a validation to make sure that the property is present.
+设置验证以确保属性存在。
 
 ##### property
-- `property [string]`: the name of the property to validate
+- `property [string]`: 验证的属性名
 
 ##### options
-- `on [string|array]`: specifies when validation happens (defaults to ['create', 'update'])
-- `message [string]`: a message to give the user if the validation fails
+- `on [string|array]`: 指定验证的方法 (默认为 ['create', 'update'])
+- `message [string]`: 验证失败给用户的提示信息
 
-##### example
+##### 例子
 ```
 this.validatesPresent('login');
 // makes sure that the login property is present
@@ -96,14 +93,14 @@ this.validatesPresent('login');
 #### .validatesAbsent
 `validatesAbsent(property, options)`
 
-Sets up a validation to make sure that the property is not present.
+设置验证确保属性不存在。
 
 ##### property
-- `property [string]`: the name of the property to validate
+- `property [string]`: 要验证的属性名
 
 ##### options
-- `on [string|array]`: specifies when validation happens (defaults to ['create', 'update'])
-- `message [string]`: a message to give the user if the validation fails
+- `on [string|array]`: 指定验证的方法 (默认为 ['create', 'update'])
+- `message [string]`: 验证失败给用户的提示信息
 
 ##### example
 ```
@@ -116,19 +113,19 @@ this.validatesAbsent('zerb');
 #### .validatesFormat
 `validatesFormat(property, regex, options)`
 
-Sets up a validation to make sure that the property is formatted correctly.
+设置验证确保属性格式正确
 
 ##### property
-- `property [string]`: the name of the property to validate
+- `property [string]`: 要验证的属性名
 
 ##### regex
-- `regex [regex]`: a regular expression that the property value must pass
+- `regex [regex]`: 属性值通过的正则表达式
 
 ##### options
-- `on [string|array]`: specifies when validation happens (defaults to ['create', 'update'])
-- `message [string]`: a message to give the user if the validation fails
+- `on [string|array]`: 指定验证的方法 (默认为 ['create', 'update'])
+- `message [string]`: 验证失败给用户的提示信息
 
-##### example
+##### 例子
 ```
 this.validatesFormat('login', /[a-z]+/, {message: 'cannot contain numbers'});
 // makes sure that the login property does not contain numbers
@@ -139,19 +136,19 @@ this.validatesFormat('login', /[a-z]+/, {message: 'cannot contain numbers'});
 #### .validatesLength
 `validatesLength(property, options)`
 
-Sets up a validation to make sure that the property meets certain length requirements.
+设置验证确保属性符合一定长度的属性要求。
 
 ##### property
-- `property [string]`: the name of the property to validate
+- `property [string]`: 验证的属性名
 
 ##### options
-- `min [number]`: the minimum length of the property
-- `max [number]`: the maximum length of the property
-- `is [number]:` the exact length of the property
-- `on [string|array]`: specifies when validation happens (defaults to ['create', 'update'])
-- `message [string]`: a message to give the user if the validation fails
+- `min [number]`: 属性最小长度要求
+- `max [number]`: 属性最大长度要求
+- `is [number]:` 属性的确切长度
+- `on [string|array]`: 指定验证的方法 (默认为 ['create', 'update'])
+- `message [string]`: 验证失败给用户的提示信息
 
-##### example
+##### 例子
 ```
 this.validatesLength('login', {min: 3});
 // makes sure that the login property is at least 3 characters long
@@ -169,19 +166,19 @@ this.validatesLength('login', {is: 3})
 #### .validatesConfirmed
 `validatesConfirmed(property, param, options)`
 
-Sets up a validation to make sure that the property has been confirmed.
+设置验证确保属性已被确认
 
 ##### property
-- `property [string]`: the name of the property to validate
+- `property [string]`: 验证的属性名
 
 ##### param
-- `param [string]`: the param required to match
+- `param [string]`: 要求匹配的参互
 
 ##### options
-- `on [string|array]`: specifies when validation happens (defaults to ['create', 'update'])
-- `message [string]`: a message to give the user if the validation fails
+- `on [string|array]`: 指定验证的方法 (默认为 ['create', 'update'])
+- `message [string]`: 验证失败给用户的提示信息
 
-##### example
+##### 例子
 ```
 this.validatesConfirmed('password', 'confirmPassword');
 // confirms that password and confirmPassword are equal
@@ -192,27 +189,25 @@ this.validatesConfirmed('password', 'confirmPassword');
 #### .validatesWithFunction
 `validatesWithFunction(property, fn, options)`
 
-Sets up a validation to make sure that the property has been confirmed.
+设置验证确保属性已被确认
 
 ##### property
-- `property [string]`: the name of the property to validate
+- `property [string]`: 验证的属性名
 
 ##### fn
-- `fn [function]`: a function which will return true or false. It is passed two 
-arguments: the value of the property, and an object mapping from the model instance's 
-properties to the values for those properties
+- `fn [function]`: 一个返回真假的函数。该函数传递两个参数:属性值，以及一个从模型实例属性到属性值的映射。
 
 ##### options
-- `on [string|array]`: specifies when validation happens (defaults to ['create', 'update'])
-- `message [string]`: a message to give the user if the validation fails
+- `on [string|array]`: 指定验证的方法 (默认为 ['create', 'update'])
+- `message [string]`: 验证失败给用户的提示信息
 
-##### example
+##### 例子
 ```
 this.validatesWithFunction('password', function (val, params) {
       // Something that returns true or false
       return val.length > 0;
 });
-// uses the function to see if the length of password is greater than 0
+// 使用函数来判断密码长度是否大于0
 ```
 
 * * *
@@ -220,12 +215,12 @@ this.validatesWithFunction('password', function (val, params) {
 #### .hasOne
 `hasOne(model)`
 
-Sets up a has-one relationship between this model and another.
+在两个模型之间建立一对一关系。
 
 ##### model
-- `model [string]`: the name of the model that this model has one of.
+- `model [string]`: 当前模型存在参数模型的名字
 
-##### example
+##### 例子
 ```
 this.hasOne('Profile');
 // sets up a has one relationship
@@ -237,12 +232,12 @@ this.hasOne('Profile');
 #### .hasMany
 `hasMany(model)`
 
-Sets up a has-many relationship between this model and another.
+在当前模型与其它模型之间建立一对多的关系
 
 ##### model
 - `model [string]`: the pluralized name of the model that this model has many of.
 
-##### example
+##### 例子
 ```
 this.hasMany('Friends');
 // sets up a has many relationship
@@ -254,12 +249,10 @@ this.hasMany('Friends');
 #### .belongsTo
 `belongsTo(model)`
 
-Sets up a belongs-to relationship between this model and another. A belongs-to
-is often used as the inverse of a has-many or has-one. Note however that this
-is not required -- associations are unidirectional.
+在该模型与其它模型之间建立隶属关系。隶属关系通常跟has-one或者has-many是反的。注意，这不是必需的 —— 关联是单向的。
 
 ##### model
-- `model [string]`: the singular name of the model that this model belongs to.
+- `model [string]`: 当前模型隶属于参数所传模型的唯一名称。
 
 ##### example
 ```
@@ -273,12 +266,12 @@ this.belongsTo('User');
 #### .adapter
 `this.adapter`
 
-Defines the database adapter for this model
+为模型定义数据库适配
 
-##### examples
+##### 例子
 ```
 this.adapter = 'mongo';
-// makes this model use mongo for it's database
+// 使用mongo作为该模型的数据库
 
 
 this.adapter = 'riak'
@@ -294,16 +287,16 @@ this.adapter = 'memory'
 
 #### instance
 
-Instance methods can be defined in the model definition as well.
+实例方法也可以在模型定义中定义。
 
-##### example
+##### 例子
 ```
 var User = function () {
 ...
   this.someMethod = function () {
     // Do some stuff
   };
-  // sets up a someMethod method on each instance of this model
+  // 在该模型的每个实例中设置一个someMethod方法
 ...
 };
 ```
@@ -313,9 +306,9 @@ var User = function () {
 #### .isValid
 `isValid()`
 
-Returns true if the model instance passes all validations, otherwise it returns false.
+如果模型实例通过所有验证返回真，否则返回假。
 
-##### example
+##### 例子
 ```
 user.isValid()
 ```
@@ -325,12 +318,12 @@ user.isValid()
 #### .save
 `save(fn)`
 
-Saves the instance to the database.
+将实例保存到数据库。
 
 ##### fn
-- `fn [function]`: the function to be called when saving is complete
+- `fn [function]`: 保存完成的回调方法
 
-##### example
+##### 例子
 ```
 user.save(function (err, data) {
 // do things
@@ -343,31 +336,31 @@ user.save(function (err, data) {
 #### .updateProperties
 `updateProperties(properties)`
 
-Updates the properties of a model and asserts that they are valid; This method will not call save on the instance.
+更新模型的属性，并声明它们是有效的;这个方法不会调用实例上的save。
 
 ##### properties
-- `properties [object]`: an object who's keys are property names and its values are the values to change the property to.
+- `properties [object]`: 一个键名是属性名、键值是设置的属性值的对象。
 
-##### example
+##### 例子
 ```
 user.updateProperties({
   login: 'alerxst'
 });
-// updates the login property and validates it
+// 验证并更新login属性
 ```
 
 #### .add
 `.add{target_model_name}( instance )`
 
-If a model has a hasMany relationship established with another model, you can use this method to add instaces of one model to it’s “parent” model.
+如果一个于其它模型建立了一对多的关系，你可以使用该方法将一个模型的实例添加到它的父模型。
 
 ##### target_model_name
-- The name of the model you’d like to add
+- 你想要添加的模型名
 
 ##### instance
-- `instace [modelInstance]`: The instance to add
+- `instace [modelInstance]`: 添加的实例
 
-##### example
+##### 例子
 ```
 var user = geddy.model.User.create(userParams);
 var post = geddy.model.Post.create(postParams);
@@ -377,13 +370,13 @@ user.addPost(post);
 #### .set
 `.set{target_model_name}( instance )`
 
-If a model has a hasOne relationship established with another model, you can use this method to add an instace of one model to it’s “parent” model.
+如果一个于其它模型建立了一对一的关系，你可以使用该方法将一个模型的实例添加到它的父模型。
 
 ##### target_model_name
-- The name of the model you’d like to set
+- 你想要添加的模型名
 
 ##### instance
-- `instace [modelInstance]`: The instance to set
+- `instace [modelInstance]`: 设置的实例
 
 ##### example
 ```
@@ -395,16 +388,16 @@ user.setAccount(account);
 #### .get
 `.get{target_model_name}( fn )`
 
-If a model has a hasOne relationship established with another model, you can use this method to add an instace of one model to it’s “parent” model.
+如果一个于其它模型建立了一对一的关系，你可以使用该方法将一个模型的实例添加到它的父模型。
 
 ##### target_model_name
-- `hasMany`: the plural name of the model you’d like to get a collection of
-- `hasOne`: the singular name of the model you like to get an instance of
+- `hasMany`: 你想要得到的集合的复数名
+- `hasOne`: 你想要得到的模型的唯一名称
 
 ##### fn
-- `fn [function]`: The function to call once the models are retrieved.
+- `fn [function]`: 一旦检索到模型，就会调用该函数。
 
-##### example
+##### 例子
 ```
 var user = geddy.model.User.create(params);
 
@@ -423,7 +416,7 @@ user.getPosts(function (err, posts) {
 
 #### static
 
-Static methods can be added by creating a method on the model definition object.
+静态方法可以通过在模型定义对象上创建方法来添加。
 
 ```
 var User = function () {
@@ -441,10 +434,10 @@ User.findByLogin = function (login, callback) {
 #### .create
 `create(params)`
 
-Creates a new model instance and returns it.
+创建一个新的模型实例并返回。
 
 ##### params
-- `params [object]`: an object whos keys are model properties
+- `params [object]`: 键值为模型属性的一个对象
 
 ##### example
 ```
@@ -462,15 +455,15 @@ var user = User.create(params);
 #### .first
 `first(query, options, fn)`
 
-Use the `first` method to find a single item. You can pass it an id, or a set of query parameters in the form of an object-literal. In the case of a query, it will return the first item that matches, according to whatever sort you've specified.
+使用 `first` 方法来查找唯一项。可以传递一个id,或者一个对象文字形式的查询参数。在查询的情况下，根据您指定的任何类型，它将返回匹配的第一项。
 
 ##### query [string]
-- `query [string]`: if the query is a string, it will be assumed that it's an id
+- `query [string]`: 如果查询是字符串，假定它就是一个id
 
 ##### query [object]
-- `query [object]`: if the query is an object, it will be interpreted as a Query object
+- `query [object]`: 如果查询是一个对象，它将被解析成一个查询对象。
 
-##### example
+##### 例子
 ```
 User.first('sdfs-asd-1', function (err, user) {
   // do stuff with user
@@ -487,16 +480,16 @@ User.first({login: 'alerxst'}, function (err, user) {
 #### .all
 `all(query, options, fn)`
 
-Use the `all` method to find lots of items. Pass it a set of query parameters in the form of an object-literal, where each key is a field to compare, and the value is either a simple value for comparison (equal to), or another object-literal where the key is the comparison-operator, and the value is the value to use for the comparison.
+使用 `all` 方法来查找系列内容。 传递一个对象文字形式的查询参数，该参数的每一个键名是一个要匹配的字段，键值既可以是一个简单的比较（等于），也可以是一个对象形式（键名是对象形式的比较运算符，键值是用于比较的值）。
 
 ##### query [object]
-- `query [object]`: if the query is an object, it will be interpreted as a Query object
+- `query [object]`: 如果参数是一个对象，将被解析为一个查询对象。
 
 ##### options
-- `sort [object]`: each key is a property name, each value can either be `asc` or `desc`.
-- `includes [array]`: Using SQL adapters, you may supply an array of model association names to eager-load.
+- `sort [object]`: 每个键名是一个属性名，键值既可以是 `asc` ，也可以是 `desc`.
+- `includes [array]`: 使用sql适配，你可以一个模型关系名的数组来加载。
 
-##### example
+##### 例子
 ```
 User.all({location: 'san francisco'}, function (err, users) {
   // do stuff with users
@@ -518,12 +511,12 @@ User.all({location: 'san francisco'}, {includes: ['posts']}, function (err, user
 #### .remove
 `remove(id, fn)`
 
-Remove an instance from the database by id.
+根据id来移除数据库中的一个实例。
 
 ##### id
-- `id [string]`: the id of the instance to be removed
+- `id [string]`: 将要被移除的id的实例
 
-##### examples
+##### 例子
 ```
 User.remove('abc-123', function (err, data) {
   // do something now that it's removed.
@@ -532,12 +525,12 @@ User.remove('abc-123', function (err, data) {
 
 `remove(condition, fn)`
 
-Remove instances from the database by condition
+根据条件来从数据库中移除实例
 
 ##### condition
-- `condition [object]`: the query condition of instances to be removed
+- `condition [object]`: 将要被移除的查询条件的实例
 
-##### examples
+##### 例子
 ```
 User.remove({state: "inactive"}, function (err, data) {
   // do something now that it's removed.
@@ -548,34 +541,27 @@ User.remove({state: "inactive"}, function (err, data) {
 
 #### queries
 
-Model uses a simple API for finding and sorting items. Again, it should look
-familiar to anyone who has used a similar ORM for looking up records. The only
-wrinkle with Model is that the API is (as you might expect for a NodeJS library)
-asynchronous.
+模型使用一个简单的api来查找及排序。再则，它使用一个大家惯用的类似orm来查询记录。唯一的不同是模型所使用的api是异步的（众所周知我们使用的是nodejs库）。
 
-##### comparison operators
-- `eql`: equal to
-- `ne`: not equal to
-- `gt`: greater than
-- `lt`: less than
-- `gte`: greater than or equal
-- `lte`: less than or equal
-- `like`: like
+##### 比较运算符
+- `eql`: equal to（等于）
+- `ne`: not equal to（不等于）
+- `gt`: greater than（大于）
+- `lt`: less than（小于）
+- `gte`: greater than or equal（大于或等于）
+- `lte`: less than or equal（小于或等于）
+- `like`: like （像）
 
-A simple string-value for a query parameter is the same as 'eql'. `{foo: 'bar'}`
-is the same as `{foo: {eql: 'bar'}}`.
+简单的查询类似于 'eql' ，`{foo: 'bar'}` 等价于 `{foo: {eql: 'bar'}}` 。
 
-##### combining queries
-Model supports combining queries with OR and negating queries with NOT.
+##### 合并查询
+模型支持使用or及用not实现否定查询的合并查询。
 
-To perform an 'or' query, use an object-literal with a key of 'or', and an array
-of query-objects to represent each set of alternative conditions.
+使用关键字 'or' 来执行 'or'查询，以及一组查询对象来表示每一组可选条件。
 
-To negate a query with 'not', simply use a query-object where 'not' is the key,
-and the value is the set of conditions to negate.
+简单使用 'not' 来实现否定查询，其键值是否定查询条件。
 
-
-##### examples
+##### 例子
 ```javascript
 {foo: 'BAR', bar: {ne: null}}
 // Where "foo" is 'BAR' and "bar" is not null
@@ -606,12 +592,9 @@ and the value is the set of conditions to negate.
 
 #### events
 
-Both the base model 'constructors,' and model instances are EventEmitters. The
-emit events during the create/update/remove lifecycle of model instances. In all
-cases, the plain-named event is fired after the event in question, and the
-'before'-prefixed event, of course happens before.
+不论是模型控制器还是模型实例都是事件源。当在模型实例的 create/update/remove 生命周期内都会产生事件。在正常情况下，简单命名的事件【译者注：这里为不带before前缀的事件】在事件执行完之后被解绑，理所当然，带 'before' 前缀的事件发生在之前。
 
-The 'constructor' for a model emits the following events:
+模型的构造函数有以下事件：
 
  - beforeCreate
  - create
@@ -626,7 +609,7 @@ The 'constructor' for a model emits the following events:
  - beforeRemove
  - remove
 
-Model-item instances emit these events:
+模型实例有以下事件：
 
  - beforeUpdateProperties
  - updateProperties

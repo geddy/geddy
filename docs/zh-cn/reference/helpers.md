@@ -1,26 +1,25 @@
-#### 尚待翻译
-Along with flexible template system in Geddy you have access to various built in helpers and custom helpers.
+在Geddy灵活的模板系统中，你可以访问各种各样的帮助和定制帮助。
 
-#### custom helpers
-When you create your application a `helpers` directory will be added to the `app` directory, all the files in this directory will be required when you start the server up.
+#### 自定义帮助
+当你创建应用时，`helpers` 目录将被添加到 `app`目录中。当你启动服务后，该目录下的所有文件将被自动包含。
 
-The exported helpers, are available in your views and throughout your application.
+一旦导入helpers，在您的视图及整个应用中都可用。
 
-For example, we have this script in a file in our `app/helpers` directory:
+例如，在 `app/helpers` 目录中有这么一个脚本文件：
 ```
 exports.upperCase = function upperCase(str) {
   return str.toUpperCase();
 };
 ```
 
-Now when we start the server up we can access it in our views by doing:
+启动我们的服务之后，在视图中我们可以这样来访问：
 ```
 <%= upperCase("some string") %>
 // => "SOME STRING"
 ```
-All the exported helpers are global to the templates, so any of them can be accessed from any template.
+所有导入的helpers对于模版来说是全局的，他们中的任何方法或变量在任何模版中都可以访问。
 
-You can also access them from controllers/models and any other part of your application by using `geddy.viewHelpers` here's an example using our upperCase helper:
+你也可以在controllers/models来访问，或者在你应用中任何一部分使用 `geddy.viewHelpers` 来访问。下面的例子使用我们大些字母的帮助：
 ```
 console.log(geddy.viewHelpers.upperCase("some string"));
 // => "SOME STRING"
@@ -28,7 +27,7 @@ console.log(geddy.viewHelpers.upperCase("some string"));
 
 ##### ejs
 
-Calling a view helper in ejs is just like executing a javascript function:
+像执行一个js函数一样在ejs中来调用一个视图帮助。
 
 ```
 <%= selectTag(options, selected) %>
@@ -36,7 +35,7 @@ Calling a view helper in ejs is just like executing a javascript function:
 
 ##### handlebars
 
-Use the block helper syntax to call helpers:
+使用块助手语法来调用帮助器：
 
 ```
 {{#selectTag options selected}}{{/selectTag}}
@@ -47,18 +46,18 @@ Use the block helper syntax to call helpers:
 #### urlFor
 `urlFor(options<String/Object>)`
 
-Returns a URL based on the `options` provided
+依赖提供的 `options` 返回一个url。
 
 #####Options [String]:
-- `'back'` [String] The 'back' string will return a URL that points to the last URL in history
+- `'back'` [String] 'back' 字符串回返回历史记录中最后一个url。
 
 #####Options [Object]:
-- `relPath` [Boolean] If true, the relative URL is returned(Default: false)
-- `protocol` [String] The protocol to use(Default: What your Geddy instance is using('http' default))
-- `username` [String] Includes a username in the path. Requires `password` or it'll be ignored
-- `password` [String] Includes a username in the path. Requires `password` or it'll be ignored
-- `subdomain` [String] Specifies the subdomain to prepend to `domain`
-- `domain` [String] Specifies the domain to point to. Required if `relPath` is false
+- `relPath` [Boolean] 如果设置为true，返回相对url (默认为false)
+- `protocol` [String] 使用的协议(默认: Geddy实例所使用的协议('http'默认))
+- `username` [String] 在路径中包含一个用户名。需要密码，否则会被忽略
+- `password` [String] 在路径中包含一个用户名。需要密码，否则会被忽略
+- `subdomain` [String] 指定子域
+- `domain` [String] 指定要指向的域，如果 `relPath` 为false，需要给出此项
 - `host` [String] Alias for `host`
 - `port` [Integer] Specify the port to connect to
 - `controller` [String] Specifies the controller to use for the path
@@ -68,11 +67,11 @@ Returns a URL based on the `options` provided
 - `fragment` [String] Appends a fragment to the end of the path/domain
 - `anchor` [String] Alias for `fragment`
 
-#####Notes:
-- If `options` is a String it will just be returned, unless the String is equal to 'back'
-- Any other `options` added will be considered as a query to be appended to the URL
+#####注释:
+- 如果 `options` 是一个字符串将会原样返回, 'back' 除外。
+- 添加任何其他的 `options` ，将作为URL的查询参数 
 
-#####Examples:
+#####例子:
 ```
 urlFor('http://google.com')
 // => 'http://google.com'
@@ -115,9 +114,9 @@ urlFor({controller: 'tasks', action: 'new', host: 'somehost.com', authToken: 'so
 #### contentTag
 `contentTag(tag<String>, content<String>, htmlOptions<Object>)`
 
-Returns an HTML element from a given `tag` and includes the `content` and all `htmlOptions`
+根据所给的 `tag` ，`content` 及所有的 `htmlOptions` 参数返回一个html元素。
 
-#####Custom HTML options:
+#####定制 HTML 选项:
 - `data`[Array] The data attribute takes an Array containing data attributes you want, when parsed they each get parsed as a full data attribute(e,g: `data: {goTo: 'google.com'}` will be `data-go-to="google.com"`).
 
 #####Examples:
@@ -158,35 +157,19 @@ contentTag('a', 'hey there', {href: 'http://google.com', data_go_to: 'http://goo
 #### selectTag
 `selectTag(data<Array>, selectedOption, options<Object>)`
 
-Creates a HTML select tag using the given `data` array to create HTML option
-elements.
+根据给定的 `data` 数组来创建一个html选择标签。
 
-`data` could be an array of strings (to use for both text and value in the
-option elements); or objects, each with a 'text' and 'value' property which will
-directly map to the option elements. This helper will also look for an `attr`
-property on the elements in the array to use for HTML attributes on each option
-element.
+`data` 可以是字符串数组(用于在选项元素中使用文本和值)；或者对象，每个对象都带有 'text' 和 'value' 属性将直接映射到选项元素。该助手还将查找数组中元素的attr属性，以便在每个选项元素上使用HTML属性。
 
-There's also a way to map arbitrary fields in your data set to the text/value of
-the option elements. This is helpful when you don't want to have to iterate over
-your data just to set a text/value -- see `options` below.
+还有一种方法可以将数据集中的任意字段映射到选项元素的text/value。当您不想重复您的数据只是为了设置一个文本/值时，这是很有帮助的 —- 请参阅下面的选项。
 
-`selectedOption` should be a string whose value matches the value of the option
-element you want to be pre-selected.
-If the select has multiple selection enabled, you can pass an array to selecteOption
-and all those values that match will be selected.
-If you pass an array when multiple selection is disable, only the first element
-of the array will be checked for matches.
+`selectedOption` 应该是一个字符串，它的值与您想要预先选择的选项元素的值相匹配。如果选择项有多个可用的选择，您可以将一个数组传递给selecteOption，所有匹配的值都将会被选中。当多选项不可用，你传递一个数组的话，仅匹配的数组的第一个元素被选中。
 
-`options` is the list of HTML attributes you want to set on the select element
-itself. This is where you will set the 'name' attribute needed when submitting
-it.
+`options` 是您想要在select元素本身上设置的HTML属性的列表。这是提交时需要设置的 'name ' 属性的地方。
 
-The `options` param can also include two special properties: 'textField' and
-'valueField'. Setting these will tell the helper to map these property names on
-your data set to the 'text' and 'value' attributes of your option elements.
+`options` 参数可以包含两个特殊的属性: 'textField' 和 'valueField'。设置这些属性将告诉帮助器将这些属性名映射到选项元素的 'text' 和 'value' 属性。
 
-#####Examples:
+#####例子:
 ```
 selectTag(['geddy', 'alex', 'neil'])
 // => '<select><option value="geddy">geddy</option><option value="alex">alex</option><option value="neil">neil</option></select>'
@@ -208,38 +191,38 @@ selectTag([{value: 1, text: "Text 1"}, {value: 2, text: "Text 2"}], [1, 2], {mul
 * * *
 
 #### render
-`render` is a function that's only available on layout templates. It `render` the template content, which is inserted in the place where the `yield` function is called.
+`render` 是一个仅可用在布局模版中的函数。 它渲染这样的内容： `yield` 调用的地方插入的内容。
 
 * * *
 
 #### partial
 `partial(partialURL<String>, data<Object>)`
 
-Partial takes a partialURL which is the location to a partial template and a data object which is the data to render the partial with(params, etc), then it renders the partial and puts the contents in place where the partial function was called.
+Partial采用partial模板的位置和数据对象的partialURL，而数据对象是用来呈现partial数据(参数等)，然后它呈现partial，并将内容放置在partial函数被调用的地方。
 
 * * *
 
-#### truncate
+#### truncate 【译者注：作用类似js的substr方法，功能比其强大】
 `truncate(string<String>, options<Integer/Object>)`
 
-Truncates a given `string` after a specified `length` if `string` is longer than `length`. The last character will be replaced with an `omission` for a total length not exceeding `length`.
+Truncates 在一个指定的 `length` 之后给予一个 `string`。如果 `string` 比 `length`长，最后的字符串会被 `omission` 截取掉。
 
-#####Options [Integer]:
-- If an `options` is an integer it will be assumed that is the desired `length`
+#####Options [整形]:
+- 如果 `options` 是一个整形，它假定是想要的 `length`
 
 #####Options [Object]:
-- `length [Integer]` Length the output string will be(Default: 30)
-- `len [Integer]` Alias for `length`
-- `omission [String]` Replace the last letters with an omission(Default: '...')
-- `ellipsis [String]` Alias for `omission`
-- `seperator [String/RegExp]` Break the truncated text at the nearest `seperator`
+- `length [Integer]` 输出字符串的长度(默认: 30)
+- `len [Integer]`  `length` 的别名
+- `omission [String]` 超出长度的字符表现形式(默认: '...')
+- `ellipsis [String]` `omission` 的别名
+- `seperator [String/RegExp]` 在最近的 `seperator` 来截取文本【译者注：如果多出，靠前截取】
 
-#####Warnings:
-- Please be aware that truncating HTML elements may result in malformed HTML returned. If you'd like safe HTML truncation look at `truncateHTML`
+#####警告:
+- 请注意，截断HTML元素可能会导致返回错误的HTML。如果你想要安全的HTML截断，请看 `truncateHTML`
 
-#####Examples:
+#####例子:
 ```
-runcate('Once upon a time in a world', {length: 10})
+truncate('Once upon a time in a world', {length: 10})
 // => 'Once up...'
 
 
@@ -259,6 +242,7 @@ truncate('Once upon a time in a world', {length: 15, seperator: ' '})
 
 truncate('<p>Once upon a time</p>', {length: 20})
 // => '<p>Once upon a ti...'
+// 【译者注：这里返回错误的html】
 ```
 
 * * *
@@ -266,17 +250,17 @@ truncate('<p>Once upon a time</p>', {length: 20})
 #### truncateHTML
 `truncateHTML(string<String>, options<Integer/Object>)`
 
-Truncates a given `string` after a specified `length` if `string` is longer than `length`. The lat character will be replace with an `omission` for a total length not exceeding `length`. If `once` is true, only the first string in the first HTML element will be truncated leaving others as they were.
+作用跟Truncates类似，最大的区别是对html元素的截取返回不一样。
 
 #####Options [Object]:
-- `once`[Boolean] If true only the first string in the first HTML element will be truncated(Default: false)
+- `once`[Boolean] 如果为真，仅仅在第一个html元素的第一个字符串会被截断(默认为 false)
 
-#####Notes:
-- All options available to `truncate` are available for `truncateHTML`
-- HTML elements are not included with the length of the truncation
-- HTML elements will not be truncated, so return value will always be safe for rendering
+#####注意:
+- `truncate` 可用的参数， 对于 `truncateHTML` 同样适用
+- HTML元素不包含在截断的长度内
+- HTML元素不会被截断，因此返回的值肯定是安全的
 
-#####Examples:
+#####例子:
 ```
 truncateHTML('<p>Once upon a time in a world</p>', {length: 10})
 // => '<p>Once up...</p>'
@@ -295,13 +279,13 @@ truncateHTML('<p>Once upon a time <small>in a world</small></p>', {length: 10, o
 #### imageLink
 `imageLink(source<String>, link<String/Object>, imageOptions<Object>, linkOptions<Object>)`
 
-Returns an anchor element to a given `link` with the given `linkOptions`, with the content being a image element to the given `source` and includes its `imageOptions`
+顾名思义，返回一个根据 `linkOptions` 参数生成的链接，其链接显示的内容是根据 `imageOptions` 生成的的图片。
 
-#####Notes:
-- `linkto` is used on the backend so any `linkOption` will be used for `linkTo`
-- `imageTag` is used on the backend as well so any `imageOptions` will be used for `imageTag`
+#####注意:
+- `linkto` 通常用于后端，因此任何 `linkOption` 都可以用于 `linkTo`
+- `imageTag` 通常也用于后端， 因此任何 `imageOptions` 都可以用于 `imageTag`
 
-#####Examples:
+#####例子:
 ```
 imageLink('images/google.png', 'http://google.com')
 // => '<a href="http://google.com"><img alt="images/google.png" src="images/google.png" /></a>'
@@ -320,10 +304,10 @@ imageLink('images/google.png', 'http://google.com', {alt: '', size: '40x50'})
 #### imageTag
 `imageTag(source<String>, htmlOptions<Object>)`
 
-Returns an image tag with the src to a `source` and includes all the given `htmlOptions`
+返回一个src为 `source` 的img标签，并附上所有的 `htmlOptions`
 
-#####Custom HTML options:
-- `size`[String] Takes a string including the width and height "{width}x{height}"(e,g: '40x50') or it can take a single string included an integer "{size}"(e,g: '40') The first being results in "height='50' width='40'" the second results in the height and width being the same value. _Note_: If the format doesn't comply, it will be ignored
+#####定制 HTML 选项:
+- `size`[String] 包含宽高的字符串 "{width}x{height}"(e,g: '40x50') 或者带一个是整形的唯一参数的字符串 "{size}"(例如: '40') 第一个结果是 "height='50' width='40'"，第二个结果是宽高被设置为相同值 _Note_: 如果格式错误，会被忽略
 
 #####Examples:
 ```
@@ -348,9 +332,9 @@ imageTag('images/google.png', {alt: '', size: 'a string'})
 #### styleLink
 `styleLink(source<String>, htmlOptions<Object>)`
 
-Generates a style element pointing to `source` and includes all the given `htmlOptions`
+用 `htmlOptions` 所带参数，创建一个link标签
 
-#####Examples:
+#####例子:
 ```
 styleLink('/css/styles.css')
 // => '<link href="/css/style.css" />'
@@ -365,9 +349,9 @@ styleLink('/css/styles.css', {rel: 'stylesheet'})
 #### scriptLink
 `scriptLink(source<String>, htmlOptions<Object>)`
 
-Generates a script element pointing to `source` and includes all the given `htmlOptions`
+用 `htmlOptions` 所带参数，创建一个script标签
 
-#####Examples:
+#####例子:
 ```
 scriptLink('/js/script.js')
 // => '<script src="/js/script.js"></script>'
@@ -382,12 +366,12 @@ scriptLink('/js/script.js', {type: 'text/javascript'})
 #### linkTo
 `linkTo(content<String>, options<String/Object>, htmlOptions<Object>)`
 
-Generates a link from the given `options`, then returns a anchor tag with the `content` and the `htmlOptions` provided
+用 `options` 所带参数创建一个a标签, 根据所提供的 `content` 和 `htmlOptions` 返回一个a锚点标签。
 
-#####Notes:
-- If you do not want to escape html entities in `content`, set the `_escapeContent` option to false.
+#####注意:
+- 如果你不想在 `content` 中转义html实体, 设置 `_escapeContent` 为 false.
 
-#####Examples:
+#####例子:
 ```
 linkTo('some content', 'http://google.com')
 // => '<a href="http://google.com">some content</a>'
@@ -402,145 +386,14 @@ linkTo('Google<sup>TM</sup>', 'http://google.com', {_escapeContent: false})
 _escapeContent
 ```
 
-* * *
-
-#### urlFor
-`urlFor(options<String/Object>)`
-
-Returns a URL based on the `options` provided
-
-#####Options [String]:
-- `'back'` [String] The 'back' string will return a URL that points to the last URL in history
-
-#####Options [Object]:
-- `relPath` [Boolean] If true, the relative URL is returned(Default: false)
-- `protocol` [String] The protocol to use(Default: What your Geddy instance is using('http' default))
-- `username` [String] Includes a username in the path. Requires `password` or it'll be ignored
-- `password` [String] Includes a username in the path. Requires `password` or it'll be ignored
-- `subdomain` [String] Specifies the subdomain to prepend to `domain`
-- `domain` [String] Specifies the domain to point to. Required if `relPath` is false
-- `host` [String] Alias for `host`
-- `port` [Integer] Specify the port to connect to
-- `controller` [String] Specifies the controller to use for the path
-- `action` [String] Specifies the action to use for the path
-- `id` [String] Specifies an ID to use for displaying specific items
-- `trailingSlash` [Boolean] If true, adds a trailing slash to the end of the path/domain
-- `fragment` [String] Appends a fragment to the end of the path/domain
-- `anchor` [String] Alias for `fragment`
-
-#####Notes:
-- If `options` is a String it will just be returned, unless the String is equal to 'back'
-- Any other `options` added will be considered as a query to be appended to the URL
-
-#####Examples:
-```
-urlFor('http://google.com')
-// => 'http://google.com'
-
-
-urlFor({controller: 'tasks', action: 'new', host: 'somehost.com'})
-// => 'http://somehost.com/tasks/new'
-
-
-urlFor({controller: 'tasks', action: 'new', relPath: true})
-// => '/tasks/new'
-
-
-urlFor({controller: 'tasks', action: 'new', relPath: true, trailingSlash: true})
-// => '/tasks/new/'
-
-
-urlFor({host: 'somehost.com', protocol: 'https', username: 'username', password: 'password'})
-// => 'https://username:password@somehost.com'
-
-
-urlFor({controller: 'tasks', action: 'new', host: 'somehost.com', protocol: 'https'})
-// => 'https://somehost.com/tasks/new'
-
-
-urlFor({controller: 'tasks', action: 'edit', id: 'IwTEf55ivH', host: 'somehost.com'})
-//  => 'http://somehost.com/tasks/IwTEf55ivH/edit'
-
-
-urlFor({controller: 'tasks', action: 'new', host: 'somehost.com', anchor: 'submit'})
-// => 'http://somehost.com/tasks/new#submit'
-
-
-urlFor({controller: 'tasks', action: 'new', host: 'somehost.com', authToken: 'some_token'})
-// => 'http://somehost.com/tasks/new?authToken=some_token'
-```
-
-* * *
-
-#### contentTag
-`contentTag(tag<String>, content<String>, htmlOptions<Object>)`
-
-Returns an HTML element from a given `tag` and includes the `content` and all `htmlOptions`
-
-#####Custom HTML options:
-- `data`[Array] The data attribute takes an Array containing data attributes you want, when parsed they each get parsed as a full data attribute(e,g: `data: {goTo: 'google.com'}` will be `data-go-to="google.com"`).
-
-#####Examples:
-```
-contentTag('p', 'this is some content')
-// => '<p>this is some content</p>'
-
-
-contentTag('input', 'sample value')
-// => '<input value="sample value" />'
-
-
-contentTag('input', 'sample value', {value: 'override sample value'})
-// => '<input autofocus="autofocus" type="text" value="sample value" />'
-
-
-contentTag('input', 'sample value', {type: 'text', autofocus: true})
-// => '<input autofocus="autofocus" type="text" value="sample value" />'
-
-
-contentTag('a', 'http://google.com')
-// => '<a href="http://google.com">http://google.com</a>'
-
-
-contentTag('a', 'hey there', {href: 'http://google.com'})
-// => '<a href="http://google.com">hey there</a>'
-
-
-contentTag('a', 'hey there', {href: 'http://google.com', data: { goTo: 'http://google.com'} })
-// => '<a data-go-to="http://google.com" href="http://google.com">hey there</a>'
-
-
-contentTag('a', 'hey there', {href: 'http://google.com', data_go_to: 'http://google.com'})
-// => '<a data-go-to="http://google.com" href="http://google.com">hey there</a>'
-
-```
-
-#### selectTag
-`selectTagString(optionsArray<Array>, selectedOption, htmlOptions<Object>)`
-
-Creates a HTML select tag using the given `optionsArray` to create HTML option elements.
-
-`optionsArray` could be an array of strings, numbers or an object with value and text properties to be used for the value attribute and option element content respectively.
-
-#####Examples:
-```
-selectTag(['geddy', 'alex', 'neil'])
-// => '<select><option value="geddy">geddy</option><option value="alex">alex</option><option value="neil">neil</option></select>'
-
-selectTag(['open', 'close'], todo.status, { class:'col-md-6', name:'status' })
-// => '<select class="col-md-6" name="status"><option selected="selected" value="open">open</option><option value="close">close</option></select>'
-
-selectTag([{value: 1, text: "Text 1"}, {value: 2, text: "Text 2"}], 2)
-// => <select><option value="1">Text 1</option><option selected="selected" value="2">Text 2</option></select>
-```
-
 #### displayFlash
 `displayFlash()`
 
 Displays a small banner automatically for items in the session flash -- e.g., if
 in your action you call `this.flash.error('Something went wrong.');` when the
 page renders, it will display an error banner with that text.
+在会话中自动显示一个小的横幅。 -- 例如，如果在脚本调用`this.flash.error('出错了');` 当页面呈现时，它将显示一条带有 '出错了' 的错误横幅。
 
-Support is built in for flash types of `error`, `success`, and `info`.
+支持基于flash的类型有 `error`, `success` 以及 `info`
 
 * * *

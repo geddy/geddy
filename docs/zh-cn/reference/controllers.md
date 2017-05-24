@@ -1,40 +1,39 @@
-#### 尚待翻译
-Controllers define the different actions that your users can interact with.
+控制器定义了不同的动作，方便用户交互。
 
 * * *
 
 #### .request
 `this.request`
 
-The raw `http.ServerRequest` object for this request/response cycle.
+原生 `http.ServerRequest` 对象，在整个 request/response 周期内。
 
 * * *
 
 #### .response
 `this.response`
 
-The raw `http.ServerResponse` object for this request/response cycle.
+原生 `http.ServerResponse` 对象，在整个 request/response 周期内。
 
 * * *
 
 #### .params
 `this.params`
 
-The parsed params for the request. `params` is also passed as an argument to the action, it was added as an instance field for convenience.
+对于请求的解析参数。`params` 也可以作为动作的参数来传递，这便于作为实例对象来新增。
 
 * * *
 
 #### .cookies
 `this.cookies`
 
-Cookies collection from the request
+请求头的cookies对象收集。
 
 * * *
 
 #### .name
 `this.name`
 
-The name of the controller constructor function, in CamelCase with uppercase initial letter.
+控制器构造函数名，首字母大写的驼峰式命名。
 
 * * *
 
@@ -42,11 +41,12 @@ The name of the controller constructor function, in CamelCase with uppercase ini
 `canRespondTo(contentTypes)`
 
 Content-types the controller can use in responses.
+控制器响应的文本类型。
 
 ##### contentTypes
-- `contentTypes [array]` The list of content-types the controller can use for responding.
+- `contentTypes [array]` 控制器响应的文件类型列表。
 
-##### example
+##### 例子
 ```
 this.canRespondTo(['html', 'json', 'js']);
 ```
@@ -56,19 +56,17 @@ this.canRespondTo(['html', 'json', 'js']);
 #### .before
 `before(filter, [options])`
 
-Adds an action to be performed before a response is rendered.
+在响应渲染之前执行一个动作。
 
 ##### filter
-- `filter [function]` Action to add to the beforeFilter list. If the action is
-asynchronous, takes a single callback parameter to call when the action is
-finished.
+- `filter [function]` 添加到beforeFilter列表的动作。如果操作是异步的，那么当操作完成时，只需要一个回调参数来调用。
 
-##### options
-- `except [array]` List of actions where the before-filter should not be performed.
-- `only [array]` List of actions where the before-filter should only be performed.
-- `async` [boolean] When set to true, the before-filter is asynchronous, and requires a callback
+##### 可选参数
+- `except [array]` 不应该执行的before-filter操作列表。
+- `only [array]` 仅当被执行before-filter的操作列表。
+- `async` [boolean] 当设置为真的时候，before-filter是异步的，而且需要一个回调
 
-##### examples
+##### 案例
 ```
 this.before(function () { // Do something });
 // runs the function before the action is run
@@ -92,19 +90,17 @@ this.before(function (next) {
 #### .after
 `after(filter, [options])`
 
-Adds an action to be performed after a response is rendered.
+在响应渲染后执行一个动作。
 
 ##### filter
-- `filter [function]` Action to add to the afterFilter list. If the action is
-asynchronous, takes a single callback parameter to call when the action is
-finished.
+- `filter [function]` 添加到afterFilter列表的动作。如果操作是异步的，那么当操作完成时，只需要一个回调参数来调用。
 
-##### options
-- `except [array]` List of actions where the after-filter should not be performed.
-- `only [array]` List of actions where the after-filter should only be performed.
-- `async` [boolean] When set to true, the after-filter is asynchronous, and requires a callback
+##### 可选参数
+- `except [array]` 不应该执行的after-filter操作列表。
+- `only [array]` 仅当被执行after-filter的操作列表。
+- `async` [boolean] 当设置为真的时候，after-filter是异步的，而且需要一个回调
 
-##### examples
+##### 案例
 ```
 this.after(function () { // Do something });
 // runs the function after the action is run, but before the response is completed
@@ -128,30 +124,26 @@ this.after(function (next) {
 #### .protectFromForgery
 `protectFromForgery()`
 
-Prevents cross-site requests by requiring a same-origin token for destructive
-HTTP methods (PUT, POST, DELETE)
-
+通过为破坏性的HTTP方法(PUT、POST、DELETE)要求一个同源标记来防止跨站点请求。
 * * *
 
 #### .redirect
 `redirect(to, options)`
 
 ##### to [string]
-- if `to` is a string, it will redirect to the url in that string
+- 如果 `to` 参数是一个字符串, 将会跳转到字符串所示的url
 
 ##### to [object]
-- `controller [string]`: a controller name
-- `action [string]`: an action name
-- `format [string]`: the file extension
+- `controller [string]`: 控制器名
+- `action [string]`: 方法名
+- `format [string]`: 文件扩展名
 
-##### options
-- `statusCode [number]` Override for default 302 HTTP status-code. Must be valid
-3xx status code (e.g., 301 / moved permanently, 301 / temporary redirect)
+##### 可选参数
+- `statusCode [number]` 重写默认的302HTTP请求状态码。必须是有效的3xx状态嘛（例如，301 / moved permanently, 301 / temporary redirect）
 
-Sends a (302) redirect to the client, based on either a simple string-URL, or a
-controller/action/format combination.
+发送一个(302)跳转到客户端，依赖于一个简单的url字符串，或者一个controller/action/format的结合。
 
-##### examples
+##### 例子
 ```
 this.redirect('/users/1');
 // will redirect the browser to /users/1
@@ -165,15 +157,13 @@ this.redirect({controller: 'users', action: 'show', id: 1});
 #### .error
 `error(err)`
 
-Respond to a request with an appropriate HTTP error-code. If a status-code is
-set on the error object, uses that as the error's status-code. Otherwise,
-responds with a 500 for the status-code.
+响应合适的HTTP错误码。如果在错误对象中有状态码，把他当作错误状态码。否则的话，响应500。
 
 ##### err [error]
-- `statusCode [number]` optional HTTP status code to send to the client, defaults to 500
-- `message [string]` the error message text to send to the client
+- `statusCode [number]` 发送到客户端的可选http状态码，默认是 500
+- `message [string]` 发送到客户端的错误内容
 
-##### examples
+##### 例子
 ```
 this.error();
 // sends a 500
@@ -197,10 +187,11 @@ transfer(action)
 
 Transfer a request from its original action to a new one. The entire request
 cycle is repeated, including before-filters.
+将请求从原来的操作转移到一个新的请求。包括before-filters在内的整个请求周期都是重复的。
 
 ##### action
-- `action [string]`: name of the new action designated to handle the request.
-- `action [object]`: The new action designated to handle the request.
+- `action [string]`: 指定处理请求的新操作的名称。
+- `action [object]`: 指定处理请求的新动作
 
 * * *
 
@@ -209,24 +200,16 @@ cycle is repeated, including before-filters.
 respondWith(resources)
 ```
 
-Uses a format-specific strategy to provide a response using the resource
-provided. In the case of an HTML response, it might render a template, or do a
-redirect -- with JSON, it will output the appropriate API-style JSON response.
+使用特定于格式的策略，使用所提供的资源提供响应。在HTML响应的情况下，它可能会渲染一个模板，或者重定向——使用JSON，它将输出适当的api形式的JSON作为响应。
 
-A good example is a CRUD `create` action. If the client requests an HTML
-response, `respondWith` will render an HTML template, and return it with a
-200/OK status-code. If the client requests a JSON response, it will output a
-JSON-formatted response with a 201/Created status-code, and a 'Location' header
-with the URL for the created item.
+CRUD中的`create`方法是一个好的例子。如果客户端请求一个html响应，`respondWith`会渲染一个模版，或者返回一个200/OK状态码。如果客户端请求一个json响应，将输出一个json格式的201/Created状态码， 带有创建项目的url的'Location'请求头。
 
-In order to use `respondWith`, you need to declare the formats your controller
-will support using `canRespondTo`.
+为了能使用`respondWith`，必须在控制器中使用`canRespondTo`来申明格式。
 
 ##### resources
-- `resources [object]`: a Geddy model instance or a collection of instances to
-use in the response.
+- `resources [object]`: Geddy在响应中的一个模型实例或者实例集合。
 
-##### examples
+##### 例子
 ```
 // Fetch a user and respond with an appropriate response-strategy
 var self = this;
@@ -242,16 +225,14 @@ geddy.model.User.first({username: 'foo'}, function (err, user) {
 ```
 respondTo(strategies)
 ```
-Allows you to provide specific response-strategies to use for a particular
-request.
+对于特定请求，允许提供特殊的响应策略来使用。
 
-NOTE: when you use `respondTo`, it overrides any formats declared to be
-supported on the controller using `canRespondTo`.
+注意：当你使用`respondTo`时，将重写任何在控制器中使用`canRespondTo`个格式申明。
 
 ##### strategies
-- `strategies [object]`: Format-specific strategies for outputting a response.
+- `strategies [object]`: 输出响应的特殊格式策略。
 
-##### examples
+##### 例子
 ```
 // Fetch a user and respond with an appropriate response-strategy
 var self = this;
@@ -275,17 +256,17 @@ geddy.model.User.first({username: 'foo'}, function (err, user) {
 respond(data, options)
 ```
 
-Performs content-negotiation, and renders a response.
+执行内容协商，渲染响应。
 
 ##### data
-- `data [object]`: an object with properties to send to the view
+- `data [object]`: 传输给模版的属性对象
 
 ##### options
-- `layout [string]`: the path to the layout file to use
-- `layout [false]`: a flag to not use a layout file
-- `format [string]`: the format to render
-- `template [string]`: The path (without file extensions) to the template to use to render this response
-- `statusCode [number]`: The HTTP status-code to use with this response
+- `layout [string]`: 所使用的布局文件的路径
+- `layout [false]`: 不使用布局文件的标志
+- `format [string]`: 渲染格式
+- `template [string]`: 渲染响应的模版文件路径（不带文件扩展名）
+- `statusCode [number]`: 响应的HTTP状态码
 
 ##### examples
 ```
@@ -314,10 +295,7 @@ this.respond(null, {statusCode: 201});
 ```
 output(statusCode, headers, content)
 ```
-
-Outputs a response with a specific HTTP response-code, HTTP headers, and
-content. This is the lowest-level response API, for when you know exactly the
-status, headers, and content you want to output.
+以具体http请求状态码的形式输出响应，包括http请求头及请求内容。这是最低级别的响应api,用于当你明确你想输出的状态、请求头、请求内容的时候。
 
 ##### statusCode
 - `statusCode [number]`: HTTP status-code to be use for the response
@@ -329,7 +307,7 @@ status, headers, and content you want to output.
 - `content [string]`: Content to be used in the response-body (optional).
 If not passed, no response body is output.
 
-##### examples
+##### 例子
 ```
 this.output(200, {'Content-Type': 'application/json'},
     '{"foo": "bar"}');
@@ -344,13 +322,12 @@ this.output(201, {'Content-Type': 'text/html',
 #### .cacheResponse
 `this.cacheResponse(actions)`
 
-Cache the response for a particular action on this controller.
+在控制器层面为特殊动作缓存响应。
 
 ##### actions
-- `actions [string|array]`: Action or actions for the controller to cache
-responses for.
+- `actions [string|array]`: 控制器的某个动作或系列动作来缓存响应。
 
-##### examples
+##### 例子
 ```
 // Cache the response for the 'index' action
 this.cacheResponse('index');
@@ -363,13 +340,9 @@ this.cacheResponse(['main', 'feed']);
 
 #### .flash
 
-The flash is a special part of the session which is cleared with each request.
-This means that values stored there will only be available in the next request.
-This is useful for storing error messages, etc. It is accessed in much the same
-way as the session, like a hash.
+flash是session中比较特殊的一部分，它在每一个请求之后都会被清除。这意味着其储存的值只有在下一个请求当中才有效。它对于存储错误等很有效。它以与类似会话的方式被访问，就像hash一样。
 
-It also includes a few convenience methods for getting/setting commonly used
-types of flash-messages.
+它也包含一些用于getting/setting一样常用类型的flash-message的简便方法。
 
 * * *
 
@@ -377,10 +350,7 @@ types of flash-messages.
 ```
 flash.alert([message])
 ```
-
-Gets or sets the *alert* flash-messages for a session. If the 'message' (value)
-parameter is included it sets the value. If the 'message' paramter is not
-included, it retrieves the value and returns it.
+为session获取或者设置一个*alert* flash-messages。如果带有'message'参数，它是设置值；如果没有，它将检索这个值并且返回。
 
 ##### message
 - `message [string|object]`: The contents of the flash-message
@@ -401,9 +371,7 @@ this.flash.alert();
 flash.error([message])
 ```
 
-Gets or sets the *error* flash-messages for a session. If the 'message' (value)
-parameter is included it sets the value. If the 'message' paramter is not
-included, it retrieves the value and returns it.
+为session获取或者设置一个*error* flash-messages。如果带有'message'参数，它是设置值；如果没有，它将检索这个值并且返回。
 
 ##### message
 - `message [string|object]`: The contents of the flash-message
@@ -424,9 +392,7 @@ this.flash.error();
 flash.success([message])
 ```
 
-Gets or sets the *success* flash-messages for a session. If the 'message' (value)
-parameter is included it sets the value. If the 'message' paramter is not
-included, it retrieves the value and returns it.
+为session获取或者设置一个*success* flash-messages。如果带有'message'参数，它是设置值；如果没有，它将检索这个值并且返回。
 
 ##### message
 - `message [string|object]`: The contents of the flash-message
@@ -447,9 +413,7 @@ this.flash.success();
 flash.info([message])
 ```
 
-Gets or sets the *info* flash-messages for a session. If the 'message' (value)
-parameter is included it sets the value. If the 'message' paramter is not
-included, it retrieves the value and returns it.
+为session获取或者设置一个*info* flash-messages。如果带有'message'参数，它是设置值；如果没有，它将检索这个值并且返回。
 
 ##### message
 - `message [string|object]`: The contents of the flash-message
@@ -469,9 +433,7 @@ this.flash.info();
 ```
 flash.set([type], message)
 ```
-
-Sets the flash-messages for a session, for a custom type, or the entire
-flash-message object
+为一个会话、自定义类型或整个flash-message对象设置flash-message
 
 ##### type
 - `type [string]`: The flash-message type. If not included, this call sets
@@ -496,8 +458,7 @@ this.flash.set({bar: 'Baz bar qux});
 flash.get([type])
 ```
 
-Retrieves the flash-messages for a session, for a custom type, or the entire
-flash-message object
+为一个会话、自定义类型或整个flash-message对象检索flash-message
 
 ##### type
 - `type [string]`: The flash-message type. If not included, this call
@@ -520,12 +481,10 @@ this.flash.get();
 flash.keep([type])
 ```
 
-Normally flash-message are wiped out when they are used in the current request.
-`keep` makes them persist and be available to the next request.
+通常，在当前请求中使用flash-message时，将会被清除。`keep`使其持久化，并对下一个请求可用。
 
 ##### type
-- `type [string]`: The type of message to preserve until the next request.
-If the type param is not included, preserves the entire flash-message object
+- `type [string]`: 要保留到下一个请求的消息类型。如果没有包含type参数，则保留整个flash消息对象。
 
 ##### examples
 ```
@@ -540,12 +499,10 @@ this.flash.keep('error');
 flash.discard([type])
 ```
 
-Mark a particular flash-message entry (or the entire object) to be discarded at
-the end of the current request.
+在当前请求结束时，标记一个特定的flash-message条目(或整个对象)被丢弃。
 
 ##### type
-- `type [string]`: The type of message to discard at the end of the current request.
-If the type param is not included, discards the entire flash-message object
+- `type [string]`: 在当前请求结束时，被丢弃的消息类型。如果不包含type参数，丢弃整个flash-message对象。
 
 ##### examples
 ```

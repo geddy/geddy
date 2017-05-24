@@ -11,9 +11,6 @@
 
 #### 定义模型
 
-Model uses a pretty simple syntax for defining a model. (It should look familiar
-to anyone who has used an ORM like ActiveRecord, DataMapper, Django's models, or
-SQLAlchemy.)
 模型使用相当简单的语法来定义。（对于使用过类似ActiveRecord, DataMapper, Django's models, 或者
 SQLAlchemy等ORM的人来说，看起来有种似曾相识的感觉）
 

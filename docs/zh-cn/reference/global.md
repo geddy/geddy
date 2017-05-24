@@ -1,39 +1,28 @@
-#### 尚待翻译
-There is one global object created for Geddy apps, the `geddy` object.  There
-are a few namespaces and methods that are available directly on this global.
-Methods can be run as soon as the global is defined (e.g., in your app's
-config/init.js).
+Geddy项目创建的全局 `geddy` 对象。在这个全局对象中，有很多可用的命名空间以及方法直接拿来用。全局对象一旦定义，方法就可以拿来使用（例如，在config/init.js使用）。
 
-The `geddy` global is also an EventEmitter, with a few lifecycle methods.
+`geddy`全局对象也是一个事件触发器，自带一些生命周期方法。
 
 #### "initialized" (event, worker only)
 
-This event is emitted by a worker process when your application has loaded.
+当项目启动时，该事件就被触发。
 
 #### "started" (event, worker only)
 
-This event is emitted by a worker process when Geddy's HTTP server has started
-listening for requests. This event is useful in your application for knowing
-when to set up a realtime connection with Socket.io.
+当Geddy的HTTP服务已经启动监听请求时触发该事件。这个事件在您的应用程序中很有用，因为它知道何时与socket.io建立一个实时连接。
 
 #### "clusterStarted" (event, cluster master only)
 
-This event is emitted by a cluster's master process when the HTTP servers for
-all workers have started listening for requests.
+当所有工作进程的HTTP服务器开始监听请求时，该事件由集群的主进程发出。
 
 #### .start
 `start(config)`
 
-This command starts an unclustered Geddy application with no worker processes,
-directly in the current process. This assumes you have installed Geddy locally
-instead of globally, and have required the `geddy` object in the current script.
+该命令直接在当前进程中开启一个不聚集的Geddy应用。这前提是，你本地安装而非全局安装的Geddy，也就是在当前目录说包含`geddy`对象。
 
 ##### config
-- `config [object]`: The configuration object passed to the Geddy application
-for startup. These configuration options correspond to the options passed to the
-CLI startup script.
+- `config [object]`: 启动时，配置对象传递给Geddy应用。配置对象与传递给CLI启动脚本一致。
 
-##### example
+##### 例子
 ```
 var geddy = require('geddy');
 // Start up an unclustered app in the current process
@@ -45,16 +34,12 @@ geddy.start({
 #### .startCluster
 `startCluster(config)`
 
-Starts a clustered Geddy application with the load shared across multiple worker
-processes. This assumes you have installed Geddy locally instead of globally,
-and have required the `geddy` object in the current script.
+通过多个工作进程的负载共享来启动一个Geddy集群应用，假设你已经在本地安装而非全局安装Geddy，也就是在当前目录说包含`geddy`对象。
 
 ##### config
-- `config [object]`: The configuration object passed to the Geddy application
-for startup. These configuration options correspond to the options passed to the
-CLI startup script.
+- `config [object]`: 启动时，配置对象传递给Geddy应用。配置对象与传递给CLI启动脚本一致。
 
-##### example
+##### 例子
 ```
 var geddy = require('geddy');
 // Start up a clustered app
@@ -67,10 +52,9 @@ geddy.startCluster({
 #### .stop
 `stop`
 
-Used to stop an unclustered Geddy application with no worker processes. This
-command should not be used with a clustered app.
+常用于停止一个未集群的Geddy应用该命令，不能适用于一个集群的app。
 
-##### example
+##### 例子
 ```
 var geddy = require('geddy');
 // Start up a server and immediately shut it back down
@@ -84,10 +68,9 @@ geddy.on('started', function () {
 #### .stopCluster
 `stopCluster`
 
-Used to stop an clustered Geddy application. This command should only be used in
-the master process of a clustered server.
+常用于停止一个未集群的Geddy应用该命令。该命令仅仅用于一个集群服务的主进程。
 
-##### example
+##### 例子
 ```
 var geddy = require('geddy');
 // Start up a clustered server and immediately shut it back down
@@ -104,24 +87,18 @@ geddy.on('clusterStarted', function () {
 #### .addFormat
 `addFormat(name, contentType, formatter)`
 
-Adds a format (i.e., content-type or MIME type) that your app can handle.
+增加一个app能处理的格式(例如： content-type 或者 MIME type)。
 
 ##### name
-- `name [string]`: the name of the format (e.g., Geddy's built-ins include
-'json', 'txt', 'html')
+- `name [string]`: 格式名 (例如：Geddy内建的像 'json', 'txt', 'html')
 
 ##### contentType
-- `contentType [string|array]`: Content-type (or array of types) browsers will give the
-server for this format. If this is passed as an array, the first item will be
-used as the Content-Type header in the outgoing response.
+- `contentType [string|array]`: Content-type (or array of types) 浏览器传给服务器的格式。如果是数组, 首项将用于作为输出响应的Content-Type头。
 
 ##### formatter
-- `formatter [function]`: Function which puts the content into the desired
-format. Takes one parameter, an object input, and returns the formatted content.
-For example, the formatter function for the built-in 'json' format runs
-`JSON.stringify` on the content and returns the result.
+- `formatter [function]`: 把内容放进想要格式的函数。带一个参数，一个对象输入返回格式化内容。例如，内建的 'json' 格式化函数，执行 `JSON.stringify` 返回结果。
 
-##### example
+##### 例子
 ```
 this.addFormat('zerp', ['application/zerp', 'text/zerp'], function (content) {
   var res;

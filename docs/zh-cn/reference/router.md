@@ -1,12 +1,11 @@
-#### 尚待翻译
-Geddy uses [Barista](http://github.com/kieran/barista) as its router. Its API is very similar to rails routes. Both general-purpose resource-based routes and individually defined routes are possible.
+Geddy 使用 [Barista](http://github.com/kieran/barista) 当作它的路由规则。它跟rails路由很类似。不但可以使用基于资源的通用路由，也可以定义独立的路由。
 
 * * *
 
 #### .match
 `router.match(path [, method])`
 
-defines the url to match to a controller action.
+定义url来匹配控制器动作。
 
 ##### path
 - `path [string]`: the url to match to an action
@@ -14,7 +13,7 @@ defines the url to match to a controller action.
 ##### method
 - `method [string]`: the http method to match
 
-##### examples
+##### 例子
 ```
 router.match('/').to('Main.index');
 // will route any request to '/' to the Main controller's index action
@@ -39,13 +38,13 @@ router.match('/products/:id(.:format)', 'GET').to('products.show')
 #### .to
 `router.match(path).to(action)`
 
-defines the action to map the path to.
+定义动作来匹配路径。
 
 ##### action
-- `action [string]`: a controller name plus an action name as a string
-- `action [object]`: an object that defines a controller and action property
+- `action [string]`: 字符串格式的控制器名+动作名
+- `action [object]`: 定义控制器和动作属性的对象
 
-##### examples
+##### 例子
 ```
 router.match('/').to('Main.index');
 // will route any request to '/' to the Main controller's index action
@@ -60,40 +59,40 @@ router.match('/').to({controller: 'Main', action: 'index'});
 #### .get
 `router.get(path)`
 
-Equivalent to `router.match(path, 'GET')`
+等价于 `router.match(path, 'GET')`
 
 * * *
 
 #### .post
 `router.post(path)`
 
-Equivalent to `router.match(path, 'POST')`
+等价于 `router.match(path, 'POST')`
 
 * * *
 
 #### .put
 `router.put(path)`
 
-Equivalent to `router.match(path, 'PUT')`
+等价于 `router.match(path, 'PUT')`
 
 * * *
 
 #### .del
 `router.del(path)`
 
-Equivalent to `router.match(path, 'DELETE')`
+等价于 `router.match(path, 'DELETE')`
 
 * * *
 
 #### .resource
 `router.resource(controller)`
 
-generates standard resource routes for a controller name
+为控制器生成标准的资源路由
 
 ##### controller
-- `controller [string]`: the camelCased controller name that needs resourceful routes
+- `controller [string]`: 需要丰富多彩的路由的驼峰命名的控制器名称
 
-##### examples
+##### 例子
 ```
 router.resource('products')
 
