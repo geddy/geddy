@@ -1,5 +1,4 @@
-#### 尚待翻译
-Geddy provides tons of useful utilities to make tasks easier, they are provided by the `utilities` module in NPM. All the utilities are availble through the `geddy` global object(e.g., `geddy.array.humanize()`).
+Geddy提供了很多有用的实用工具来使得开发更简单。通过npm下载`utilities`即可使用。通过 `geddy` 全局对象，所有的实用工具都可用（例如： `geddy.array.humanize()` ）。
 
 * * *
 
@@ -8,9 +7,9 @@ Geddy provides tons of useful utilities to make tasks easier, they are provided 
 #### setIndentLevel
 `setIndentLevel(level<Number>)`
 
-SetIndentLevel changes the indent level for XML.stringify and returns it
+SetIndentLevel 实用 XML.stringify 改变缩紧级别并返回它。
 
-#####Examples
+#####例子
 ```
 setIndentLevel(6)
 // => 6
@@ -22,15 +21,15 @@ setIndentLevel(6)
 `stringify(obj<Object>, opts<Object>)`
 
 #####Options
-- `whitespace` [Boolean] Don't insert indents and newlines after xml entities(Default: true)
-- `name` [String] Use custom name as global namespace(Default: typeof obj)
-- `fragment` [Boolean] If true no header fragment is added to the top(Default: false)
-- `level` [Number] Remove this many levels from the output(Default: 0)
+- `whitespace` [Boolean] 在xml之后不插入缩进及新行(Default: true)
+- `name` [String] 使用自定义明作为全局命名空间(Default: typeof obj)
+- `fragment` [Boolean] 为真的话，头部片度被加入到顶部(Default: false)
+- `level` [Number] 从输出中移除很多级别(Default: 0)
 - `arrayRoot` [Boolean] (Default: true)
 
-Stringify returns an XML representation of the given `obj`
+Stringify 根据给定的 `obj` 返回一个xml表示。
 
-#####Examples
+#####例子
 ```
 stringify({user: 'name'})
 // => '<?xml version="1.0" encoding="UTF-8"?>\n<object>\n    <user>name</user>\n</object>\n'
@@ -49,9 +48,9 @@ stringify({user: 'name'}, {fragment: true})
 #### humanize
 `humanize(array<Array>)`
 
-Creates a string containing the array elements in a readable format
+用可读的格式创建包含数组元素的字符串。
 
-#####Examples
+#####例子
 ```
 humanize(["array", "array", "array"])
 // => "array, array and array"
@@ -65,9 +64,9 @@ humanize(["array", "array"])
 #### include
 `include(array<Array>, item<Any>)`
 
-Checks if an `item` is included in an `array`
+检查 `item` 是否被包含在 `array` 中
 
-#####Examples
+#####例子
 ```
 include(["array"], "array")
 // => true
@@ -86,9 +85,9 @@ include(["array", false], false)
 #### getFileExtension
 `getFileExtension(path<String>)`
 
-Gets the file extension for a path and returns it
+获取一个路径的文件扩展并返回。
 
-#####Examples
+#####例子
 ```
 getFileExtension('users.json')
 // => 'json'
@@ -100,14 +99,14 @@ getFileExtension('users.json')
 `paramify(obj<Object>, o<Object>)`
 
 #####Options
-- `consolidate` [Boolean] take values from elements that can return(Default: false)
-- `includeEmpty` [Boolean] include keys in the string for all elements, even(Default: false)
-- `snakeize` [Boolean] change param names from camelCase to snake_case.(Default: false)
-- `escapeVals` [Boolean] escape the values for XML entities.(Default: false)
+- `consolidate` [Boolean] 从可以返回的元素中获取值(Default: false)
+- `includeEmpty` [Boolean] 在字符串中包含所有元素的键，即使是空值(Default: false)
+- `snakeize` [Boolean] 把参数名从驼峰式编委蛇底式(Default: false)
+- `escapeVals` [Boolean] 从xml实体中剥离值(Default: false)
 
-Convert a JS Object to a querystring (key=val&key=val). Values in arrays
+把js数组对象转换为查询字符串 (key=val&key=val)。
 
-#####Examples
+#####例子
 ```
 paramify({username: 'user', token: 'token', secret: 'secret'})
 // => 'username=user&token=token&secret=secret'
@@ -128,11 +127,11 @@ paramify({username: 'user', token: '<token'}, {escapeVals: true})
 `objectify(str<String>, o<Object>)`
 
 #####Options
-- `consolidate` [Boolean] Convert multiple instances of the same(Default: true)
+- `consolidate` [Boolean] 转换多个相同实例(Default: true)
 
-Convert the values in a query string (key=val&key=val) to an Object
+把查询字符串转为对象 (key=val&key=val) 
 
-#####Examples
+#####例子
 ```
 objectify('name=user')
 // => {name: 'user'}
@@ -151,9 +150,9 @@ objectify('name=user&name=user2', {consolidate: false})
 #### proxyEmit
 `proxyEmit(name<String>, args<Array>)`
 
-Emit an event by name and arguments or add it to the buffer if no outlet is set
+通过名称和参数发出一个事件，或者在没有设置出口的情况下将其添加到缓冲区中
 
-#####Examples
+#####例子
 ```
 proxyEmit("close")
 // => undefined
@@ -167,9 +166,9 @@ proxyEmit("data", "some content here")
 #### emit
 `emit(name<String>, args<Array>)`
 
-Emit an event by name and arguments
+通过名称和参数发出一个事件
 
-#####Examples
+#####例子
 ```
 emit("close")
 // => undefined
@@ -183,9 +182,9 @@ emit("data", "some content here")
 #### sync
 `sync(outlet<Object>)`
 
-Flush the buffer and continue piping new events to the outlet
+刷新缓冲区，并继续将新事件输送到出口
 
-#####Examples
+#####例子
 ```
 sync(new EventEmitter())
 // => undefined
@@ -198,9 +197,9 @@ sync(new EventEmitter())
 #### addItem
 `addItem(key<String>, val<Any>)`
 
-Adds a new key/value to the collection
+在集合中添加一个新的key/value
 
-#####Examples
+#####例子
 ```
 addItem('testA', 'AAAA');
 // => 'AAAA'
@@ -214,9 +213,9 @@ addItem('testV', 'VVVV');
 #### getItem
 `getItem(p<String/Number>)`
 
-Retrieves the value for the given identifier that being a key or index
+检索作为键或索引的给定标识符的值
 
-#####Examples
+#####例子
 ```
 getItem('testA');
 // => 'AAAA'
@@ -230,9 +229,9 @@ getItem(1);
 #### setItem
 `setItem(p<String/Number>, val<Any>)`
 
-Sets the item in the collection with the given val, overwriting the existsing item
+在集合中使用给定的val设置项目，并覆盖存在的条目
 
-#####Examples
+#####例子
 ```
 setItem('testA', 'aaaa');
 // => 'aaaa'
@@ -246,9 +245,9 @@ setItem(1, 'vvvv');
 #### removeItem
 `removeItem(p<String/Number>)`
 
-Removes the item for the given identifier
+根据已知识别移除项目。
 
-#####Examples
+#####例子
 ```
 removeItem('testA')
 // => true
@@ -262,9 +261,9 @@ removeItem(3)
 #### getByKey
 `getByKey(key<String>)`
 
-Retrieves the value for the given key
+根据给定键值检索其值
 
-#####Examples
+#####例子
 ```
 getByKey('testA');
 // => 'AAAA'
@@ -278,9 +277,9 @@ getByKey('testV');
 #### setByKey
 `setByKey(key<String>, val<Any>)`
 
-Sets a item by key assigning the given val
+根据给定的值设置一个项目。
 
-#####Examples
+#####例子
 ```
 setByKey('testA', 'aaaa');
 // => 'aaaa'
@@ -294,9 +293,9 @@ setByKey('testV', 'vvvv');
 #### removeByKey
 `removeByKey(key<String>)`
 
-Removes a collection item by key
+根据给定键值移除一个集合
 
-#####Examples
+#####例子
 ```
 removeByKey('testA')
 // => true
@@ -310,9 +309,9 @@ removeByKey('testC')
 #### getByIndex
 `getByIndex(ind<Number>)`
 
-Retrieves the value for the given index
+根据给定的索引检索其值
 
-#####Examples
+#####例子
 ```
 getByIndex(0);
 // => 'AAAA'
@@ -326,9 +325,9 @@ getByIndex(1);
 #### setByIndex
 `setByIndex(ind<Number>, val<Any>)`
 
-Sets a item by index assigning the given val
+根据给定的索引重制其值
 
-#####Examples
+#####例子
 ```
 setByIndex(0, 'aaaa');
 // => 'aaaa'
@@ -342,7 +341,7 @@ setByIndex(1, 'vvvv');
 #### removeByIndex
 `removeByIndex(ind<Number>)`
 
-Removes a collection item by index
+根据索引移除一个集合选项
 
 #####Examples
 ```
@@ -358,9 +357,9 @@ removeByIndex(3)
 #### hasKey
 `hasKey(key<String>)`
 
-Checks if a key item exists in the collection
+在集合中检测一个键名是否存在
 
-#####Examples
+#####例子
 ```
 hasKey('testA')
 // => true
@@ -374,9 +373,9 @@ hasKey('testC')
 #### hasValue
 `hasValue(val<Any>)`
 
-Checks if a key item in the collection has a given val
+根据给定的值检测一个键值项在集合中是否存在。
 
-#####Examples
+#####例子
 ```
 hasValue('aaaa')
 // => true
@@ -390,9 +389,9 @@ hasValue('cccc')
 #### allKeys
 `allKeys(str<String>)`
 
-Joins all the keys into a string
+将所有的键连接到字符串中
 
-#####Examples
+#####例子
 ```
 allKeys(", ")
 // => "testA, testV"
@@ -403,7 +402,7 @@ allKeys(", ")
 #### replaceKey
 `replaceKey(oldKey<String>, newKey<String>)`
 
-Joins all the keys into a string
+将所有的键连接到字符串中
 
 #####Examples
 ```
@@ -416,9 +415,9 @@ replaceKey("testV", "testC")
 #### insertAtIndex
 `insertAtIndex(ind<Number>, key<String>, val<Any>)`
 
-Inserts a key/value at a specific index in the collection
+在集合中特殊的索引位置插入一个key/value
 
-#####Examples
+#####例子
 ```
 insertAtIndex(1, "testB", "bbbb")
 // => true
@@ -429,9 +428,9 @@ insertAtIndex(1, "testB", "bbbb")
 #### insertAfterKey
 `insertAfterKey(refKey<String>, key<String>, val<Any>)`
 
-Inserts a key/value item after the given reference key in the collection
+在集合中给定的引用键之后插入一个key/value项。
 
-#####Examples
+#####例子
 ```
 insertAfterKey("testB", "testB1", "b1b1b1b1b1b1")
 // => true
@@ -442,9 +441,9 @@ insertAfterKey("testB", "testB1", "b1b1b1b1b1b1")
 #### getPosition
 `getPosition(key<String>)`
 
-Retrieves the index of the key item
+检索键名的索引
 
-#####Examples
+#####例子
 ```
 getPosition("testA")
 // => 0
@@ -459,12 +458,12 @@ getPosition("testB1")
 `each(func<Function>, opts<Object>)`
 
 #####Options
-- `keyOnly` [Boolean] Only give the function the key
-- `valueOnly` [Boolean] Only give the function the value
+- `keyOnly` [Boolean] 只给函数键
+- `valueOnly` [Boolean] 只给函数值
 
-Loops through the collection and calls the given function
+通过集合轮询并调用给定方法
 
-#####Examples
+#####例子
 ```
 each(function (val, key) {
   console.log("Key: " + key + " Value: " + val);
@@ -484,9 +483,9 @@ each(function (val) {
 #### eachKey
 `eachKey(func<Function>)`
 
-Loops through the collection and calls the given function
+通过集合轮询并调用给定方法
 
-#####Examples
+#####例子
 ```
 each(function (key) {
   console.log("Key: " + key);
@@ -498,9 +497,9 @@ each(function (key) {
 #### eachValue
 `eachValue(func<Function>)`
 
-Loops through the collection and calls the given function
+通过集合轮询并调用给定方法
 
-#####Examples
+#####例子
 ```
 each(function (val) {
   console.log("Val: " + val);
@@ -512,9 +511,9 @@ each(function (val) {
 #### clone
 `clone()`
 
-Creates a cloned version of the current collection and returns it
+创建一个当前集合的克隆版本并返回之。
 
-#####Examples
+#####例子
 ```
 clone()
 // => SortedCollection
@@ -525,9 +524,9 @@ clone()
 #### concat
 `concat(hNew<Object>)`
 
-Join a given collection with the current one
+用当前的拼接到给定集合中
 
-#####Examples
+#####例子
 ```
 concat(new SortedCollection())
 // => undefined
@@ -538,7 +537,7 @@ concat(new SortedCollection())
 #### push
 `push(key<String>, val<Any>)`
 
-Appends a new item to the collection
+在集合中插入一个新项
 
 #####Examples
 ```
@@ -551,9 +550,9 @@ push("testZ", "zzzz")
 #### pop
 `pop()`
 
-Pops off the last item in the collection and returns it's value
+弹出集合中最后一项并返回其值
 
-#####Examples
+#####例子
 ```
 pop()
 // => "zzzz"
@@ -564,9 +563,9 @@ pop()
 #### unshift
 `unshift(key<String>, val<Any>)`
 
-Prepends a new item to the beginning of the collection
+在集合的开始插入一个新值
 
-#####Examples
+#####例子
 ```
 unshift("testA0", "a0a0a0a0")
 // => 6
@@ -577,9 +576,9 @@ unshift("testA0", "a0a0a0a0")
 #### shift
 `shift()`
 
-Removes the first item in the list and returns it's value
+移除列表中的第一项并返回其值
 
-#####Examples
+#####例子
 ```
 shift()
 // => "a0a0a0a0"
@@ -590,9 +589,9 @@ shift()
 #### splice
 `splice(index<Number>, numToRemove<Number>, hash<Object>)`
 
-Removes items from index to the given max and then adds the given collections items
+从索引到给定的最大值中移除项，然后添加给定的集合项
 
-#####Examples
+#####例子
 ```
 splice(2, 1, new SortedCollection())
 // => undefined
@@ -603,9 +602,9 @@ splice(2, 1, new SortedCollection())
 #### reverse
 `reverse()`
 
-Reverse the collection item list
+反转集合
 
-#####Examples
+#####例子
 ```
 reverse()
 // => undefined
@@ -618,16 +617,16 @@ reverse()
 #### supportedFormats
 `supportedFormats`
 
-Object of supported strftime formats
+支持strftime格式的对象
 
 * * *
 
 #### getSupportedFormats
 `getSupportedFormats()`
 
-return the list of formats in a string
+以字符串的形式返回列表
 
-#####Examples
+#####例子
 ```
 getSupportedFormats()
 // => "aAbhBcCdDefFgGHI..."
@@ -638,9 +637,9 @@ getSupportedFormats()
 #### strftime
 `strftime(dt<Date>, format<String>)`
 
-Formats the given date with the strftime formated
+用strftime格式话指定日期
 
-#####Examples
+#####例子
 ```
 strftime(new Date(), "%w")
 // => 3
@@ -651,9 +650,9 @@ strftime(new Date(), "%w")
 #### calcCentury
 `calcCentury(year<Number>)`
 
-Find the century for the given `year`
+从给定年份中获取世纪
 
-#####Examples
+#####例子
 ```
 calcCentury()
 // => "21"
@@ -667,9 +666,9 @@ calcCentury(2000)
 #### calcDays
 `calcDays(dt<Date>)`
 
-Calculate the day number in the year a particular date is on
+根据给定日期计算在一年中的日子数
 
-#####Examples
+#####例子
 ```
 calcDays(new Date())
 // => 150
@@ -680,9 +679,9 @@ calcDays(new Date())
 #### getMeridiem
 `getMeridiem(h<Number>)`
 
-Return 'AM' or 'PM' based on hour in 24-hour format
+以24小时制返回 'AM' or 'PM'。
 
-#####Examples
+#####例子
 ```
 getMeridiem(14)
 // => "PM"
@@ -696,9 +695,9 @@ getMeridiem(7)
 #### hrMil2Std
 `hrMil2Std(hour<String>)`
 
-Convert a 24-hour formatted hour to 12-hour format
+把24小时制转换为12小时制
 
-#####Examples
+#####例子
 ```
 hrMil2Std("14")
 // => 2
@@ -712,7 +711,7 @@ hrMil2Std("7")
 #### hrStd2Mil
 `hrStd2Mil(hour<String>, pm<Boolean>)`
 
-Convert a 12-hour formatted hour with meridian flag to 24-hour format
+把12小时制转换为24小时制
 
 #####Examples
 ```
@@ -728,9 +727,9 @@ hrStd2Mil("7")
 #### add
 `add(dt<Date>, interv<String>, incr<Number>)`
 
-Add to a Date in intervals of different size, from milliseconds to years
+以不同大小的间隔添加日期，从毫秒到年
 
-#####Examples
+#####例子
 ```
 add(new Date(), "hour", 1)
 // => Date
@@ -745,6 +744,7 @@ add(new Date(), "minute", 10)
 `diff(date1<Date>, date2<Date>, interv<String>)`
 
 Get the difference in a specific unit of time (e.g., number of months, weeks, days, etc.) between two dates.
+在两个日期内，获取特定的时间单位中的差值(例如几个月、几周、几天等)
 
 #####Examples
 ```
@@ -760,9 +760,9 @@ diff(new Date(), new Date(), "minute")
 #### parse
 `parse(val<String>)`
 
-Convert various sorts of strings to JavaScript Date objects
+转换不同字符串为js日期对象
 
-#####Examples
+#####例子
 ```
 parse("12:00 March 5 1950")
 // => Sun Mar 05 1950 12:00:00 GMT-0500 (EST)
@@ -774,11 +774,11 @@ parse("12:00 March 5 1950")
 `relativeTime(dt<Date>, opts<Object>)`
 
 #####Options
-- `abbreviated` [Boolean] Use short strings(Default: false)
+- `abbreviated` [Boolean] 使用短字符(Default: false)
 
-Convert a Date to an English sentence representing
+转换日期为一个英语表达式
 
-#####Examples
+#####例子
 ```
 relativeTime(new Date())
 // => 'less than a minute ago'
@@ -789,9 +789,9 @@ relativeTime(new Date())
 #### toISO8601
 `toISO8601(dt<Date>)`
 
-Convert a Date to an ISO8601-formatted string
+转换日期为一个ISO8601格式字符串
 
-#####Examples
+#####例子
 ```
 toISO8601(new Date())
 // => '2012-10-17T17:57:03.892-04'
@@ -804,9 +804,10 @@ toISO8601(new Date())
 #### merge
 `merge(object<Object>, otherObject<Object>)`
 
-Merge merges `otherObject` into `object` and takes care of deep merging of objects
+合并将 `otherObject` 合并到 `object` 中，并处理对象的深度合并
 
-#####Examples
+
+#####例子
 ```
 merge({user: 'geddy'}, {key: 'key'})
 // => {user: 'geddy', key: 'key'}
@@ -820,7 +821,7 @@ merge({user: 'geddy', key: 'geddyKey'}, {key: 'key'})
 #### reverseMerge
 `reverseMerge(object<Object>, defaultObject<Object>)`
 
-ReverseMerge merges `object` into `defaultObject`
+反向合并 `object` 变为 `defaultObject`
 
 #####Examples
 ```
@@ -836,9 +837,9 @@ reverseMerge({user: 'geddy', key: 'geddyKey'}, {key: 'key'})
 #### isEmpty
 `isEmpty(object<Object>)`
 
-isEmpty checks if an Object is empty
+对象非空检测
 
-#####Examples
+#####例子
 ```
 isEmpty({user: 'geddy'})
 // => false
@@ -852,9 +853,9 @@ isEmpty({})
 #### toArray
 `toArray(object<Object>)`
 
-Converts an object to an array of objects each including the original key/value
+把每一个包含原始对象的key/value的对象转为数组对象
 
-#####Examples
+#####例子
 ```
 toArray({user: 'geddy'})
 // => [{key: 'user', value: 'geddy'}]
@@ -867,9 +868,9 @@ toArray({user: 'geddy'})
 #### isPortOpen
 `isPortOpen(port<Number>, host<String>, callback<Function>)`
 
-Checks if the given port in the given host is open
+检测在给定主机中的给定端口是否打开
 
-#####Examples
+#####例子
 ```
 isPortOpen(3000, 'localhost', function (err, isOpen) {
   if (err) { throw err; }
@@ -885,16 +886,16 @@ isPortOpen(3000, 'localhost', function (err, isOpen) {
 #### request
 `request(opts<Object>, callback<Function>)`
 
-Sends requests to the given url sending any data if the method is POST or PUT
+如果方法是POST或PUT，则向给定的url发送任何数据的请求发
 
 #####Options
-- `url` [String] The URL to send the request to
-- `method` [String] The method to use for the request(Default: 'GET')
-- `headers` [Object] Headers to send on requests
-- `data` [String] Data to send on POST and PUT requests
-- `dataType` [String] The type of data to send
+- `url` [String] 发送请求的url
+- `method` [String] 请求发送的方法(Default: 'GET')
+- `headers` [Object] 请求头
+- `data` [String] 请求数据
+- `dataType` [String] 发送的数据类型
 
-#####Examples
+#####例子
 ```
 // 'GET' request
 request({url: 'google.com', method: 'GET'}, function (err, data) {
@@ -913,19 +914,19 @@ request({url: 'google.com', data: geddy.uri.paramify({name: 'geddy', key: 'geddy
 
 * * *
 
-#### inflection
+### inflection
 
 #### inflections
 `inflections`
 
-A list of rules and replacements for different inflection types
+不同变化类型的规则和替换列表
 
 * * *
 
 #### parse
 `parse(type<String>, word<String>)`
 
-Parse a word from the given inflection type
+根据给定的变化类型解析一个单词
 
 #####Examples
 ```
@@ -941,7 +942,7 @@ parse('singulars', 'pluralities')
 #### pluralize
 `pluralize(word<String>)`
 
-Create a plural inflection for a word
+把单词变为复数
 
 #####Examples
 ```
@@ -954,7 +955,7 @@ pluralize('carrier')
 #### singularize
 `singularize(word<String>)`
 
-Create a singular inflection for a word
+把单词变为单数
 
 #####Examples
 ```
@@ -964,15 +965,15 @@ singularize('pluralities')
 
 * * *
 
-#### file
+### file
 
 #### cpR
 `cpR(fromPath<String>, toPath<String>, opts<Object>)`
 
 #####Options
-- `silent` [Boolean] If false then will log the command
+- `silent` [Boolean] 如果为假，记录命令
 
-Copies a directory/file to a destination
+拷贝目录或文件
 
 #####Examples
 ```
@@ -985,9 +986,9 @@ cpR('path/to/directory', 'destination/path')
 #### mkdirP
 `mkdirP(dir<String>, mode<Number>)`
 
-Create the given directory(ies) using the given mode permissions
+根据给定mode权限创建指定目录
 
-#####Examples
+#####例子
 ```
 mkdirP('dir', 0755)
 // => undefined
@@ -1002,11 +1003,11 @@ mkdirP('recursive/dirs')
 `readdirR(dir<String>, opts<Object>)`
 
 #####Options
-- `format` [String] Set the format to return(Default: Array)
+- `format` [String] 设置返回格式(Default: Array)
 
-Reads the given directory returning it's contents
+读取指定目录并返回其内容
 
-#####Examples
+#####例子
 ```
 readdirR('dir')
 // => ['dir', 'item.txt']
@@ -1023,9 +1024,9 @@ readdirR('path/to/dir')
 #####Options
 - `silent` [String] If false then logs the command
 
-Deletes the given directory/file
+删除指定目录或文件
 
-#####Examples
+#####例子
 ```
 rmRf('file.txt')
 // => undefined
@@ -1036,9 +1037,9 @@ rmRf('file.txt')
 #### isAbsolute
 `isAbsolute(p<String>)`
 
-Checks if a given path is absolute or relative
+检测给定路径是绝对路径还是相对路径【译者注：绝对路径返回true】
 
-#####Examples
+#####例子
 ```
 isAbsolute('/path/to/file.txt')
 // => true
@@ -1052,9 +1053,9 @@ isAbsolute('C:\\path\\to\\file.txt')
 #### absolutize
 `absolutize(p<String>)`
 
-Returns the absolute path for the given path
+根据给定路径返回其绝对路径
 
-#####Examples
+#####例子
 ```
 absolutize(path/to/dir)
 // => /home/user/path/to/dir
@@ -1065,9 +1066,10 @@ absolutize(path/to/dir)
 #### searchParentPath
 `searchParentPath(p<String>, callback<Function>)`
 
-Search for a directory/file in the current directory and parent directories
+在当前目录和父目录中搜索一个目录／文件。
 
-#####Examples
+
+#####例子
 ```
 searchParentPath('path/to/file.txt', function (err, path) {
   if (err) { throw err; }
@@ -1081,9 +1083,9 @@ searchParentPath('path/to/file.txt', function (err, path) {
 #### watch
 `watch(path<String>, callback<Function>)`
 
-Watch a given path then calls the callback once a change occurs
+观察给定路径，然后在发生变化时调用回调
 
-#####Examples
+#####例子
 ```
 watch('path/to/dir', function (currStat, oldStat) {
   console.log('the current mtime is: ' + currStat.mtime);
@@ -1096,9 +1098,9 @@ watch('path/to/dir', function (currStat, oldStat) {
 #### requireLocal
 `requireLocal(module<String>, message<String>)`
 
-Require a local module from the node_modules in the current directory
+返回一个在当前目录中来自node_modules的本地模块。
 
-#####Examples
+#####例子
 ```
 requireLocal('utilities', 'optional error message')
 // => { ... }
@@ -1111,9 +1113,9 @@ requireLocal('utilities', 'optional error message')
 #### escapeRegExpChars
 `escapeRegExpChars(string<String>)`
 
-Escapes regex control-characters in strings used to build regexes dynamically
+在字符串中转移正则控制字符，用于动态构架正则。
 
-#####Examples
+#####例子
 ```
 escapeRegExpChars('/\s.*/')
 // => '\\\\/s\\\\.\\\\*\\\\/'
@@ -1124,9 +1126,9 @@ escapeRegExpChars('/\s.*/')
 #### toArray
 `toArray(string<String>)`
 
-Converts a string to an array
+把字符串转位数组
 
-#####Examples
+#####例子
 ```
 toArray('geddy')
 // => ['g', 'e', 'd', 'd', 'y']
@@ -1137,9 +1139,9 @@ toArray('geddy')
 #### reverse
 `reverse(string<String>)`
 
-Reverses a string
+字符串反转
 
-#####Examples
+#####例子
 ```
 reverse('geddy')
 // => 'yddeg'
@@ -1150,9 +1152,9 @@ reverse('geddy')
 #### ltrim
 `ltrim(string<String>, char<String>)`
 
-Ltrim trims `char` from the left of a `string` and returns it if no `char` is given it will trim spaces
+根据第二个参数从左边开始截取字符串并返回除参数以外的字符，如果不给定第二个参数，默认截取掉空格。
 
-#####Examples
+#####例子
 ```
 ltrim('&geddy', '&')
 // => 'geddy'
@@ -1166,7 +1168,7 @@ ltrim('    geddy')
 #### rtrim
 `rtrim(string<String>, char<String>)`
 
-Rtrim trims `char` from the right of a `string` and returns it if no `char` is given it will trim spaces
+根据第二个参数从右边截取字符串并返回除参数以外的字符，如果不给定第二个参数，默认截取掉空格。
 
 #####Examples
 ```
@@ -1182,9 +1184,9 @@ rtrim('geddy    ')
 #### trim
 `trim(string<String>, char<String>)`
 
-Trim trims `char` from the left and right of a `string` and returns it if no `char` is given it will trim spaces
+根据第二个参数从左右两边截取字符串并返回除参数以外的字符，如果不给定第二个参数，默认截取掉空格。
 
-#####Examples
+#####例子
 ```
 trim('&&&&geddy&', '&')
 // => 'geddy'
@@ -1198,9 +1200,9 @@ trim('    geddy    ')
 #### chop
 `chop(string<String>)`
 
-Returns a new String with the last character removed. If the string ends with \r\n, both characters are removed. Applying chop to an empty string returns an empty string.
+移除最后的字符并返回新的字符串。如果字符串以空格换行结尾，都将被移除。空字符串调用chop仍返回空字符串。
 
-#####Examples
+#####例子
 ```
 chop('geddy&')
 // => 'geddy'
@@ -1211,9 +1213,9 @@ chop('geddy&')
 #### lpad
 `lpad(string<String>, char<String>, width<Number>)`
 
-Lpad adds `char` to the left of `string` until the length of `string` is more than `width`
+lpad 在 `string` 左边添加 `char` ，直到 `string` 超出其 `width`
 
-#####Examples
+#####例子
 ```
 lpad('geddy', '&', 6)
 // => '&geddy'
@@ -1224,9 +1226,9 @@ lpad('geddy', '&', 6)
 #### rpad
 `rpad(string<String>, char<String>, width<Number>)`
 
-Rpad adds `char` to the right of `string` until the length of `string` is more than `width`
+rpad 在 `string` 右边添加 `char` ，直到 `string` 超出其 `width`
 
-#####Examples
+#####例子
 ```
 rpad('geddy', '&', 7)
 // => 'geddy&'
@@ -1237,7 +1239,7 @@ rpad('geddy', '&', 7)
 #### pad
 `pad(string<String>, char<String>, width<Number>)`
 
-Pad adds `char` to the left and right of `string` until the length of `string` is more than `width`
+pad 在 `string` 左右两边添加 `char` ，直到 `string` 超出其 `width`
 
 #####Examples
 ```
@@ -1247,15 +1249,15 @@ rpad('geddy', '&', 6)
 
 * * *
 
-#### truncate
+#### truncate 【译者注：truncate及truncateHTML 在 [helpers](https://github.com/geddy/geddy/blob/master/docs/zh-cn/reference/helpers.md#truncate) 有翻译】
 `truncate(string<String>, options<Integer/Object>, callback<Function>)`
 
 #####Options
-- `length` [Integer] Length the output string will be(Default: string.length)
-- `len` [Integer] Alias for `length`
-- `omission` [String] Replace last characters with an omission(Default: '...')
-- `ellipsis` [String] Alias for `omission`(Default: '...')
-- `seperator` [String/RegExp] Break the truncated test at the nearest `seperator`
+- `length` [Integer] 输出字符串的长度(Default: string.length)
+- `len` [Integer]  `length` 的别名
+- `omission` [String] 被替换字符串的替代表示(Default: '...')
+- `ellipsis` [String]  `omission` 的别名 (Default: '...')
+- `seperator` [String/RegExp] 在最近的 `seperator` 截断
 
 Truncates a given `string` after a specified `length` if `string` is longer than `length`. The last characters will be replaced with an `omission` for a total length not exceeding `length`. If `callback` is given it will fire if `string` is truncated.
 
@@ -1304,7 +1306,7 @@ truncateHTML('<p>Once upon a time <small>in a world</small></p>', { length: 10, 
 #### nl2br
 `nl2br(string<String>)`
 
-Nl2br returns a string where all newline chars are turned into line break HTML tags
+Nl2br返回一个字符串，其中所有的换行符都被转换成html标签。
 
 #####Examples
 ```
@@ -1317,9 +1319,9 @@ nl2br("geddy\n")
 #### snakeize
 `snakeize(string<String>, separ='_'<String>)`
 
-Snakeize converts camelCase and CamelCase strings to snake_case strings
+Snakeize 把驼峰式转位为蛇底式。
 
-#####Examples
+#####例子
 ```
 snakeize("geddyJs")
 // => 'geddy_js'
@@ -1334,10 +1336,8 @@ snakeize("GeddyJs")
 `camelize(string<String>, options<Object>)`
 
 #####Options
-- `initialCap` [Boolean] If initialCap is true the returned
-- `leadingUnderscore` [Boolean] If leadingUnderscore os true then if
-
-Camelize takes a string and optional options and returns a camelCase version of the given `string`
+- `initialCap` [Boolean] 为真则首字母也大些
+- `leadingUnderscore` [Boolean] If leadingUnderscore os true then if Camelize takes a string and optional options and returns a camelCase version of the given `string`
 
 #####Examples
 ```
@@ -1359,9 +1359,9 @@ camelize("_geddy_js", {leadingUnderscore: true})
 #### decapitalize
 `decapitalize(string<String>)`
 
-Decapitalize returns the given string with the first letter uncapitalized.
+返回首字母小写
 
-#####Examples
+#####例子
 ```
 decapitalize("Geddy")
 // => 'geddy'
@@ -1372,9 +1372,9 @@ decapitalize("Geddy")
 #### capitalize
 `capitalize(string<String>)`
 
-capitalize returns the given string with the first letter capitalized.
+返回首字母大写
 
-#####Examples
+#####例子
 ```
 decapitalize("geddy")
 // => 'Geddy'
@@ -1385,9 +1385,9 @@ decapitalize("geddy")
 #### dasherize
 `dasherize(string<String>, replace='-'<String>)`
 
-Dasherize returns the given `string` converting camelCase and snakeCase to dashes or replace them with the `replace` character.
+在驼峰式或蛇底式之间已给定字符串隔开
 
-#####Examples
+#####例子
 ```
 dasherize("geddyJs")
 // => 'geddy-js'
@@ -1401,7 +1401,7 @@ dasherize("geddyJs", "_")
 #### include
 `include(searchIn<String>, searchFor<String>)`
 
-Searches for a particular string in another string
+在另一个字符串中搜索特定字符串
 
 #####Examples
 ```
@@ -1420,9 +1420,9 @@ include('geddyjs', 'js')
 #####Options
 - `initialCap` [Boolean]
 
-Inflection returns an object that contains different inflections created from the given `name`
+根据给定的 `name` 返回一个包含创建的不同的对象。
 
-#####Examples
+#####例子
 ```
 getInflections('user')
 // => {filename: { ... }, constructor: { ... }, property: { ... }}

@@ -1,13 +1,12 @@
-#### 尚待翻译
-Sessions are used to keep track of current connections to the server.
+Sessions通常用于记录与服务器的保持当前连接。
 
 #### .get
 `get( key )`
 
-Gets a key from the current session.
+从当前session中获取key
 
 ##### key
-- `key [string]`: the key to return the value of
+- `key [string]`: 返回值的键
 
 ##### example
 ```
@@ -17,15 +16,15 @@ var user = this.session.get(‘user’);
 #### .set
 `set( key, value )`
 
-Saves a value to the current session as a key
+按照key,value的形式保存当前会话。
 
 ##### key
-- `key [string]`: the key to set on the session
+- `key [string]`: 设置session的键名
 
 ##### value
-- `value [object]`: the value to save to the session
+- `value [object]`: 保存session的键值
 
-##### example
+##### 例子
 ```
 this.session.set(‘user’, user);
 ```
@@ -33,12 +32,12 @@ this.session.set(‘user’, user);
 #### .unset
 `unset( key )`
 
-Removes a key and value from the current session
+从当前会话中移除键名和键值
 
 ##### key
-- `key [string]`: the key to remove
+- `key [string]`: 待移除的键名
 
-##### example
+##### 例子
 ```
 this.session.unset(‘user’);
 ```
@@ -48,9 +47,9 @@ this.session.unset(‘user’);
 isExpired()
 ```
 
-Returns true if the current session has expired
+如果当前会话已过期，则返回true
 
-##### example
+##### 例子
 ```
 this.session.isExpired
 ```
@@ -60,9 +59,9 @@ this.session.isExpired
 reset()
 ```
 
-Completely resets the user's session -- wipes all data, sets a new session ID.
+完全重置用户会话 —— 清除所有数据，设置一个新的会话ID。
 
-##### example
+##### 例子
 ```
 this.session.reset
 ```
