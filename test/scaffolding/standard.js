@@ -13,7 +13,6 @@
     , engines = {
         ejs: null
       , jade: '-j'
-      , swig: '-s'
       , handlebars: '-H'
       , mustache: '-m'
       }

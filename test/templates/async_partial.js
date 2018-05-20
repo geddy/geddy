@@ -2,6 +2,7 @@
   'use strict';
 
   require('../../lib/geddy');
+  geddy.viewHelpers = {};
 
   var assert = require('assert')
     , Partial = require('../../lib/template/partial').Partial
