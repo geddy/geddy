@@ -8,7 +8,7 @@
     "MVC",
     "realtime"
   ],
-  "version": "13.0.8",
+  "version": "14.0.0",
   "author": "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
   "license": "Apache 2.0",
   "dependencies": {
