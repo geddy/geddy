@@ -16,7 +16,7 @@
     "chalk": "^0.4.0",
     "is-promise": "^2.0.0",
     "jake": "8.0.x",
-    "mime": "1.2.x",
+    "mime": "^2.3.1",
     "model": "6.0.x",
     "tlsopts": "0.0.1",
     "utilities": "1.0.x"
@@ -35,11 +35,11 @@
   "preferGlobal": true,
   "devDependencies": {
     "browserify": "1.16.x",
-    "socket.io-client": "1.0.x",
+    "ejs": "latest",
     "handlebars": "latest",
     "jade": "latest",
-    "ejs": "latest",
-    "request": "latest"
+    "request": "latest",
+    "socket.io-client": "1.0.x"
   },
   "engines": {
     "node": "*"
