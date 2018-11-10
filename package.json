@@ -38,7 +38,7 @@
     "ejs": "latest",
     "handlebars": "latest",
     "pug": "latest",
-    "request": "latest",
+    "request": "^2.88.0",
     "socket.io-client": "latest"
   },
   "engines": {
