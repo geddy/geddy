@@ -15,7 +15,7 @@
     "barista": "0.2.x",
     "chalk": "^0.4.0",
     "is-promise": "^2.0.0",
-    "jake": "8.0.x",
+    "jake": "^8.0.19",
     "mime": "^2.3.1",
     "model": "6.0.x",
     "tlsopts": "0.0.1",
@@ -34,12 +34,12 @@
   },
   "preferGlobal": true,
   "devDependencies": {
-    "browserify": "1.16.x",
+    "browserify": "latest",
     "ejs": "latest",
     "handlebars": "latest",
-    "jade": "latest",
+    "pug": "latest",
     "request": "latest",
-    "socket.io-client": "1.0.x"
+    "socket.io-client": "latest"
   },
   "engines": {
     "node": "*"
