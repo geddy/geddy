@@ -68,7 +68,7 @@ geddy console environment=development
 *Options*
 
 - `--realtime, -rt`: When generating or scaffolding, take realtime into account
-- `--jade, -j`: When generating views this will create Jade templates (Default: EJS)
+- `--pug, -j`: When generating views this will create Jade templates (Default: EJS)
 - `--handle, -H`: When generating views this will create Handlebars templates (Default: EJS)
 - `--mustache, -m`: When generating views this will create Mustache templates (Default: EJS)
 - `--swig, -s`: When generating views this will create Swig templates (Default: EJS)

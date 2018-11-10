@@ -56,7 +56,7 @@ applications or resources for applications.
 
 -   `--swig`: When generating views, use Swig templates(Default:
     EJS)
--   `--jade`, `-j`: When generating views, use Jade templates(Default:
+-   `--pug`, `-j`: When generating views, use Jade templates(Default:
     EJS)
 -   `--handle`, `-H`: When generating views, use Handlebars
     templates (Default: EJS)
@@ -77,7 +77,7 @@ learn how to use those.
     deleting any other secret.
 -   `controller` takes a single argument being a name. It will create a
     new controller, a route and an index view. If you also include the
-    options `--swig`, `--jade`, `--handle` or `--mustache` you can substitute the
+    options `--swig`, `--pug`, `--handle` or `--mustache` you can substitute the
     template language to your liking.
 -   `model` takes one or more arguments, the first being a name and the
     others being a set of model properties. We won't go over model
@@ -92,7 +92,7 @@ learn how to use those.
     the others being a set of model properties. Scaffolding includes a
     controller, a model including the given model properties as well as
     a default model adapter a resource route and will create all views.
-    If you also include the options `--swig`, `--jade`, `--handle` or `--mustache`
+    If you also include the options `--swig`, `--pug`, `--handle` or `--mustache`
     you can substitute the template language to your liking.
 
 #### Model properties

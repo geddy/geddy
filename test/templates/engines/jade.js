@@ -20,7 +20,7 @@
   'use strict';
 
   try {
-    require('jade');
+    require('pug');
   } catch (err) {
     var events = new (require('events').EventEmitter)
 

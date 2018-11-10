@@ -3,7 +3,7 @@ Geddy's view layer provides a versatile set of templating languages and helpers 
 The view layer supports these four templating engines:
 
 + EJS (.ejs)
-+ Jade (.jade)
++ Jade (.pug)
 + Mustache (.mu, .ms, .mustache)
 + Handlebars (.hbs, .handlebars)
 + [Swig](http://paularmstrong.github.io/swig/) (.swig)
@@ -17,7 +17,7 @@ geddy app --mustache my_app
 geddy scaffold -m user
 
 
-geddy app --jade my_app
+geddy app --pug my_app
 geddy scaffold -j user
 
 
