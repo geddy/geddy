@@ -34,6 +34,7 @@
   },
   "preferGlobal": true,
   "devDependencies": {
+    "acorn": "^6.0.4",
     "browserify": "^16.2.3",
     "ejs": "^2.6.1",
     "handlebars": "^4.0.12",
