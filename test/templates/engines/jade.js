@@ -32,7 +32,7 @@
     , tests
     , render = function (str, data) {
         data = data || {};
-        var ad = new adapter.JadeAdapter(str);
+        var ad = new adapter.PugAdapter(str);
         return ad.render(data);
       };
 

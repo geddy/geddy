@@ -56,7 +56,7 @@ applications or resources for applications.
 
 -   `--swig`: When generating views, use Swig templates(Default:
     EJS)
--   `--pug`, `-j`: When generating views, use Jade templates(Default:
+-   `--pug`, `-j`: When generating views, use Pug templates(Default:
     EJS)
 -   `--handle`, `-H`: When generating views, use Handlebars
     templates (Default: EJS)

@@ -30,7 +30,7 @@ geddy
 geddy -p 3000
 # Start Geddy in production mode
 geddy -e production
-# Generate a users scaffolding using Jade templates
+# Generate a users scaffolding using Pug templates
 geddy -j scaffold user
 
 ```
@@ -68,7 +68,7 @@ geddy console environment=development
 *Options*
 
 - `--realtime, -rt`: When generating or scaffolding, take realtime into account
-- `--pug, -j`: When generating views this will create Jade templates (Default: EJS)
+- `--pug, -j`: When generating views this will create Pug templates (Default: EJS)
 - `--handle, -H`: When generating views this will create Handlebars templates (Default: EJS)
 - `--mustache, -m`: When generating views this will create Mustache templates (Default: EJS)
 - `--swig, -s`: When generating views this will create Swig templates (Default: EJS)
