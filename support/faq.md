@@ -1,6 +1,6 @@
 ### Which templating engines does Geddy support?
 + EJS
-+ Jade
++ Pug
 + Handlebars
 + Mustache
 + Swig

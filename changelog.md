@@ -9,7 +9,7 @@
 + Rewritten tutorial
 + API for adding new MIME types
 + Expose template engines for use in controllers
-+ Update to Jade v1.x in generated apps
++ Update to Pug v1.x in generated apps
 + appName config value
 + Numerous updates to selectTag helper
 + Config options for asset server and URI base path

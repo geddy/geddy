@@ -68,7 +68,7 @@ foo:string or bar:number).
 A scaffolded resource includes a model, REST routes, a controller with
 appropriate CRUD actions, and views.
 
-If you also include the options `--swig`, `--jade`, `--handle`
+If you also include the options `--swig`, `--pug`, `--handle`
 or `--mustache` you can substitute the template language to your liking.
 
 `resource <name> [model attributes]`: Creates a plain resource.
@@ -86,7 +86,7 @@ actions. It does not include views.
 
 A bare controller includes a controller, REST routes, and an index view.
 
-If you also include the options `--swig`, `--jade`, `--handle`
+If you also include the options `--swig`, `--pug`, `--handle`
 or `--mustache` you can substitute the template language to your liking.
 
 `model <name> [model attributes]`: Generates a new model.

@@ -12,9 +12,9 @@
       assert.equal('gen:app[foo,default,default]', c.jakeTaskName);
     }
 
-  , 'Cmd parseArgs gen app --jade': function () {
-      var c = new Cmd(['app', 'foo', '--jade']);
-      assert.equal('gen:app[foo,jade,default]', c.jakeTaskName);
+  , 'Cmd parseArgs gen app --pug': function () {
+      var c = new Cmd(['app', 'foo', '--pug']);
+      assert.equal('gen:app[foo,pug,default]', c.jakeTaskName);
     }
 
   , 'Cmd parseArgs gen scaffold zooby foo bar --realtime': function () {

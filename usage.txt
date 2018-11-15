@@ -23,7 +23,7 @@
                                     display a prompt to use "geddy -h"
    geddy -p 3000                  Start Geddy on port 3000
    geddy -e production            Start Geddy in production mode
-   geddy -j scaffold user         Generate a users scaffolding using Jade templates
+   geddy -j scaffold user         Generate a users scaffolding using Pug templates
 
 -------------------------------------------------------
  Console usage:
@@ -66,7 +66,7 @@
  Generator options:
    --trace, -t                    Output detailed error information for failures
    --realtime, -rt                When generating or scaffolding, take realtime into account
-   --jade, -j                     When generating views this will create Jade
+   --pug, -j                     When generating views this will create Pug
                                     templates(Default: EJS)
    --handle, -H                   When generating views this will create Handlebars
                                     templates(Default: EJS)

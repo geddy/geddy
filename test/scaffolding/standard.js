@@ -12,7 +12,7 @@
     , staticId = utils.string.uuid(10)
     , engines = {
         ejs: null
-      , jade: '-j'
+      //, pug: '-j' // TODO: Fix Pug implementation
       , handlebars: '-H'
       , mustache: '-m'
       }

@@ -477,8 +477,8 @@ namespace('gen', function () {
       case 'ejs':
         ext += '.ejs';
         break;
-      case 'jade':
-        ext += '.jade';
+      case 'pug':
+        ext += '.pug';
         break;
       case 'handlebars':
         ext += '.hbs';
@@ -511,7 +511,7 @@ namespace('gen', function () {
 
     // Create default layout if one doesn't exist
     // Hack: There should be a better way to detect if a application layout exists
-    if (!utils.file.existsSync(appLayoutPath + '.html.ejs') && !utils.file.existsSync(appLayoutPath + '.html.jade') &&
+    if (!utils.file.existsSync(appLayoutPath + '.html.ejs') && !utils.file.existsSync(appLayoutPath + '.html.pug') &&
        !utils.file.existsSync(appLayoutPath + '.html.hbs') && !utils.file.existsSync(appLayoutPath + '.html.ms') &&
        !utils.file.existsSync(appLayoutPath + '.html.swig')) {
       // Copy template layout file to apps application layout file
@@ -563,8 +563,8 @@ namespace('gen', function () {
       case 'ejs':
         ext += '.ejs';
         break;
-      case 'jade':
-        ext += '.jade';
+      case 'pug':
+        ext += '.pug';
         break;
       case 'handlebars':
         ext += '.hbs';
@@ -613,7 +613,7 @@ namespace('gen', function () {
 
     // Create default layout if one doesn't exist
     // Hack: There should be a better way to detect if a application layout exists
-    if (!utils.file.existsSync(appLayoutPath + '.html.ejs') && !utils.file.existsSync(appLayoutPath + '.html.jade') &&
+    if (!utils.file.existsSync(appLayoutPath + '.html.ejs') && !utils.file.existsSync(appLayoutPath + '.html.pug') &&
        !utils.file.existsSync(appLayoutPath + '.html.hbs') && !utils.file.existsSync(appLayoutPath + '.html.ms') &&
        !utils.file.existsSync(appLayoutPath + '.html.swig')) {
       // Copy template layout file to apps application layout file

@@ -10,12 +10,12 @@
   ],
   "version": "14.0.1",
   "author": "Matthew Eernisse <mde@fleegix.org> (http://fleegix.org)",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "dependencies": {
     "barista": "0.2.x",
     "chalk": "^0.4.0",
     "is-promise": "^2.0.0",
-    "jake": "8.0.x",
+    "jake": "^8.0.19",
     "mime": "^2.3.1",
     "model": "6.0.x",
     "tlsopts": "0.0.1",
@@ -34,12 +34,13 @@
   },
   "preferGlobal": true,
   "devDependencies": {
-    "browserify": "1.16.x",
-    "ejs": "latest",
-    "handlebars": "latest",
-    "jade": "latest",
-    "request": "latest",
-    "socket.io-client": "1.0.x"
+    "acorn": "^6.0.4",
+    "browserify": "^16.2.3",
+    "ejs": "^2.6.1",
+    "handlebars": "^4.0.12",
+    "pug": "^2.0.3",
+    "request": "^2.88.0",
+    "socket.io-client": "^2.1.1"
   },
   "engines": {
     "node": "*"

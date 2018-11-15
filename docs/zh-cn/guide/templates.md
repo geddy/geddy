@@ -2,7 +2,7 @@ Geddy的视图层提供了一套通用的模板语言和帮助程序，让你快
 
 视图层支持以下四种模版引擎：
 + EJS (.ejs)
-+ Jade (.jade)
++ Pug (.pug)
 + Mustache (.mu, .ms, .mustache)
 + Handlebars (.hbs, .handlebars)
 + [Swig](http://paularmstrong.github.io/swig/) (.swig)
@@ -16,7 +16,7 @@ geddy app --mustache my_app
 geddy scaffold -m user
 
 
-geddy app --jade my_app
+geddy app --pug my_app
 geddy scaffold -j user
 
 
