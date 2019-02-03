@@ -1,7 +1,10 @@
 # Geddy
 #### A simple, structured web framework for Node
 
-[![Build Status](https://travis-ci.org/geddy/geddy.png?branch=master)](https://travis-ci.org/geddy/geddy) [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/geddy/geddy)
+[![Build Status](https://travis-ci.org/geddy/geddy.png?branch=master)](https://travis-ci.org/geddy/geddy) [![Gitter](https://badges.gitter.im/geddy/geddy.svg)](https://gitter.im/geddy/geddy)
+
+## DEPRECATION NOTICE
+**Geddy is no longer actively maintained, and therefore it is not recommended to be used for any new projects. For current users, it is highly recommended to migrate another framework.**
 
 #### Install Geddy:
 
